@@ -40,6 +40,10 @@ namespace Pitstop {
 
 	private:
 
+		bool retrieveFromRegistry(QString& target, const QString& path, const QString& keyName);
+
+	private:
+
 		QString m_Description;
 		QString m_Category;
 		Type m_Type;
