@@ -12,6 +12,10 @@
 
 #include <stdint.h>
 
+// Windows
+
+#include <Windows.h>
+
 // Qt Core
 
 #include <QtCore/QBuffer>
@@ -48,12 +52,6 @@
 #include <QtCore/QUrlQuery>
 #include <QtCore/QVariant>
 #include <QtCore/QWaitCondition>
-
-// Windows
-
-#include <Windows.h>
-
-// WinDDK
 
 extern "C" {
 	#include <hidsdi.h>

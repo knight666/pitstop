@@ -1,5 +1,8 @@
 #include "Application/Application.h"
 
+#include <QtGui/QWindow>
+#include <QtGui/QGuiApplication>
+
 #include "Application/MainWindow.h"
 
 namespace Pitstop {
@@ -24,7 +27,7 @@ namespace Pitstop {
 	{
 		m_MainWindow->show();
 
-		if (!m_RawInput->initialize())
+		if (!m_RawInput->initialize((HWND)m_MainWindow->winId()))
 		{
 			return false;
 		}

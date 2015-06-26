@@ -13,7 +13,7 @@ namespace Pitstop {
 		qDeleteAll(m_Joysticks);
 	}
 
-	bool RawInputManager::initialize()
+	bool RawInputManager::initialize(HWND window)
 	{
 		QVector<RAWINPUTDEVICELIST> device_info_list;
 
@@ -62,9 +62,15 @@ namespace Pitstop {
 				continue;
 			}
 
-			RawInputJoystick* joystick = new RawInputJoystick(device_info.hDevice, info, NULL, device_name);
-
-			m_Joysticks.insert(joystick->getHandle(), joystick);
+			RawInputJoystick* joystick = new RawInputJoystick(device_info.hDevice, info, window, device_name);
+			if (joystick->setup())
+			{
+				m_Joysticks.insert(joystick->getHandle(), joystick);
+			}
+			else
+			{
+				delete joystick;
+			}
 		}
 
 		if (m_Joysticks.size() > 0)
@@ -96,28 +102,38 @@ namespace Pitstop {
 
 	void RawInputManager::processInputMessage(WPARAM wParam, LPARAM lParam)
 	{
-		UINT size;
-		if (::GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &size, sizeof(RAWINPUTHEADER)) == (UINT)-1)
+		UINT raw_size = 0;
+		if (::GetRawInputData(
+			(HRAWINPUT)lParam,
+			RID_INPUT,
+			NULL,
+			&raw_size,
+			sizeof(RAWINPUTHEADER)) == (UINT)-1)
 		{
 			return;
 		}
 
-		QByteArray raw_data;
-		raw_data.resize(size);
-		RAWINPUT* input = (RAWINPUT*)&raw_data[0];
+		QVector<uint8_t> raw_data;
+		raw_data.resize(raw_size);
+		RAWINPUT* raw_input = (RAWINPUT*)&raw_data[0];
 
-		if (::GetRawInputData((HRAWINPUT)lParam, RID_INPUT, input, &size, sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
-			input->header.dwType != RIM_TYPEHID)
+		if (::GetRawInputData(
+			(HRAWINPUT)lParam,
+			RID_INPUT,
+			raw_input,
+			&raw_size,
+			sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
+			raw_input->header.dwType != RIM_TYPEHID)
 		{
 			return;
 		}
 
-		QHash<HANDLE, RawInputJoystick*>::iterator found = m_Joysticks.find(input->header.hDevice);
+		QHash<HANDLE, RawInputJoystick*>::iterator found = m_Joysticks.find(raw_input->header.hDevice);
 		if (found != m_Joysticks.end())
 		{
 			RawInputJoystick* joystick = found.value();
 
-			int i = 0;
+			joystick->process(*raw_input);
 		}
 	}
 

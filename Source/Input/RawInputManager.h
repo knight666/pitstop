@@ -4,6 +4,7 @@
 
 namespace Pitstop {
 
+	class ProcessorBase;
 	class RawInputJoystick;
 
 	class RawInputManager
@@ -14,13 +15,14 @@ namespace Pitstop {
 		RawInputManager();
 		~RawInputManager();
 
-		bool initialize();
+		bool initialize(HWND window);
 
 		void processInputMessage(WPARAM wParam, LPARAM lParam);
 
 	private:
 
 		QHash<HANDLE, RawInputJoystick*> m_Joysticks;
+		QHash<HANDLE, ProcessorBase*> m_Processors;
 
 	}; // class RawInputManager
 
