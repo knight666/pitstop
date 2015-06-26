@@ -34,9 +34,9 @@ namespace Pitstop {
 
 		const QString& getGuid() const { return m_GUID; }
 
-	private:
+		bool setup();
 
-		void extractStringProperties();
+		bool process(const RAWINPUT& message);
 
 	private:
 

@@ -10,18 +10,15 @@ namespace Pitstop {
 		: m_Handle(handle)
 		, m_Info(info)
 		, m_DeviceIdentifier(name)
+		, m_Description(name)
 		, m_Type(Type::Raw)
+		, m_Processor(nullptr)
 	{
 		memset(&m_Device, 0, sizeof(m_Device));
 		m_Device.usUsagePage = info.hid.usUsagePage;
 		m_Device.usUsage = info.hid.usUsage;
 		m_Device.dwFlags = 0;
 		m_Device.hwndTarget = window;
-
-		extractStringProperties();
-
-		m_Processor = new ProcessorBase(*this);
-		m_Processor->setup();
 	}
 
 	RawInputJoystick::~RawInputJoystick()
@@ -29,18 +26,14 @@ namespace Pitstop {
 		delete m_Processor;
 	}
 
-	void RawInputJoystick::extractStringProperties()
+	bool RawInputJoystick::setup()
 	{
-		m_GUID.clear();
-		m_Category.clear();
-		m_Description = m_DeviceIdentifier;
-
 		// Extract GUID
 
 		QRegExp extract_guid("(\\{.+\\})");
 		if (extract_guid.indexIn(m_DeviceIdentifier) < 0)
 		{
-			return;
+			return false;
 		}
 
 		m_GUID = extract_guid.cap(1);
@@ -50,7 +43,7 @@ namespace Pitstop {
 		QRegExp extract_info("VID_([A-Fa-f0-9]+)&PID_([A-Fa-f0-9]+)");
 		if (extract_info.indexIn(m_DeviceIdentifier) < 0)
 		{
-			return;
+			return false;
 		}
 
 		QString vid = extract_info.cap(1);
@@ -98,6 +91,16 @@ namespace Pitstop {
 				m_Description = QString::fromUtf16(&description_data[0], (int)length);
 			}
 		}
+
+		// Add input processor
+
+		m_Processor = new ProcessorBase(*this);
+		return m_Processor->setup();
+	}
+
+	bool RawInputJoystick::process(const RAWINPUT& message)
+	{
+		return (m_Processor != nullptr) ? m_Processor->process(message) : false;
 	}
 
 }; // namespace Pitstop
