@@ -5,6 +5,9 @@
     <ClCompile Include="Source\Application\Application.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\RawInputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -13,6 +16,9 @@
     <Filter Include="Application">
       <UniqueIdentifier>{a0866125-9c39-48af-aedf-da95c5721666}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{c1c9cad1-3898-4238-bbeb-1cf5ff1166e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Base\Main.h">
@@ -20,6 +26,9 @@
     </ClInclude>
     <ClInclude Include="Source\Application\Application.h">
       <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\RawInputManager.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

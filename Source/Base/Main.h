@@ -44,3 +44,7 @@
 #include <QtCore/QUrlQuery>
 #include <QtCore/QVariant>
 #include <QtCore/QWaitCondition>
+
+// Windows
+
+#include <Windows.h>

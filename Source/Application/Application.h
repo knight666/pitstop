@@ -2,6 +2,8 @@
 
 #include "Base/Main.h"
 
+#include "Input/RawInputManager.h"
+
 #include <QtWidgets/QApplication>
 
 namespace Pitstop {
@@ -16,6 +18,10 @@ namespace Pitstop {
 		~Application();
 
 		int run();
+
+	private:
+
+		RawInputManager* m_RawInput;
 
 	}; // class Application
 
