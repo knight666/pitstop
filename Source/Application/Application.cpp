@@ -10,13 +10,17 @@ namespace Pitstop {
 
 	Application::~Application()
 	{
+		delete m_RawInput;
 	}
 
 	int Application::run()
 	{
-		m_RawInput->initialize();
+		if (!m_RawInput->initialize())
+		{
+			return false;
+		}
 
-		return 0;
+		return exec();
 	}
 
 }; // namespace Pitstop

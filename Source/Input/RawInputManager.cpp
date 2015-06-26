@@ -75,10 +75,13 @@ namespace Pitstop {
 
 		// Register raw input devices
 
-		QVector<RAWINPUTDEVICE> device_list(m_Joysticks.size());
+		QVector<RAWINPUTDEVICE> device_list;
 		for (RawInputJoystick* joystick : m_Joysticks)
 		{
-			device_list.push_back(joystick->getDevice());
+			if (joystick->getType() != RawInputJoystick::Type::XInput)
+			{
+				device_list.push_back(joystick->getDevice());
+			}
 		}
 
 		if (::RegisterRawInputDevices(&device_list[0], (UINT)device_list.size(), sizeof(RAWINPUTDEVICE)) == FALSE)

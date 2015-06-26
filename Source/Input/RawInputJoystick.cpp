@@ -11,6 +11,9 @@ namespace Pitstop {
 		, m_Type(Type::Raw)
 	{
 		memset(&m_Device, 0, sizeof(m_Device));
+		m_Device.usUsagePage = info.hid.usUsagePage;
+		m_Device.usUsage = info.hid.usUsage;
+		m_Device.dwFlags = 0;
 		m_Device.hwndTarget = window;
 
 		extractStringProperties();
