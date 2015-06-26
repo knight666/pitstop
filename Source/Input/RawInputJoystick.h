@@ -9,10 +9,18 @@ namespace Pitstop {
 
 	public:
 
+		enum class Type
+		{
+			Raw,
+			XInput,
+		};
+
 		RawInputJoystick(HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name);
 		~RawInputJoystick();
 
 		const RAWINPUTDEVICE& getDevice() const { return m_Device; }
+
+		Type getType() const { return m_Type; }
 
 		const QString& getDescription() const { return m_Description; }
 
@@ -24,6 +32,7 @@ namespace Pitstop {
 
 	private:
 
+		Type m_Type;
 		HANDLE m_Handle;
 		RAWINPUTDEVICE m_Device;
 		RID_DEVICE_INFO m_Info;
