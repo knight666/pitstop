@@ -16,6 +16,8 @@ namespace Pitstop {
 
 		bool initialize();
 
+		void processInputMessage(WPARAM wParam, LPARAM lParam);
+
 	private:
 
 		QVector<RawInputJoystick*> m_Joysticks;

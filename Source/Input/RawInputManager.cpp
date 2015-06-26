@@ -28,10 +28,8 @@ namespace Pitstop {
 		device_info_list.resize((int)device_count);
 		::GetRawInputDeviceList(&device_info_list[0], &device_count, sizeof(RAWINPUTDEVICELIST));
 
-		for (UINT i = 0; i < device_count; ++i)
+		for (RAWINPUTDEVICELIST& device_info : device_info_list)
 		{
-			RAWINPUTDEVICELIST& device_info = device_info_list[i];
-
 			// Get device info
 
 			RID_DEVICE_INFO info = { 0 };
@@ -68,30 +66,50 @@ namespace Pitstop {
 			m_Joysticks.push_back(joystick);
 		}
 
-		if (m_Joysticks.isEmpty())
+		if (m_Joysticks.size() > 0)
 		{
-			return true;
-		}
+			// Register raw input devices
 
-		// Register raw input devices
-
-		QVector<RAWINPUTDEVICE> device_list;
-		for (RawInputJoystick* joystick : m_Joysticks)
-		{
-			if (joystick->getType() != RawInputJoystick::Type::XInput)
+			QVector<RAWINPUTDEVICE> device_list;
+			for (RawInputJoystick* joystick : m_Joysticks)
 			{
-				device_list.push_back(joystick->getDevice());
+				if (joystick->getType() != RawInputJoystick::Type::XInput)
+				{
+					device_list.push_back(joystick->getDevice());
+				}
+			}
+
+			if (device_list.size() > 0)
+			{
+				if (::RegisterRawInputDevices(&device_list[0], (UINT)device_list.size(), sizeof(RAWINPUTDEVICE)) == FALSE)
+				{
+					DWORD errorCode = GetLastError();
+
+					return false;
+				}
 			}
 		}
 
-		if (::RegisterRawInputDevices(&device_list[0], (UINT)device_list.size(), sizeof(RAWINPUTDEVICE)) == FALSE)
-		{
-			DWORD errorCode = GetLastError();
+		return true;
+	}
 
-			return false;
+	void RawInputManager::processInputMessage(WPARAM wParam, LPARAM lParam)
+	{
+		UINT size;
+		if (::GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &size, sizeof(RAWINPUTHEADER)) == (UINT)-1)
+		{
+			return;
 		}
 
-		return true;
+		QByteArray raw_data;
+		raw_data.resize(size);
+
+		if (::GetRawInputData((HRAWINPUT)lParam, RID_INPUT, (RAWINPUT*)&raw_data[0], &size, sizeof(RAWINPUTHEADER)) == (UINT)-1)
+		{
+			return;
+		}
+
+		int i = 0;
 	}
 
 }; // namespace Pitstop

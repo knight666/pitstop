@@ -8,7 +8,12 @@
     <ClCompile Include="Source\Input\RawInputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input\RawInputJoystick.cpp" />
+    <ClCompile Include="Source\Input\RawInputJoystick.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\MainWindow.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -19,6 +24,15 @@
     </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{c1c9cad1-3898-4238-bbeb-1cf5ff1166e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneratedFiles">
+      <UniqueIdentifier>{80a2cfa4-5584-4ec7-839a-dfa768c514dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneratedFiles\Debug">
+      <UniqueIdentifier>{f7c66623-87cd-4122-8afb-f935ba5cd148}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneratedFiles\Release">
+      <UniqueIdentifier>{b3bbc76f-fb7e-4047-ac90-3d6dfd5e1605}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,5 +48,16 @@
     <ClInclude Include="Source\Input\RawInputJoystick.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_MainWindow.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application\MainWindow.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Source\Application\MainWindow.ui">
+      <Filter>Application</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>
