@@ -78,7 +78,7 @@ namespace Pitstop {
 		QVector<RAWINPUTDEVICE> device_list(m_Joysticks.size());
 		for (RawInputJoystick* joystick : m_Joysticks)
 		{
-			device_list.push_back(joystick->GetDevice());
+			device_list.push_back(joystick->getDevice());
 		}
 
 		if (::RegisterRawInputDevices(&device_list[0], (UINT)device_list.size(), sizeof(RAWINPUTDEVICE)) == FALSE)
