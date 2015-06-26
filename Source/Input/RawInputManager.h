@@ -4,6 +4,8 @@
 
 namespace Pitstop {
 
+	class RawInputJoystick;
+
 	class RawInputManager
 	{
 
@@ -13,6 +15,10 @@ namespace Pitstop {
 		~RawInputManager();
 
 		bool initialize();
+
+	private:
+
+		QVector<RawInputJoystick*> m_Joysticks;
 
 	}; // class RawInputManager
 
