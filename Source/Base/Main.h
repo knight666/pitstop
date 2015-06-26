@@ -8,6 +8,10 @@
 	#define NOMINMAX
 #endif
 
+// C/C++
+
+#include <stdint.h>
+
 // Qt Core
 
 #include <QtCore/QBuffer>
@@ -48,3 +52,9 @@
 // Windows
 
 #include <Windows.h>
+
+// WinDDK
+
+extern "C" {
+	#include <hidsdi.h>
+};
