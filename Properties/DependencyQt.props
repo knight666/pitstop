@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <QTDIR>$(SolutionDir)Dependencies\Qt-5.4.1</QTDIR>
+    <DepQtDir>$(SolutionDir)Dependencies\Qt-5.4.1\</DepQtDir>
+    <DepQtTargetMacro Condition="'$(Configuration)'=='Debug'"></DepQtTargetMacro>
+    <DepQtTargetMacro Condition="'$(Configuration)'!='Debug'">QT_NO_DEBUG</DepQtTargetMacro>
+    <DepQtLibraryDir>$(DepQtDir)lib\msvc2012\</DepQtLibraryDir>
+    <DepQtExt Condition="'$(Configuration)'=='Debug'">d</DepQtExt>
+    <DepQtExt Condition="'$(Configuration)'!='Debug'"></DepQtExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>$(DepQtTargetMacro);QT_LARGEFILE_SUPPORT;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(DepQtDir)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(DepQtLibraryDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(DepQtLibraryDir)QtMain$(DepQtExt).lib;$(DepQtLibraryDir)Qt5Core$(DepQtExt).lib;$(DepQtLibraryDir)Qt5Gui$(DepQtExt).lib;$(DepQtLibraryDir)Qt5Widgets$(DepQtExt).lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+</Project>
