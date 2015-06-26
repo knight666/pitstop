@@ -63,7 +63,8 @@ namespace Pitstop {
 			}
 
 			RawInputJoystick* joystick = new RawInputJoystick(device_info.hDevice, info, NULL, device_name);
-			m_Joysticks.push_back(joystick);
+
+			m_Joysticks.insert(device_info.hDevice, joystick);
 		}
 
 		if (m_Joysticks.size() > 0)
@@ -103,13 +104,21 @@ namespace Pitstop {
 
 		QByteArray raw_data;
 		raw_data.resize(size);
+		RAWINPUT* input = (RAWINPUT*)&raw_data[0];
 
-		if (::GetRawInputData((HRAWINPUT)lParam, RID_INPUT, (RAWINPUT*)&raw_data[0], &size, sizeof(RAWINPUTHEADER)) == (UINT)-1)
+		if (::GetRawInputData((HRAWINPUT)lParam, RID_INPUT, input, &size, sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
+			input->header.dwType != RIM_TYPEHID)
 		{
 			return;
 		}
 
-		int i = 0;
+		QHash<HANDLE, RawInputJoystick*>::iterator found = m_Joysticks.find(input->header.hDevice);
+		if (found != m_Joysticks.end())
+		{
+			RawInputJoystick* joystick = found.value();
+
+			int i = 0;
+		}
 	}
 
 }; // namespace Pitstop
