@@ -58,37 +58,34 @@ namespace Pitstop {
 
 		// Get category
 
-		QString category_key_path = QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + m_GUID;
-
-		HKEY category_key = NULL;
-		if (::RegOpenKeyExW(HKEY_LOCAL_MACHINE, (const wchar_t*)category_key_path.utf16(), 0, KEY_READ | KEY_WOW64_64KEY, &category_key) == ERROR_SUCCESS)
-		{
-			DWORD length = 0;
-			if (::RegQueryValueExW(category_key, L"Category", nullptr, nullptr, nullptr, &length) == ERROR_SUCCESS)
-			{
-				QVector<ushort> category_name_data;
-				category_name_data.resize((int)length);
-				::RegQueryValueExW(category_key, L"Category", nullptr, nullptr, (BYTE*)&category_name_data[0], &length);
-
-				m_Category = QString::fromUtf16(&category_name_data[0], (int)length);
-			}
-		}
+		retrieveFromRegistry(
+			m_Category,
+			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + m_GUID,
+			"Category");
 
 		// Get translated name
 
-		QString description_key_path = QString("SYSTEM\\CurrentControlSet\\Control\\MediaProperties\\PrivateProperties\\Joystick\\OEM\\VID_%1&PID_%2").arg(vid).arg(pid);
-
-		HKEY description_key = NULL;
-		if (::RegOpenKeyExW(HKEY_LOCAL_MACHINE, (const wchar_t*)description_key_path.utf16(), 0, KEY_READ | KEY_WOW64_64KEY, &description_key) == ERROR_SUCCESS)
+		if (!retrieveFromRegistry(
+			m_Description,
+			QString("SYSTEM\\CurrentControlSet\\Control\\MediaProperties\\PrivateProperties\\Joystick\\OEM\\VID_%1&PID_%2").arg(vid).arg(pid),
+			"OEMName"))
 		{
-			DWORD length = 0;
-			if (::RegQueryValueExW(description_key, L"OEMName", nullptr, nullptr, nullptr, &length) == ERROR_SUCCESS)
-			{
-				QVector<ushort> description_data;
-				description_data.resize((int)length);
-				::RegQueryValueExW(description_key, L"OEMName", nullptr, nullptr, (BYTE*)&description_data[0], &length);
+			QString path = m_DeviceIdentifier;
+			path.replace(0, 4, "SYSTEM\\CurrentControlSet\\Enum\\");
+			path.replace('#', '\\');
+			path.replace(QRegExp("\\{.+\\}"), "");
 
-				m_Description = QString::fromUtf16(&description_data[0], (int)length);
+			if (retrieveFromRegistry(m_Description, path, "DeviceDesc"))
+			{
+				// Save only the name from the device description
+
+				int last_semicolon = m_Description.lastIndexOf(';');
+				if (last_semicolon >= 0)
+				{
+					m_Description = m_Description.mid(
+						last_semicolon + 1,
+						m_Description.length() - last_semicolon);
+				}
 			}
 		}
 
@@ -101,6 +98,29 @@ namespace Pitstop {
 	bool RawInputJoystick::process(const RAWINPUT& message)
 	{
 		return (m_Processor != nullptr) ? m_Processor->process(message) : false;
+	}
+
+	bool RawInputJoystick::retrieveFromRegistry(QString& target, const QString& path, const QString& keyName)
+	{
+		HKEY key = NULL;
+		if (::RegOpenKeyExW(HKEY_LOCAL_MACHINE, (const wchar_t*)path.utf16(), 0, KEY_READ | KEY_WOW64_64KEY, &key) != ERROR_SUCCESS)
+		{
+			return false;
+		}
+
+		DWORD length = 0;
+		if (::RegQueryValueExW(key, (const wchar_t*)keyName.utf16(), nullptr, nullptr, nullptr, &length) != ERROR_SUCCESS)
+		{
+			return false;
+		}
+
+		QVector<ushort> data;
+		data.resize((int)length);
+		::RegQueryValueExW(key, (const wchar_t*)keyName.utf16(), nullptr, nullptr, (BYTE*)&data[0], &length);
+
+		target = QString::fromUtf16(&data[0], (int)length);
+
+		return true;
 	}
 
 }; // namespace Pitstop
