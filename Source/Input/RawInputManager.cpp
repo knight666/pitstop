@@ -64,7 +64,7 @@ namespace Pitstop {
 
 			RawInputJoystick* joystick = new RawInputJoystick(device_info.hDevice, info, NULL, device_name);
 
-			m_Joysticks.insert(device_info.hDevice, joystick);
+			m_Joysticks.insert(joystick->getHandle(), joystick);
 		}
 
 		if (m_Joysticks.size() > 0)

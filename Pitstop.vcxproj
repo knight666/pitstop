@@ -36,12 +36,14 @@
     <Import Project="Properties\TargetAll.props" />
     <Import Project="Properties\TargetDebug.props" />
     <Import Project="Properties\DependencyQt.props" />
+    <Import Project="Properties\DependencyWinDDK.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="Properties\TargetAll.props" />
     <Import Project="Properties\TargetRelease.props" />
     <Import Project="Properties\DependencyQt.props" />
+    <Import Project="Properties\DependencyWinDDK.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
@@ -67,6 +69,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Application\MainWindow.cpp" />
+    <ClCompile Include="Source\Input\Process\ProcessorBase.cpp" />
     <ClCompile Include="Source\Input\RawInputJoystick.cpp" />
     <ClCompile Include="Source\Input\RawInputManager.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -75,6 +78,7 @@
     <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Application\MainWindow.h" />
     <ClInclude Include="Source\Base\Main.h" />
+    <ClInclude Include="Source\Input\Process\ProcessorBase.h" />
     <ClInclude Include="Source\Input\RawInputJoystick.h" />
     <ClInclude Include="Source\Input\RawInputManager.h" />
   </ItemGroup>

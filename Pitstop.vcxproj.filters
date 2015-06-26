@@ -14,6 +14,9 @@
     <ClCompile Include="Source\Application\MainWindow.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\Process\ProcessorBase.cpp">
+      <Filter>Input\Process</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -34,6 +37,9 @@
     <Filter Include="GeneratedFiles\Release">
       <UniqueIdentifier>{b3bbc76f-fb7e-4047-ac90-3d6dfd5e1605}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input\Process">
+      <UniqueIdentifier>{055cabb2-3790-4f02-bbd3-0d5a64b4fc8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Base\Main.h">
@@ -53,6 +59,9 @@
     </ClInclude>
     <ClInclude Include="Source\Application\MainWindow.h">
       <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Process\ProcessorBase.h">
+      <Filter>Input\Process</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

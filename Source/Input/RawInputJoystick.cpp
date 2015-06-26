@@ -2,6 +2,8 @@
 
 #include <QtCore/QRegularExpression>
 
+#include "Input/Process/ProcessorBase.h"
+
 namespace Pitstop {
 
 	RawInputJoystick::RawInputJoystick(HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name)
@@ -17,10 +19,14 @@ namespace Pitstop {
 		m_Device.hwndTarget = window;
 
 		extractStringProperties();
+
+		m_Processor = new ProcessorBase(*this);
+		m_Processor->setup();
 	}
 
 	RawInputJoystick::~RawInputJoystick()
 	{
+		delete m_Processor;
 	}
 
 	void RawInputJoystick::extractStringProperties()

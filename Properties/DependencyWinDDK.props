@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <WinDDKDir Condition="'$(WinDDKDir)'==''">$(SolutionDir)Dependencies\WinDDK_7600.16385.1\</WinDDKDir>
+    <WinDDKLibDir Condition="'$(Platform)'=='x64'">$(WinDDKDir)lib\win7\amd64\</WinDDKLibDir>
+    <WinDDKLibDir Condition="'$(Platform)'=='Win32'">$(WinDDKDir)lib\win7\i386\</WinDDKLibDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(WinDDKDir)inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(WinDDKDir)$(WinDDKLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(WinDDKLibDir)hid.lib;$(WinDDKLibDir)hidclass.lib;$(WinDDKLibDir)hidparse.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
