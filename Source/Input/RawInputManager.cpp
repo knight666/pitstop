@@ -1,21 +1,21 @@
 #include "Input/RawInputManager.h"
 
+#include "Input/RawInputJoystick.h"
+
 namespace Pitstop {
 
 	RawInputManager::RawInputManager()
 	{
-
 	}
 
 	RawInputManager::~RawInputManager()
 	{
-
+		qDeleteAll(m_Joysticks);
 	}
 
 	bool RawInputManager::initialize()
 	{
 		QVector<RAWINPUTDEVICELIST> device_info_list;
-		QVector<RAWINPUTDEVICE> device_list;
 
 		UINT device_count = 0;
 		if (::GetRawInputDeviceList(nullptr, &device_count, sizeof(RAWINPUTDEVICELIST)) == (UINT)-1)
@@ -27,8 +27,6 @@ namespace Pitstop {
 
 		device_info_list.resize((int)device_count);
 		::GetRawInputDeviceList(&device_info_list[0], &device_count, sizeof(RAWINPUTDEVICELIST));
-
-		device_list.resize((int)device_count);
 
 		for (UINT i = 0; i < device_count; ++i)
 		{
@@ -66,8 +64,28 @@ namespace Pitstop {
 				continue;
 			}
 
-			RAWINPUTDEVICE device = { 0 };
-			device.hwndTarget = NULL;
+			RawInputJoystick* joystick = new RawInputJoystick(device_info.hDevice, info, NULL, device_name);
+			m_Joysticks.push_back(joystick);
+		}
+
+		if (m_Joysticks.isEmpty())
+		{
+			return true;
+		}
+
+		// Register raw input devices
+
+		QVector<RAWINPUTDEVICE> device_list(m_Joysticks.size());
+		for (RawInputJoystick* joystick : m_Joysticks)
+		{
+			device_list.push_back(joystick->GetDevice());
+		}
+
+		if (::RegisterRawInputDevices(&device_list[0], (UINT)device_list.size(), sizeof(RAWINPUTDEVICE)) == FALSE)
+		{
+			DWORD errorCode = GetLastError();
+
+			return false;
 		}
 
 		return true;

@@ -8,6 +8,7 @@
     <ClCompile Include="Source\Input\RawInputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\RawInputJoystick.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -28,6 +29,9 @@
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\RawInputManager.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\RawInputJoystick.h">
       <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
