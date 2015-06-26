@@ -4,12 +4,16 @@
 
 #include "Input/RawInputManager.h"
 
+#include <QtCore/QAbstractNativeEventFilter>
 #include <QtWidgets/QApplication>
 
 namespace Pitstop {
 
+	class MainWindow;
+
 	class Application
 		: public QApplication
+		, public QAbstractNativeEventFilter
 	{
 
 	public:
@@ -21,6 +25,11 @@ namespace Pitstop {
 
 	private:
 
+		virtual bool nativeEventFilter(const QByteArray& eventType, void* message, long* result) override;
+
+	private:
+
+		MainWindow* m_MainWindow;
 		RawInputManager* m_RawInput;
 
 	}; // class Application
