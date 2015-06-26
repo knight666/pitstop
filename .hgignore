@@ -2,6 +2,9 @@
 syntax: glob
 Intermediate/*
 
+syntax: regexp
+Build/[P|p]itstop([D|d]ebug|[R|r]elease)\.(exe|pdb)
+
 # Qt
 syntax: glob
 Generated/*
