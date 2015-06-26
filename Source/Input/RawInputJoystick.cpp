@@ -8,6 +8,7 @@ namespace Pitstop {
 		: m_Handle(handle)
 		, m_Info(info)
 		, m_DeviceIdentifier(name)
+		, m_Type(Type::Raw)
 	{
 		memset(&m_Device, 0, sizeof(m_Device));
 		m_Device.hwndTarget = window;
@@ -45,6 +46,13 @@ namespace Pitstop {
 
 		QString vid = extract_info.cap(1);
 		QString pid = extract_info.cap(2);
+
+		// Check if managed by XInput
+
+		if (m_DeviceIdentifier.indexOf("IG_") >= 0)
+		{
+			m_Type = Type::XInput;
+		}
 
 		// Get category
 
