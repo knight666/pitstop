@@ -10,6 +10,8 @@ namespace Pitstop {
 		m_RawInput = new RawInputManager();
 
 		m_MainWindow = new MainWindow();
+
+		installNativeEventFilter(this);
 	}
 
 	Application::~Application()

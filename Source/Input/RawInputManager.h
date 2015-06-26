@@ -20,7 +20,7 @@ namespace Pitstop {
 
 	private:
 
-		QVector<RawInputJoystick*> m_Joysticks;
+		QHash<HANDLE, RawInputJoystick*> m_Joysticks;
 
 	}; // class RawInputManager
 
