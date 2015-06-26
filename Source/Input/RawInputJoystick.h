@@ -12,19 +12,25 @@ namespace Pitstop {
 		RawInputJoystick(HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name);
 		~RawInputJoystick();
 
-		const RAWINPUTDEVICE& GetDevice() const { return m_Device; }
+		const RAWINPUTDEVICE& getDevice() const { return m_Device; }
+
+		const QString& getDescription() const { return m_Description; }
+
+		const QString& getCategory() const { return m_Category; }
 
 	private:
 
-		QString translateName(const QString& name) const;
+		void extractStringProperties();
 
 	private:
 
 		HANDLE m_Handle;
 		RAWINPUTDEVICE m_Device;
 		RID_DEVICE_INFO m_Info;
-		QString m_DeviceName;
-		QString m_TranslatedName;
+		QString m_DeviceIdentifier;
+		QString m_GUID;
+		QString m_Category;
+		QString m_Description;
 
 	}; // class RawInputJoystick
 
