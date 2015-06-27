@@ -1,6 +1,7 @@
 #include "Input/RawInputManager.h"
 
 #include "Input/RawInputJoystick.h"
+#include "Input/XInputDevice.h"
 
 namespace Pitstop {
 
@@ -95,6 +96,9 @@ namespace Pitstop {
 					return false;
 				}
 			}
+
+			XInputDevice* xinput = new XInputDevice();
+			xinput->setup(0);
 		}
 
 		return true;
