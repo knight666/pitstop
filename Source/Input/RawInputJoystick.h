@@ -42,6 +42,8 @@ namespace Pitstop {
 
 		bool retrieveFromRegistry(QString& target, const QString& path, const QString& keyName);
 
+		QString findDevicePath(const GUID& guid);
+
 	private:
 
 		QString m_Description;
