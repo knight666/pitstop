@@ -18,6 +18,9 @@ namespace Pitstop {
 
 		bool initialize(HWND window);
 
+		// TEMP
+		RawInputJoystick* getJoystick() const;
+
 		InputProcessorBase* createInputProcessor(RawInputJoystick& joystick);
 
 		template <typename InputType>

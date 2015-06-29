@@ -41,6 +41,8 @@ namespace Pitstop {
 
 		const GUID& getGuid() const { return m_GUID; }
 
+		InputProcessorBase* getInputProcessor() { return m_InputProcessor; }
+
 		bool setup();
 
 		bool process(const RAWINPUT& message);
@@ -64,7 +66,7 @@ namespace Pitstop {
 		RID_DEVICE_INFO m_Info;
 		QString m_DevicePath;
 		GUID m_GUID;
-		InputProcessorBase* m_Processor;
+		InputProcessorBase* m_InputProcessor;
 
 	}; // class RawInputJoystick
 
