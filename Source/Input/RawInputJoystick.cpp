@@ -10,7 +10,7 @@ namespace Pitstop {
 	RawInputJoystick::RawInputJoystick(HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name)
 		: m_Handle(handle)
 		, m_Info(info)
-		, m_DeviceIdentifier(name)
+		, m_DevicePath(name)
 		, m_Description(name)
 		, m_Type(Type::Raw)
 		, m_Processor(nullptr)
@@ -32,7 +32,7 @@ namespace Pitstop {
 		// Extract GUID
 
 		QRegExp extract_guid("(\\{.+\\})");
-		if (extract_guid.indexIn(m_DeviceIdentifier) < 0)
+		if (extract_guid.indexIn(m_DevicePath) < 0)
 		{
 			return false;
 		}
@@ -42,7 +42,7 @@ namespace Pitstop {
 		// Extract VID and PID
 
 		QRegExp extract_info("VID_([A-Fa-f0-9]+)&PID_([A-Fa-f0-9]+)");
-		if (extract_info.indexIn(m_DeviceIdentifier) < 0)
+		if (extract_info.indexIn(m_DevicePath) < 0)
 		{
 			return false;
 		}
@@ -52,7 +52,7 @@ namespace Pitstop {
 
 		// Check if managed by XInput
 
-		if (m_DeviceIdentifier.indexOf("IG_") >= 0)
+		if (m_DevicePath.indexOf("IG_") >= 0)
 		{
 			m_Type = Type::XInput;
 		}
@@ -71,7 +71,7 @@ namespace Pitstop {
 			QString("SYSTEM\\CurrentControlSet\\Control\\MediaProperties\\PrivateProperties\\Joystick\\OEM\\VID_%1&PID_%2").arg(vid).arg(pid),
 			"OEMName"))
 		{
-			QString path = m_DeviceIdentifier;
+			QString path = m_DevicePath;
 			path.replace(0, 4, "SYSTEM\\CurrentControlSet\\Enum\\");
 			path.replace('#', '\\');
 			path.replace(QRegExp("\\{.+\\}"), "");

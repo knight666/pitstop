@@ -88,8 +88,9 @@ namespace Pitstop {
 					device_list.push_back(joystick->getDevice());
 				}
 
-				XInputDevice* xinput = new XInputDevice();
-				xinput->setup(joystick->getGuid(), controller++);
+				XInputDevice* xinput = new XInputDevice(0);
+				bool success = xinput->attach(*joystick);
+				xinput->setPluggedIn(true);
 			}
 
 			if (device_list.size() > 0)
