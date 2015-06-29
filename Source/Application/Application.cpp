@@ -4,30 +4,33 @@
 #include <QtGui/QGuiApplication>
 
 #include "Application/MainWindow.h"
+#include "Input/RawInputManager.h"
+#include "Input/Usb/UsbController.h"
 
 namespace Pitstop {
 
 	Application::Application(int& argc, char** argv, int flags /*= ApplicationFlags*/)
 		: QApplication(argc, argv, flags)
+		, m_MainWindow(new MainWindow())
+		, m_RawInput(new RawInputManager())
+		, m_UsbController(new UsbController())
 	{
-		m_RawInput = new RawInputManager();
-
-		m_MainWindow = new MainWindow();
-
 		installNativeEventFilter(this);
 	}
 
 	Application::~Application()
 	{
-		delete m_MainWindow;
+		delete m_UsbController;
 		delete m_RawInput;
+		delete m_MainWindow;
 	}
 
 	int Application::run()
 	{
 		m_MainWindow->show();
 
-		if (!m_RawInput->initialize((HWND)m_MainWindow->winId()))
+		if (!m_RawInput->initialize((HWND)m_MainWindow->winId()) ||
+			!m_UsbController->initialize())
 		{
 			return false;
 		}
