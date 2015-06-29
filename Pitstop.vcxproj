@@ -59,6 +59,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h" />
+    <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h" />
     <ClInclude Include="Source\Input\Usb\UsbController.h" />
     <ClInclude Include="Source\Input\Usb\UsbDevice.h" />
     <ClInclude Include="Source\Input\XInputDevice.h" />
@@ -75,6 +76,7 @@
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Application\MainWindow.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorBase.cpp" />
+    <ClCompile Include="Source\Input\Process\InputProcessorDualShock4.cpp" />
     <ClCompile Include="Source\Input\RawInputJoystick.cpp" />
     <ClCompile Include="Source\Input\RawInputManager.cpp" />
     <ClCompile Include="Source\Input\Usb\UsbController.cpp" />

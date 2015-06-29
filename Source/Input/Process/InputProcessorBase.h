@@ -1,10 +1,15 @@
 #pragma once
 
 #include "Base/Main.h"
+#include "Input/RawInputJoystick.h"
 
 namespace Pitstop {
 
-	class RawInputJoystick;
+#define IMPLEMENT_INPUT_PROCESSOR(_type, _vid, _pid) \
+	static InputProcessorBase* create(RawInputJoystick& joystick) { \
+		return joystick.matchVendorAndProduct(_vid, _pid) ? new _type(joystick) : nullptr; \
+	} \
+	_type(RawInputJoystick& joystick) : InputProcessorBase(joystick) { }
 
 	class InputProcessorBase
 	{
@@ -19,6 +24,8 @@ namespace Pitstop {
 			InputState_Released = 0x04,
 		};
 
+		typedef std::function<InputProcessorBase*(RawInputJoystick&)> FactoryMethod;
+
 		InputProcessorBase(RawInputJoystick& joystick);
 		virtual ~InputProcessorBase();
 
@@ -28,8 +35,8 @@ namespace Pitstop {
 
 	protected:
 
-		virtual bool processButtonState(USAGE identifier, bool pressed);
-		virtual bool processAxisState(USAGE identifier, LONG value);
+		virtual bool processDigital(USAGE identifier, bool pressed);
+		virtual bool processAnalog(USAGE identifier, LONG value);
 
 	protected:
 

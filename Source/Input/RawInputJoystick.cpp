@@ -9,6 +9,8 @@ namespace Pitstop {
 
 	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name)
 		: m_Manager(manager)
+		, m_VendorIdentifier(0)
+		, m_ProductIdentifier(0)
 		, m_Handle(handle)
 		, m_Info(info)
 		, m_DevicePath(name)
@@ -49,7 +51,10 @@ namespace Pitstop {
 		}
 
 		QString vid = extract_info.cap(1);
+		m_VendorIdentifier = vid.toInt(nullptr, 16);
+
 		QString pid = extract_info.cap(2);
+		m_ProductIdentifier = pid.toInt(nullptr, 16);
 
 		// Check if managed by XInput
 

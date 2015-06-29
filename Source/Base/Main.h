@@ -12,6 +12,10 @@
 
 #include <stdint.h>
 
+// STL
+
+#include <functional>
+
 // Windows
 
 #include <Windows.h>
