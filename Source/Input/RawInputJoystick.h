@@ -5,6 +5,7 @@
 namespace Pitstop {
 
 	class ProcessorBase;
+	class RawInputManager;
 
 	class RawInputJoystick
 	{
@@ -17,7 +18,7 @@ namespace Pitstop {
 			XInput,
 		};
 
-		RawInputJoystick(HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name);
+		RawInputJoystick(RawInputManager& manager, HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name);
 		~RawInputJoystick();
 
 		const QString& getDescription() const { return m_Description; }
@@ -48,6 +49,7 @@ namespace Pitstop {
 
 	private:
 
+		RawInputManager& m_Manager;
 		QString m_Description;
 		QString m_Category;
 		Type m_Type;
