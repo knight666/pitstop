@@ -7,8 +7,9 @@
 
 namespace Pitstop {
 
-	RawInputJoystick::RawInputJoystick(HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name)
-		: m_Handle(handle)
+	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name)
+		: m_Manager(manager)
+		, m_Handle(handle)
 		, m_Info(info)
 		, m_DevicePath(name)
 		, m_Description(name)
