@@ -32,7 +32,7 @@ namespace Pitstop {
 
 		const RID_DEVICE_INFO_HID& getInfo() const { return m_Info.hid; }
 
-		const QString& getGuid() const { return m_GUID; }
+		const GUID& getGuid() const { return m_GUID; }
 
 		bool setup();
 
@@ -53,7 +53,7 @@ namespace Pitstop {
 		RAWINPUTDEVICE m_Device;
 		RID_DEVICE_INFO m_Info;
 		QString m_DeviceIdentifier;
-		QString m_GUID;
+		GUID m_GUID;
 		ProcessorBase* m_Processor;
 
 	}; // class RawInputJoystick

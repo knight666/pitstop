@@ -76,6 +76,8 @@ namespace Pitstop {
 
 		if (m_Joysticks.size() > 0)
 		{
+			size_t controller = 0;
+
 			// Register raw input devices
 
 			QVector<RAWINPUTDEVICE> device_list;
@@ -85,6 +87,9 @@ namespace Pitstop {
 				{
 					device_list.push_back(joystick->getDevice());
 				}
+
+				XInputDevice* xinput = new XInputDevice();
+				xinput->setup(joystick->getGuid(), controller++);
 			}
 
 			if (device_list.size() > 0)
@@ -96,9 +101,6 @@ namespace Pitstop {
 					return false;
 				}
 			}
-
-			XInputDevice* xinput = new XInputDevice();
-			xinput->setup(0);
 		}
 
 		return true;

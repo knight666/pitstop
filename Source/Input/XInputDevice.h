@@ -12,7 +12,7 @@ namespace Pitstop {
 		XInputDevice();
 		~XInputDevice();
 
-		bool setup(size_t controllerIndex);
+		bool setup(const GUID& guid, size_t controllerIndex);
 
 	private:
 
