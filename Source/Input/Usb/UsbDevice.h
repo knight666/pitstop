@@ -2,6 +2,8 @@
 
 #include "Base/Main.h"
 
+#include "Input/XInputState.h"
+
 namespace Pitstop {
 
 	class UsbController;
@@ -11,13 +13,19 @@ namespace Pitstop {
 
 	public:
 
-		UsbDevice(UsbController& controller, size_t identifier);
+		UsbDevice(UsbController& controller, uint8_t identifier);
 		~UsbDevice();
+
+		bool isPluggedIn() const { return m_PluggedIn; }
+		void setPluggedIn(bool value);
+
+		bool write(DWORD command, QVector<uint8_t>& input, QVector<uint8_t>& output);
 
 	private:
 
 		UsbController& m_Controller;
-		size_t m_Identifier;
+		uint8_t m_Identifier;
+		bool m_PluggedIn;
 
 	}; // class UsbDevice
 

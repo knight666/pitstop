@@ -5,6 +5,7 @@
 namespace Pitstop {
 
 	class UsbDevice;
+	struct XInputState;
 
 	class UsbController
 	{
@@ -14,15 +15,17 @@ namespace Pitstop {
 		UsbController();
 		~UsbController();
 
-		bool initialize();
+		HANDLE getHubHandle() const { return m_HubHandle; }
 
-		UsbDevice* getDeviceByIndex(size_t index);
+		UsbDevice* getDeviceByIndex(uint8_t index);
+
+		bool initialize();
 
 	private:
 
-		HDEVINFO m_DeviceInfo;
-		QString m_DevicePath;
-		HANDLE m_DeviceHandle;
+		HDEVINFO m_HubInfo;
+		QString m_HubPath;
+		HANDLE m_HubHandle;
 		QVector<UsbDevice*> m_Devices;
 
 	}; // class UsbController
