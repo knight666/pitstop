@@ -26,6 +26,9 @@
     <ClCompile Include="Source\Input\Process\InputProcessorBase.cpp">
       <Filter>Input\Process</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\Process\InputProcessorDualShock4.cpp">
+      <Filter>Input\Process</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -85,6 +88,9 @@
       <Filter>Input\Usb</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\Process\InputProcessorBase.h">
+      <Filter>Input\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h">
       <Filter>Input\Process</Filter>
     </ClInclude>
   </ItemGroup>

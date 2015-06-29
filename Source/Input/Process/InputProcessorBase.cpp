@@ -159,23 +159,23 @@ namespace Pitstop {
 
 		for (QHash<USAGE, bool>::iterator it = m_ButtonsState.begin(); it != m_ButtonsState.end(); ++it)
 		{
-			processButtonState(it.key(), it.value());
+			processDigital(it.key(), it.value());
 		}
 
 		for (QHash<USAGE, LONG>::iterator it = m_AxisValues.begin(); it != m_AxisValues.end(); ++it)
 		{
-			processAxisState(it.key(), it.value());
+			processAnalog(it.key(), it.value());
 		}
 
 		return true;
 	}
 
-	bool InputProcessorBase::processButtonState(USAGE identifier, bool pressed)
+	bool InputProcessorBase::processDigital(USAGE identifier, bool pressed)
 	{
 		return true;
 	}
 
-	bool InputProcessorBase::processAxisState(USAGE identifier, LONG value)
+	bool InputProcessorBase::processAnalog(USAGE identifier, LONG value)
 	{
 		return true;
 	}
