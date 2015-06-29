@@ -17,6 +17,9 @@
     <ClCompile Include="Source\Input\Process\ProcessorBase.cpp">
       <Filter>Input\Process</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\XInputDevice.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -62,6 +65,12 @@
     </ClInclude>
     <ClInclude Include="Source\Input\Process\ProcessorBase.h">
       <Filter>Input\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\XInputDevice.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\XInputState.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

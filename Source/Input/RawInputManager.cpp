@@ -1,10 +1,13 @@
 #include "Input/RawInputManager.h"
 
+#include "Input/Process/ProcessorBase.h"
 #include "Input/RawInputJoystick.h"
+#include "Input/XInputDevice.h"
 
 namespace Pitstop {
 
 	RawInputManager::RawInputManager()
+		: m_NextXInputIdentifier(0)
 	{
 	}
 
@@ -75,6 +78,8 @@ namespace Pitstop {
 
 		if (m_Joysticks.size() > 0)
 		{
+			size_t controller = 0;
+
 			// Register raw input devices
 
 			QVector<RAWINPUTDEVICE> device_list;
@@ -82,6 +87,14 @@ namespace Pitstop {
 			{
 				if (joystick->getType() != RawInputJoystick::Type::XInput)
 				{
+					XInputDevice* xinput = new XInputDevice(m_NextXInputIdentifier++);
+					if (xinput->attach(*joystick))
+					{
+						xinput->setPluggedIn(true);
+
+						m_XInputDevices.insert(joystick->getHandle(), xinput);
+					}
+
 					device_list.push_back(joystick->getDevice());
 				}
 			}
@@ -134,6 +147,16 @@ namespace Pitstop {
 			RawInputJoystick* joystick = found.value();
 
 			joystick->process(*raw_input);
+		}
+
+		QHash<HANDLE, XInputDevice*>::iterator found_xinput = m_XInputDevices.find(raw_input->header.hDevice);
+		if (found_xinput != m_XInputDevices.end())
+		{
+			XInputDevice* xinput = found_xinput.value();
+
+			XInputState output_state = { 0 };
+			output_state.buttonState[(size_t)XInputState::Button::A] = ProcessorBase::InputState_Down;
+			xinput->writeOutput(output_state);
 		}
 	}
 
