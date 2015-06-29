@@ -11,12 +11,6 @@
     <ClCompile Include="Source\Input\RawInputJoystick.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\MainWindow.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\Process\ProcessorBase.cpp">
-      <Filter>Input\Process</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Input\XInputDevice.cpp">
       <Filter>Input</Filter>
     </ClCompile>
@@ -25,6 +19,24 @@
     </ClCompile>
     <ClCompile Include="Source\Input\Usb\UsbDevice.cpp">
       <Filter>Input\Usb</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Process\InputProcessorBase.cpp">
+      <Filter>Input\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Process\InputProcessorDualShock4.cpp">
+      <Filter>Input\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\BindingsList.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BindingsList.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BindingsList.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\MainWindow.cpp">
+      <Filter>Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +64,9 @@
     <Filter Include="Input\Usb">
       <UniqueIdentifier>{1aced2b9-fe6e-453c-8932-54a8f3d7d24c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Widgets">
+      <UniqueIdentifier>{d08accf9-c4c0-4430-8b60-b4abfa06d43e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Base\Main.h">
@@ -72,9 +87,6 @@
     <ClInclude Include="Source\Application\MainWindow.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\Process\ProcessorBase.h">
-      <Filter>Input\Process</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Input\XInputDevice.h">
       <Filter>Input</Filter>
     </ClInclude>
@@ -87,10 +99,22 @@
     <ClInclude Include="Source\Input\Usb\UsbDevice.h">
       <Filter>Input\Usb</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Input\Process\InputProcessorBase.h">
+      <Filter>Input\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h">
+      <Filter>Input\Process</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Source\Application\MainWindow.ui">
       <Filter>Application</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\BindingsList.h">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\BindingsList.ui">
+      <Filter>Application\Widgets</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

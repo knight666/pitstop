@@ -1,6 +1,6 @@
 #include "Input/XInputDevice.h"
 
-#include "Input/Process/ProcessorBase.h"
+#include "Input/Process/InputProcessorBase.h"
 #include "Input/RawInputJoystick.h"
 
 namespace Pitstop {
@@ -89,7 +89,7 @@ namespace Pitstop {
 
 		for (size_t i = 0; i < (size_t)XInputState::Button::_COUNT; ++i)
 		{
-			if ((state.buttonState[i] & ProcessorBase::InputState_Down) != 0)
+			if ((state.buttonState[i] & InputProcessorBase::InputState_Down) != 0)
 			{
 				input[10 + (i / 7)] = (uint8_t)(1 << i);
 			}

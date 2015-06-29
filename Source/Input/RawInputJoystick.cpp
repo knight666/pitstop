@@ -3,18 +3,21 @@
 #include <SetupAPI.h>
 #include <QtCore/QRegularExpression>
 
-#include "Input/Process/ProcessorBase.h"
+#include "Input/Process/InputProcessorBase.h"
+#include "Input/RawInputManager.h"
 
 namespace Pitstop {
 
 	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name)
 		: m_Manager(manager)
+		, m_VendorIdentifier(0)
+		, m_ProductIdentifier(0)
 		, m_Handle(handle)
 		, m_Info(info)
 		, m_DevicePath(name)
 		, m_Description(name)
 		, m_Type(Type::Raw)
-		, m_Processor(nullptr)
+		, m_InputProcessor(nullptr)
 	{
 		memset(&m_Device, 0, sizeof(m_Device));
 		m_Device.usUsagePage = info.hid.usUsagePage;
@@ -25,7 +28,7 @@ namespace Pitstop {
 
 	RawInputJoystick::~RawInputJoystick()
 	{
-		delete m_Processor;
+		delete m_InputProcessor;
 	}
 
 	bool RawInputJoystick::setup()
@@ -49,7 +52,10 @@ namespace Pitstop {
 		}
 
 		QString vid = extract_info.cap(1);
+		m_VendorIdentifier = vid.toInt(nullptr, 16);
+
 		QString pid = extract_info.cap(2);
+		m_ProductIdentifier = pid.toInt(nullptr, 16);
 
 		// Check if managed by XInput
 
@@ -96,13 +102,13 @@ namespace Pitstop {
 
 		// Add input processor
 
-		m_Processor = new ProcessorBase(*this);
-		return m_Processor->setup();
+		m_InputProcessor = m_Manager.createInputProcessor(*this);
+		return (m_InputProcessor != nullptr) ? m_InputProcessor->setup() : true;
 	}
 
 	bool RawInputJoystick::process(const RAWINPUT& message)
 	{
-		return (m_Processor != nullptr) ? m_Processor->process(message) : false;
+		return (m_InputProcessor != nullptr) ? m_InputProcessor->process(message) : false;
 	}
 
 	bool RawInputJoystick::retrieveFromRegistry(QString& target, const QString& path, const QString& keyName)
