@@ -2,6 +2,8 @@
 
 #include "Base/Main.h"
 
+#include "Input/XInputState.h"
+
 namespace Pitstop {
 
 	class RawInputJoystick;
@@ -22,7 +24,7 @@ namespace Pitstop {
 		bool isPluggedIn() const { return m_PluggedIn; }
 		void setPluggedIn(bool value);
 
-		void writeOutput();
+		void writeOutput(const XInputState& state);
 
 	private:
 

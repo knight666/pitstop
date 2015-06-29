@@ -69,6 +69,9 @@
     <ClInclude Include="Source\Input\XInputDevice.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Input\XInputState.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Source\Application\MainWindow.ui">
