@@ -6,9 +6,9 @@
 namespace Pitstop {
 
 #define IMPLEMENT_INPUT_PROCESSOR(_type, _vid, _pid) \
-	static InputProcessorBase* create(RawInputJoystick& joystick) { \
-		return joystick.matchVendorAndProduct(_vid, _pid) ? new _type(joystick) : nullptr; \
-	} \
+	static const uint16_t Vendor = _vid; \
+	static const uint16_t Product = _pid; \
+	static InputProcessorBase* create(RawInputJoystick& joystick) { return new _type(joystick); } \
 	_type(RawInputJoystick& joystick) : InputProcessorBase(joystick) { }
 
 	class InputProcessorBase
