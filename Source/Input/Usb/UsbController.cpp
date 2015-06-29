@@ -5,19 +5,24 @@
 namespace Pitstop {
 
 	UsbController::UsbController()
-		: m_DeviceInfo(NULL)
+		: m_HubInfo(NULL)
 	{
 	}
 
 	UsbController::~UsbController()
 	{
-		if (m_DeviceInfo != NULL)
+		if (m_HubInfo != NULL)
 		{
-			delete m_DeviceInfo;
-			m_DeviceInfo = NULL;
+			delete m_HubInfo;
+			m_HubInfo = NULL;
 		}
 
 		qDeleteAll(m_Devices);
+	}
+
+	UsbDevice* UsbController::getDeviceByIndex(uint8_t index)
+	{
+		return (index < m_Devices.size()) ? m_Devices[index] : nullptr;
 	}
 
 	bool UsbController::initialize()
@@ -25,12 +30,12 @@ namespace Pitstop {
 		GUID guid;
 		::CLSIDFromString(L"{F679F562-3164-42CE-A4DB-E7DDBE723909}", &guid);
 
-		m_DeviceInfo = ::SetupDiGetClassDevsW(
+		m_HubInfo = ::SetupDiGetClassDevsW(
 			&guid,
 			nullptr,
 			nullptr,
 			DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-		if (m_DeviceInfo == NULL)
+		if (m_HubInfo == NULL)
 		{
 			return false;
 		}
@@ -39,7 +44,7 @@ namespace Pitstop {
 		device_interface_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
 
 		if (::SetupDiEnumDeviceInterfaces(
-			m_DeviceInfo,
+			m_HubInfo,
 			nullptr,
 			&guid,
 			0,
@@ -54,7 +59,7 @@ namespace Pitstop {
 		DWORD buffer_size = 0;
 
 		if (::SetupDiGetDeviceInterfaceDetailW(
-			m_DeviceInfo,
+			m_HubInfo,
 			&device_interface_data,
 			nullptr,
 			0,
@@ -71,7 +76,7 @@ namespace Pitstop {
 		detail_data_ptr->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
 
 		if (::SetupDiGetDeviceInterfaceDetailW(
-			m_DeviceInfo,
+			m_HubInfo,
 			&device_interface_data,
 			(SP_DEVICE_INTERFACE_DETAIL_DATA_W*)&detail_data[0],
 			buffer_size,
@@ -81,24 +86,24 @@ namespace Pitstop {
 			return false;
 		}
 
-		m_DevicePath = QString::fromUtf16((const ushort*)&detail_data_ptr->DevicePath[0]);
+		m_HubPath = QString::fromUtf16((const ushort*)&detail_data_ptr->DevicePath[0]);
 
-		m_DeviceHandle = ::CreateFileW(
-			m_DevicePath.utf16(),
+		m_HubHandle = ::CreateFileW(
+			m_HubPath.utf16(),
 			GENERIC_WRITE | GENERIC_READ,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,
 			nullptr,
 			OPEN_EXISTING,
 			FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED,
 			0);
-		if (m_DeviceHandle == NULL)
+		if (m_HubHandle == NULL)
 		{
 			return false;
 		}
 
 		for (size_t i = 0; i < 4; ++i)
 		{
-			UsbDevice* device = new UsbDevice(*this, i + 1);
+			UsbDevice* device = new UsbDevice(*this, (uint8_t)i + 1);
 
 			m_Devices.push_back(device);
 		}
