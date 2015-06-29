@@ -1,6 +1,6 @@
 #include "Input/RawInputManager.h"
 
-#include "Input/Process/ProcessorBase.h"
+#include "Input/Process/InputProcessorBase.h"
 #include "Input/RawInputJoystick.h"
 #include "Input/XInputDevice.h"
 
@@ -113,6 +113,38 @@ namespace Pitstop {
 		return true;
 	}
 
+	RawInputJoystick* RawInputManager::getJoystick() const
+	{
+		for (RawInputJoystick* joystick : m_Joysticks)
+		{
+			if (joystick->getType() != RawInputJoystick::Type::XInput)
+			{
+				return joystick;
+			}
+		}
+
+		return nullptr;
+	}
+
+	InputProcessorBase* RawInputManager::createInputProcessor(RawInputJoystick& joystick)
+	{
+		uint32_t key = (joystick.getVendorIdentifier() << 16) | joystick.getProductIdentifier();
+		QHash<uint32_t, std::function<InputProcessorBase::FactoryMethod>>::iterator found = m_InputProcessorFactories.find(key);
+		if (found != m_InputProcessorFactories.end())
+		{
+			return found.value()(joystick);
+		}
+
+		return nullptr;
+	}
+
+	void RawInputManager::registerInputProcessor(uint16_t vendor, uint16_t product, InputProcessorBase::FactoryMethod method)
+	{
+		uint32_t key = (vendor << 16) | product;
+
+		m_InputProcessorFactories.insert(key, std::bind(method, std::placeholders::_1));
+	}
+
 	void RawInputManager::processInputMessage(WPARAM wParam, LPARAM lParam)
 	{
 		UINT raw_size = 0;
@@ -155,7 +187,7 @@ namespace Pitstop {
 			XInputDevice* xinput = found_xinput.value();
 
 			XInputState output_state = { 0 };
-			output_state.buttonState[(size_t)XInputState::Button::A] = ProcessorBase::InputState_Down;
+			output_state.buttonState[(size_t)XInputState::Button::A] = InputProcessorBase::InputState_Down;
 			xinput->writeOutput(output_state);
 		}
 	}

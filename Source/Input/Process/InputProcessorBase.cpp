@@ -1,19 +1,19 @@
-#include "Input/Process/ProcessorBase.h"
+#include "Input/Process/InputProcessorBase.h"
 
 #include "Input/RawInputJoystick.h"
 
 namespace Pitstop {
 
-	ProcessorBase::ProcessorBase(RawInputJoystick& joystick)
+	InputProcessorBase::InputProcessorBase(RawInputJoystick& joystick)
 		: m_Joystick(joystick)
 	{
 	}
 
-	ProcessorBase::~ProcessorBase()
+	InputProcessorBase::~InputProcessorBase()
 	{
 	}
 
-	bool ProcessorBase::setup()
+	bool InputProcessorBase::setup()
 	{
 		UINT preparsed_size = 0;
 		if (::GetRawInputDeviceInfoW(
@@ -50,6 +50,8 @@ namespace Pitstop {
 			return false;
 		}
 
+		// Setup digital input
+
 		m_ButtonCapabilities.resize(m_Capabilities.NumberInputButtonCaps);
 		USHORT button_caps_count = m_Capabilities.NumberInputButtonCaps;
 		if (::HidP_GetButtonCaps(
@@ -66,9 +68,13 @@ namespace Pitstop {
 		USAGE button_count = 0;
 		for (HIDP_BUTTON_CAPS& buttons : m_ButtonCapabilities)
 		{
-			button_count += buttons.Range.UsageMax - buttons.Range.UsageMin + 1;
+			for (USAGE button = buttons.Range.UsageMin; button < buttons.Range.UsageMax; ++button)
+			{
+				m_ButtonsState[button] = false;
+			}
 		}
-		m_ButtonState.resize(button_count);
+
+		// Setup analog axes
 
 		m_ValueCapabilities.resize(m_Capabilities.NumberInputValueCaps);
 		USHORT value_caps_count = m_Capabilities.NumberInputValueCaps;
@@ -88,18 +94,20 @@ namespace Pitstop {
 			m_AxisValues[values.Range.UsageMin] = 0;
 		}
 
+		// Add bindings
+
+		createBindings();
+
 		return true;
 	}
 
-	bool ProcessorBase::process(const RAWINPUT& message)
+	bool InputProcessorBase::process(const RAWINPUT& message)
 	{
-		// Save previous button state and compare
+		// Clear previous state
 
-		QVector<USAGE> button_state_previous(m_ButtonState.size());
-		for (int i = 0; i < m_ButtonState.size(); ++i)
+		for (QHash<USAGE, bool>::iterator it = m_ButtonsState.begin(); it != m_ButtonsState.end(); ++it)
 		{
-			button_state_previous[i] = m_ButtonState[i];
-			m_ButtonState[i] = InputState_Up;
+			it.value() = false;
 		}
 
 		// Read button state
@@ -107,8 +115,8 @@ namespace Pitstop {
 		size_t buttons_index = 0;
 		for (HIDP_BUTTON_CAPS& buttons : m_ButtonCapabilities)
 		{
-			QVector<USAGE> usage_list(m_ButtonState.size());
-			ULONG usage_length = m_ButtonState.size();
+			QVector<USAGE> usage_list(m_ButtonsState.size());
+			ULONG usage_length = m_ButtonsState.size();
 
 			NTSTATUS success = ::HidP_GetUsages(
 				HidP_Input,
@@ -127,13 +135,7 @@ namespace Pitstop {
 
 			for (ULONG i = 0; i < usage_length; ++i)
 			{
-				USAGE index = usage_list[i] - buttons.Range.UsageMin;
-
-				if ((button_state_previous[index] & InputState_Down) == 0)
-				{
-					m_ButtonState[index] = InputState_Pressed;
-				}
-				m_ButtonState[index] |= InputState_Down;
+				m_ButtonsState[usage_list[i]] = true;
 			}
 		}
 
@@ -163,33 +165,22 @@ namespace Pitstop {
 
 		// Process input
 
-		for (int i = 0; i < m_ButtonState.size(); ++i)
+		for (QHash<USAGE, bool>::iterator it = m_ButtonsState.begin(); it != m_ButtonsState.end(); ++it)
 		{
-			if ((button_state_previous[i] & InputState_Down) != 0 &&
-				(m_ButtonState[i] & InputState_Down) == 0)
-			{
-				m_ButtonState[i] = InputState_Released;
-			}
-
-			processButtonState(buttons_index, m_ButtonState[i]);
+			processDigital(it.key(), it.value());
 		}
 
 		for (QHash<USAGE, LONG>::iterator it = m_AxisValues.begin(); it != m_AxisValues.end(); ++it)
 		{
-			processAxisState(it.key(), it.value());
+			processAnalog(it.key(), it.value());
 		}
 
 		return true;
 	}
 
-	bool ProcessorBase::processButtonState(size_t index, uint8_t state)
+	void InputProcessorBase::addBinding(const QString& name, InputType type)
 	{
-		return true;
-	}
-
-	bool ProcessorBase::processAxisState(size_t index, LONG value)
-	{
-		return true;
+		m_Bindings[name] = InputBinding(name, m_Bindings.size(), type);
 	}
 
 }; // namespace Pitstop
