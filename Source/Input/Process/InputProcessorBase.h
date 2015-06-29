@@ -24,10 +24,18 @@ namespace Pitstop {
 			InputState_Released = 0x04,
 		};
 
+		struct InputBinding
+		{
+			bool digital;
+			float analog;
+		};
+
 		typedef InputProcessorBase* (FactoryMethod(RawInputJoystick&));
 
 		InputProcessorBase(RawInputJoystick& joystick);
 		virtual ~InputProcessorBase();
+
+		const QHash<QString, InputBinding>& getBindings() const { return m_Bindings; }
 
 		virtual bool setup();
 
@@ -35,12 +43,14 @@ namespace Pitstop {
 
 	protected:
 
-		virtual bool processDigital(USAGE identifier, bool pressed);
-		virtual bool processAnalog(USAGE identifier, LONG value);
+		virtual bool processDigital(USAGE identifier, bool pressed) = 0;
+		virtual bool processAnalog(USAGE identifier, LONG value) = 0;
 
 	protected:
 
 		RawInputJoystick& m_Joystick;
+		QHash<QString, InputBinding> m_Bindings;
+
 		QVector<uint8_t> m_PreparsedData;
 		PHIDP_PREPARSED_DATA m_Preparsed;
 		HIDP_CAPS m_Capabilities;

@@ -170,14 +170,4 @@ namespace Pitstop {
 		return true;
 	}
 
-	bool InputProcessorBase::processDigital(USAGE identifier, bool pressed)
-	{
-		return true;
-	}
-
-	bool InputProcessorBase::processAnalog(USAGE identifier, LONG value)
-	{
-		return true;
-	}
-
 }; // namespace Pitstop
