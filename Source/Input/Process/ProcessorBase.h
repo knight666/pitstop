@@ -28,8 +28,8 @@ namespace Pitstop {
 
 	protected:
 
-		virtual bool processButtonState(size_t index, uint8_t state);
-		virtual bool processAxisState(size_t index, LONG value);
+		virtual bool processButtonState(USAGE identifier, bool pressed);
+		virtual bool processAxisState(USAGE identifier, LONG value);
 
 	protected:
 
@@ -39,7 +39,7 @@ namespace Pitstop {
 		HIDP_CAPS m_Capabilities;
 		QVector<HIDP_BUTTON_CAPS> m_ButtonCapabilities;
 		QVector<HIDP_VALUE_CAPS> m_ValueCapabilities;
-		QVector<uint8_t> m_ButtonState;
+		QHash<USAGE, bool> m_ButtonsState;
 		QHash<USAGE, LONG> m_AxisValues;
 
 	}; // class ProcessorBase
