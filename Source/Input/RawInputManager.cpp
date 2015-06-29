@@ -113,6 +113,19 @@ namespace Pitstop {
 		return true;
 	}
 
+	RawInputJoystick* RawInputManager::getJoystick() const
+	{
+		for (RawInputJoystick* joystick : m_Joysticks)
+		{
+			if (joystick->getType() != RawInputJoystick::Type::XInput)
+			{
+				return joystick;
+			}
+		}
+
+		return nullptr;
+	}
+
 	InputProcessorBase* RawInputManager::createInputProcessor(RawInputJoystick& joystick)
 	{
 		uint32_t key = (joystick.getVendorIdentifier() << 16) | joystick.getProductIdentifier();

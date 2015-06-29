@@ -17,7 +17,7 @@ namespace Pitstop {
 		, m_DevicePath(name)
 		, m_Description(name)
 		, m_Type(Type::Raw)
-		, m_Processor(nullptr)
+		, m_InputProcessor(nullptr)
 	{
 		memset(&m_Device, 0, sizeof(m_Device));
 		m_Device.usUsagePage = info.hid.usUsagePage;
@@ -28,7 +28,7 @@ namespace Pitstop {
 
 	RawInputJoystick::~RawInputJoystick()
 	{
-		delete m_Processor;
+		delete m_InputProcessor;
 	}
 
 	bool RawInputJoystick::setup()
@@ -102,13 +102,13 @@ namespace Pitstop {
 
 		// Add input processor
 
-		m_Processor = m_Manager.createInputProcessor(*this);
-		return (m_Processor != nullptr) ? m_Processor->setup() : true;
+		m_InputProcessor = m_Manager.createInputProcessor(*this);
+		return (m_InputProcessor != nullptr) ? m_InputProcessor->setup() : true;
 	}
 
 	bool RawInputJoystick::process(const RAWINPUT& message)
 	{
-		return (m_Processor != nullptr) ? m_Processor->process(message) : false;
+		return (m_InputProcessor != nullptr) ? m_InputProcessor->process(message) : false;
 	}
 
 	bool RawInputJoystick::retrieveFromRegistry(QString& target, const QString& path, const QString& keyName)
