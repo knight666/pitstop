@@ -21,17 +21,15 @@ namespace Pitstop {
 		RawInputJoystick(RawInputManager& manager, HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name);
 		~RawInputJoystick();
 
-		bool matchVendorAndProduct(uint16_t vendor, uint16_t product) const
-		{
-			return (m_VendorIdentifier == vendor &&
-				m_ProductIdentifier == product);
-		}
-
 		const QString& getDescription() const { return m_Description; }
 
 		const QString& getCategory() const { return m_Category; }
 
 		Type getType() const { return m_Type; }
+
+		uint16_t getVendorIdentifier() const { return m_VendorIdentifier; }
+
+		uint16_t getProductIdentifier() const { return m_ProductIdentifier; }
 
 		HANDLE getHandle() const { return m_Handle; }
 

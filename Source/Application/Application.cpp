@@ -18,7 +18,7 @@ namespace Pitstop {
 	{
 		installNativeEventFilter(this);
 
-		m_RawInput->registerInputProcessor(InputProcessorDualShock4::create);
+		m_RawInput->registerInputProcessor<InputProcessorDualShock4>();
 	}
 
 	Application::~Application()
