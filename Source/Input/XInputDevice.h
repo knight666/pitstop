@@ -17,6 +17,7 @@ namespace Pitstop {
 	private:
 
 		QString m_DevicePath;
+		HDEVINFO m_DeviceInfo;
 		HANDLE m_DeviceHandle;
 
 	}; // class XInputDevice
