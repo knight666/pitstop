@@ -180,7 +180,7 @@ namespace Pitstop {
 
 	void InputProcessorBase::addBinding(const QString& name, InputType type)
 	{
-		m_Bindings[name] = InputBinding(type);
+		m_Bindings[name] = InputBinding(name, m_Bindings.size(), type);
 	}
 
 }; // namespace Pitstop

@@ -32,13 +32,17 @@ namespace Pitstop {
 
 		struct InputBinding
 		{
-			InputBinding(InputType type = InputType::Analog)
-				: type(type)
+			InputBinding(const QString& name = "", size_t index = 0, InputType type = InputType::Analog)
+				: name(name)
+				, index(index)
+				, type(type)
 				, digitalValue(false)
 				, analogValue(0.0f)
 			{
 			}
 
+			QString name;
+			size_t index;
 			InputType type;
 			bool digitalValue;
 			float analogValue;
