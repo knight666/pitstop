@@ -22,6 +22,8 @@ namespace Pitstop {
 		bool isPluggedIn() const { return m_PluggedIn; }
 		void setPluggedIn(bool value);
 
+		void writeOutput();
+
 	private:
 
 		size_t m_ControllerIndex;
