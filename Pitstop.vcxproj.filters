@@ -14,9 +14,6 @@
     <ClCompile Include="Source\Application\MainWindow.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input\Process\ProcessorBase.cpp">
-      <Filter>Input\Process</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Input\XInputDevice.cpp">
       <Filter>Input</Filter>
     </ClCompile>
@@ -25,6 +22,9 @@
     </ClCompile>
     <ClCompile Include="Source\Input\Usb\UsbDevice.cpp">
       <Filter>Input\Usb</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Process\InputProcessorBase.cpp">
+      <Filter>Input\Process</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,9 +72,6 @@
     <ClInclude Include="Source\Application\MainWindow.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\Process\ProcessorBase.h">
-      <Filter>Input\Process</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Input\XInputDevice.h">
       <Filter>Input</Filter>
     </ClInclude>
@@ -86,6 +83,9 @@
     </ClInclude>
     <ClInclude Include="Source\Input\Usb\UsbDevice.h">
       <Filter>Input\Usb</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Process\InputProcessorBase.h">
+      <Filter>Input\Process</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

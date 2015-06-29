@@ -4,7 +4,7 @@
 
 namespace Pitstop {
 
-	class ProcessorBase;
+	class InputProcessorBase;
 	class RawInputManager;
 
 	class RawInputJoystick
@@ -58,7 +58,7 @@ namespace Pitstop {
 		RID_DEVICE_INFO m_Info;
 		QString m_DevicePath;
 		GUID m_GUID;
-		ProcessorBase* m_Processor;
+		InputProcessorBase* m_Processor;
 
 	}; // class RawInputJoystick
 

@@ -3,7 +3,7 @@
 #include <SetupAPI.h>
 #include <QtCore/QRegularExpression>
 
-#include "Input/Process/ProcessorBase.h"
+#include "Input/Process/InputProcessorBase.h"
 
 namespace Pitstop {
 
@@ -96,7 +96,7 @@ namespace Pitstop {
 
 		// Add input processor
 
-		m_Processor = new ProcessorBase(*this);
+		m_Processor = new InputProcessorBase(*this);
 		return m_Processor->setup();
 	}
 

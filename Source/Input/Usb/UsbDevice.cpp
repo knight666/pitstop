@@ -1,6 +1,6 @@
 #include "Input/Usb/UsbDevice.h"
 
-#include "Input/Process/ProcessorBase.h"
+#include "Input/Process/InputProcessorBase.h"
 #include "Input/Usb/UsbController.h"
 
 namespace Pitstop {
