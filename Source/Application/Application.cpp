@@ -8,6 +8,7 @@
 
 #include "Application/MainWindow.h"
 #include "Input/Process/InputProcessorDualShock4.h"
+#include "Input/Process/InputProcessorFFBWheel.h"
 #include "Input/Usb/UsbController.h"
 #include "Input/RawInputManager.h"
 
@@ -22,6 +23,7 @@ namespace Pitstop {
 		installNativeEventFilter(this);
 
 		m_RawInput->registerInputProcessor<InputProcessorDualShock4>();
+		m_RawInput->registerInputProcessor<InputProcessorFFBWheel>();
 	}
 
 	Application::~Application()

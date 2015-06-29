@@ -38,6 +38,9 @@
     <ClCompile Include="Source\Application\MainWindow.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\Process\InputProcessorFFBWheel.cpp">
+      <Filter>Input\Process</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -103,6 +106,9 @@
       <Filter>Input\Process</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h">
+      <Filter>Input\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Process\InputProcessorFFBWheel.h">
       <Filter>Input\Process</Filter>
     </ClInclude>
   </ItemGroup>
