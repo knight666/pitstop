@@ -66,9 +66,11 @@ namespace Pitstop {
 		USAGE button_count = 0;
 		for (HIDP_BUTTON_CAPS& buttons : m_ButtonCapabilities)
 		{
-			button_count += buttons.Range.UsageMax - buttons.Range.UsageMin + 1;
+			for (USAGE button = buttons.Range.UsageMin; button < buttons.Range.UsageMax; ++button)
+			{
+				m_ButtonsState[button] = false;
+			}
 		}
-		m_ButtonState.resize(button_count);
 
 		m_ValueCapabilities.resize(m_Capabilities.NumberInputValueCaps);
 		USHORT value_caps_count = m_Capabilities.NumberInputValueCaps;
@@ -93,13 +95,11 @@ namespace Pitstop {
 
 	bool ProcessorBase::process(const RAWINPUT& message)
 	{
-		// Save previous button state and compare
+		// Clear previous state
 
-		QVector<USAGE> button_state_previous(m_ButtonState.size());
-		for (int i = 0; i < m_ButtonState.size(); ++i)
+		for (QHash<USAGE, bool>::iterator it = m_ButtonsState.begin(); it != m_ButtonsState.end(); ++it)
 		{
-			button_state_previous[i] = m_ButtonState[i];
-			m_ButtonState[i] = InputState_Up;
+			it.value() = false;
 		}
 
 		// Read button state
@@ -107,8 +107,8 @@ namespace Pitstop {
 		size_t buttons_index = 0;
 		for (HIDP_BUTTON_CAPS& buttons : m_ButtonCapabilities)
 		{
-			QVector<USAGE> usage_list(m_ButtonState.size());
-			ULONG usage_length = m_ButtonState.size();
+			QVector<USAGE> usage_list(m_ButtonsState.size());
+			ULONG usage_length = m_ButtonsState.size();
 
 			NTSTATUS success = ::HidP_GetUsages(
 				HidP_Input,
@@ -127,13 +127,7 @@ namespace Pitstop {
 
 			for (ULONG i = 0; i < usage_length; ++i)
 			{
-				USAGE index = usage_list[i] - buttons.Range.UsageMin;
-
-				if ((button_state_previous[index] & InputState_Down) == 0)
-				{
-					m_ButtonState[index] = InputState_Pressed;
-				}
-				m_ButtonState[index] |= InputState_Down;
+				m_ButtonsState[usage_list[i]] = true;
 			}
 		}
 
@@ -163,15 +157,9 @@ namespace Pitstop {
 
 		// Process input
 
-		for (int i = 0; i < m_ButtonState.size(); ++i)
+		for (QHash<USAGE, bool>::iterator it = m_ButtonsState.begin(); it != m_ButtonsState.end(); ++it)
 		{
-			if ((button_state_previous[i] & InputState_Down) != 0 &&
-				(m_ButtonState[i] & InputState_Down) == 0)
-			{
-				m_ButtonState[i] = InputState_Released;
-			}
-
-			processButtonState(buttons_index, m_ButtonState[i]);
+			processButtonState(it.key(), it.value());
 		}
 
 		for (QHash<USAGE, LONG>::iterator it = m_AxisValues.begin(); it != m_AxisValues.end(); ++it)
@@ -182,12 +170,12 @@ namespace Pitstop {
 		return true;
 	}
 
-	bool ProcessorBase::processButtonState(size_t index, uint8_t state)
+	bool ProcessorBase::processButtonState(USAGE identifier, bool pressed)
 	{
 		return true;
 	}
 
-	bool ProcessorBase::processAxisState(size_t index, LONG value)
+	bool ProcessorBase::processAxisState(USAGE identifier, LONG value)
 	{
 		return true;
 	}
