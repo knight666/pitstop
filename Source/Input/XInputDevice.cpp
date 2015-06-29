@@ -5,11 +5,17 @@
 namespace Pitstop {
 
 	XInputDevice::XInputDevice()
+		: m_DeviceInfo(nullptr)
+		, m_DeviceHandle(NULL)
 	{
 	}
 
 	XInputDevice::~XInputDevice()
 	{
+		if (m_DeviceInfo != nullptr)
+		{
+			SetupDiDestroyDeviceInfoList(m_DeviceInfo);
+		}
 	}
 
 	bool XInputDevice::setup(size_t controllerIndex)
@@ -20,7 +26,7 @@ namespace Pitstop {
 		SP_DEVICE_INTERFACE_DATA device_interface_data = { 0 };
 		device_interface_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
 
-		HDEVINFO device_info = ::SetupDiGetClassDevsW(
+		m_DeviceInfo = ::SetupDiGetClassDevsW(
 			&guid,
 			nullptr,
 			nullptr,
@@ -31,7 +37,7 @@ namespace Pitstop {
 		do
 		{
 			result = ::SetupDiEnumDeviceInterfaces(
-				device_info,
+				m_DeviceInfo,
 				nullptr,
 				&guid,
 				member_index,
@@ -56,7 +62,7 @@ namespace Pitstop {
 		DWORD buffer_size = 0;
 
 		if (::SetupDiGetDeviceInterfaceDetailW(
-			device_info,
+			m_DeviceInfo,
 			&device_interface_data,
 			nullptr,
 			0,
@@ -73,7 +79,7 @@ namespace Pitstop {
 		detail_data_ptr->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
 
 		if (::SetupDiGetDeviceInterfaceDetailW(
-			device_info,
+			m_DeviceInfo,
 			&device_interface_data,
 			(SP_DEVICE_INTERFACE_DETAIL_DATA_W*)&detail_data[0],
 			buffer_size,
