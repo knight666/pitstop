@@ -24,14 +24,20 @@ namespace Pitstop {
 			return;
 		}
 
-		const QHash<QString, InputProcessorBase::InputBinding>& bindings = m_BindingProcessor->getBindings();
-		for (QHash<QString, InputProcessorBase::InputBinding>::const_iterator it = bindings.begin(); it != bindings.end(); ++it)
+		QList<InputProcessorBase::InputBinding> bindings = m_BindingProcessor->getBindings().values();
+
+		qSort(bindings.begin(), bindings.end(),
+			[] (const InputProcessorBase::InputBinding& left, const InputProcessorBase::InputBinding& right) {
+				return left.index < right.index;
+		});
+
+		for (InputProcessorBase::InputBinding& binding : bindings)
 		{
 			QLabel* label = new QLabel();
 
 			m_Form.labelsContainer->addWidget(label);
 
-			m_BindingLabels[it.key()] = label;
+			m_BindingLabels[binding.name] = label;
 		}
 
 		updateBindings();
@@ -49,10 +55,10 @@ namespace Pitstop {
 		{
 			const InputProcessorBase::InputBinding& binding = it.value();
 
-			QHash<QString, QLabel*>::iterator label_found = m_BindingLabels.find(it.key());
-			if (label_found != m_BindingLabels.end())
+			QHash<QString, QLabel*>::iterator found = m_BindingLabels.find(it.key());
+			if (found != m_BindingLabels.end())
 			{
-				label_found.value()->setText(QString("%1: %2").arg(it.key()).arg(binding.digitalValue));
+				found.value()->setText(QString("%1: %2").arg(it.key()).arg(binding.digitalValue));
 			}
 		}
 
