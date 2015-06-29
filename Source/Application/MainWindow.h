@@ -29,8 +29,6 @@ namespace Pitstop {
 
 		RawInputManager& m_RawInput;
 		Ui_MainWindow m_Form;
-		InputProcessorBase* m_BindingProcessor;
-		QHash<QString, QLabel*> m_BindingLabels;
 
 	}; // class MainWindow
 
