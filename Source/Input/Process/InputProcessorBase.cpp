@@ -1,19 +1,19 @@
-#include "Input/Process/ProcessorBase.h"
+#include "Input/Process/InputProcessorBase.h"
 
 #include "Input/RawInputJoystick.h"
 
 namespace Pitstop {
 
-	ProcessorBase::ProcessorBase(RawInputJoystick& joystick)
+	InputProcessorBase::InputProcessorBase(RawInputJoystick& joystick)
 		: m_Joystick(joystick)
 	{
 	}
 
-	ProcessorBase::~ProcessorBase()
+	InputProcessorBase::~InputProcessorBase()
 	{
 	}
 
-	bool ProcessorBase::setup()
+	bool InputProcessorBase::setup()
 	{
 		UINT preparsed_size = 0;
 		if (::GetRawInputDeviceInfoW(
@@ -93,7 +93,7 @@ namespace Pitstop {
 		return true;
 	}
 
-	bool ProcessorBase::process(const RAWINPUT& message)
+	bool InputProcessorBase::process(const RAWINPUT& message)
 	{
 		// Clear previous state
 
@@ -170,12 +170,12 @@ namespace Pitstop {
 		return true;
 	}
 
-	bool ProcessorBase::processButtonState(USAGE identifier, bool pressed)
+	bool InputProcessorBase::processButtonState(USAGE identifier, bool pressed)
 	{
 		return true;
 	}
 
-	bool ProcessorBase::processAxisState(USAGE identifier, LONG value)
+	bool InputProcessorBase::processAxisState(USAGE identifier, LONG value)
 	{
 		return true;
 	}

@@ -6,7 +6,7 @@ namespace Pitstop {
 
 	class RawInputJoystick;
 
-	class ProcessorBase
+	class InputProcessorBase
 	{
 
 	public:
@@ -19,8 +19,8 @@ namespace Pitstop {
 			InputState_Released = 0x04,
 		};
 
-		ProcessorBase(RawInputJoystick& joystick);
-		virtual ~ProcessorBase();
+		InputProcessorBase(RawInputJoystick& joystick);
+		virtual ~InputProcessorBase();
 
 		virtual bool setup();
 

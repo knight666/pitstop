@@ -1,6 +1,6 @@
 #include "Input/RawInputManager.h"
 
-#include "Input/Process/ProcessorBase.h"
+#include "Input/Process/InputProcessorBase.h"
 #include "Input/RawInputJoystick.h"
 #include "Input/XInputDevice.h"
 
@@ -155,7 +155,7 @@ namespace Pitstop {
 			XInputDevice* xinput = found_xinput.value();
 
 			XInputState output_state = { 0 };
-			output_state.buttonState[(size_t)XInputState::Button::A] = ProcessorBase::InputState_Down;
+			output_state.buttonState[(size_t)XInputState::Button::A] = InputProcessorBase::InputState_Down;
 			xinput->writeOutput(output_state);
 		}
 	}
