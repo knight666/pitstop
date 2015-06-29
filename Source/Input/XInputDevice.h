@@ -4,20 +4,29 @@
 
 namespace Pitstop {
 
+	class RawInputJoystick;
+
 	class XInputDevice
 	{
 
 	public:
 
-		XInputDevice();
+		XInputDevice(size_t controllerIndex);
 		~XInputDevice();
 
-		bool setup(const GUID& guid, size_t controllerIndex);
+		bool isActive() const { return m_DeviceHandle != NULL; }
+
+		bool attach(RawInputJoystick& joystick);
+		void detach();
+
+		bool isPluggedIn() const { return m_PluggedIn; }
+		void setPluggedIn(bool value);
 
 	private:
 
-		QString m_DevicePath;
-		HDEVINFO m_DeviceInfo;
+		size_t m_ControllerIndex;
+		RawInputJoystick* m_Joystick;
+		bool m_PluggedIn;
 		HANDLE m_DeviceHandle;
 
 	}; // class XInputDevice

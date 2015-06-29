@@ -32,6 +32,8 @@ namespace Pitstop {
 
 		const RID_DEVICE_INFO_HID& getInfo() const { return m_Info.hid; }
 
+		const QString& getDevicePath() const { return m_DevicePath; }
+
 		const GUID& getGuid() const { return m_GUID; }
 
 		bool setup();
@@ -52,7 +54,7 @@ namespace Pitstop {
 		HANDLE m_Handle;
 		RAWINPUTDEVICE m_Device;
 		RID_DEVICE_INFO m_Info;
-		QString m_DeviceIdentifier;
+		QString m_DevicePath;
 		GUID m_GUID;
 		ProcessorBase* m_Processor;
 
