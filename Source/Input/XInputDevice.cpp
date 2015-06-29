@@ -1,7 +1,5 @@
 #include "Input/XInputDevice.h"
 
-#include <SetupAPI.h>
-
 namespace Pitstop {
 
 	XInputDevice::XInputDevice()
@@ -18,11 +16,8 @@ namespace Pitstop {
 		}
 	}
 
-	bool XInputDevice::setup(size_t controllerIndex)
+	bool XInputDevice::setup(const GUID& guid, size_t controllerIndex)
 	{
-		GUID guid;
-		::CLSIDFromString(L"{F679F562-3164-42CE-A4DB-E7DDBE723909}", &guid);
-
 		SP_DEVICE_INTERFACE_DATA device_interface_data = { 0 };
 		device_interface_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
 

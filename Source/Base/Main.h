@@ -16,6 +16,10 @@
 
 #include <Windows.h>
 
+// SetupAPI
+
+#include <SetupAPI.h>
+
 // Qt Core
 
 #include <QtCore/QBuffer>

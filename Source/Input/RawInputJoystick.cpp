@@ -37,7 +37,7 @@ namespace Pitstop {
 			return false;
 		}
 
-		m_GUID = extract_guid.cap(1);
+		QString guid_string = extract_guid.cap(1);
 
 		// Extract VID and PID
 
@@ -61,7 +61,7 @@ namespace Pitstop {
 
 		retrieveFromRegistry(
 			m_Category,
-			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + m_GUID,
+			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + guid_string,
 			"Category");
 
 		// Get translated name
@@ -90,9 +90,8 @@ namespace Pitstop {
 			}
 		}
 
-		GUID guid;
-		::CLSIDFromString(m_GUID.utf16(), &guid);
-		QString path = findDevicePath(guid);
+		::CLSIDFromString(guid_string.utf16(), &m_GUID);
+		QString path = findDevicePath(m_GUID);
 
 		// Add input processor
 
