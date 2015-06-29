@@ -85,6 +85,7 @@
     <ClInclude Include="Source\Input\Process\ProcessorBase.h" />
     <ClInclude Include="Source\Input\RawInputJoystick.h" />
     <ClInclude Include="Source\Input\RawInputManager.h" />
+    <ClInclude Include="Source\Input\XInputState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

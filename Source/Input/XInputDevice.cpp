@@ -1,5 +1,6 @@
 #include "Input/XInputDevice.h"
 
+#include "Input/Process/ProcessorBase.h"
 #include "Input/RawInputJoystick.h"
 
 namespace Pitstop {
@@ -77,7 +78,7 @@ namespace Pitstop {
 			nullptr);
 	}
 
-	void XInputDevice::writeOutput()
+	void XInputDevice::writeOutput(const XInputState& state)
 	{
 		uint8_t input[28] = { 0 };
 		uint8_t output[8] = { 0 };
@@ -86,7 +87,18 @@ namespace Pitstop {
 		input[ 4] = (uint8_t)m_ControllerIndex + 1;
 		input[ 9] = 0x14;
 
-		input[11] |= 1 << 4; // A
+		for (size_t i = 0; i < (size_t)XInputState::Button::_COUNT; ++i)
+		{
+			if ((state.buttonState[i] & ProcessorBase::InputState_Down) != 0)
+			{
+				input[10 + (i / 7)] = (uint8_t)(1 << i);
+			}
+		}
+
+		input[12] = (uint8_t)(state.axisState[(size_t)XInputState::Axis::LeftTrigger] * 255.0f);
+		input[13] = (uint8_t)(state.axisState[(size_t)XInputState::Axis::RightTrigger] * 255.0f);
+
+		// TODO: Sticks
 
 		DWORD written = 0;
 
