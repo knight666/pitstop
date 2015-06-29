@@ -29,9 +29,9 @@ namespace Pitstop {
 
 	private:
 
-		MainWindow* m_MainWindow;
 		RawInputManager* m_RawInput;
 		UsbController* m_UsbController;
+		MainWindow* m_MainWindow;
 
 	}; // class Application
 
