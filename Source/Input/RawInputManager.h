@@ -4,8 +4,8 @@
 
 namespace Pitstop {
 
-	class ProcessorBase;
 	class RawInputJoystick;
+	class XInputDevice;
 
 	class RawInputManager
 	{
@@ -22,7 +22,8 @@ namespace Pitstop {
 	private:
 
 		QHash<HANDLE, RawInputJoystick*> m_Joysticks;
-		QHash<HANDLE, ProcessorBase*> m_Processors;
+		QHash<HANDLE, XInputDevice*> m_XInputDevices;
+		size_t m_NextXInputIdentifier;
 
 	}; // class RawInputManager
 
