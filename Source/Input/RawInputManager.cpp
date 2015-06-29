@@ -6,6 +6,7 @@
 namespace Pitstop {
 
 	RawInputManager::RawInputManager()
+		: m_NextXInputIdentifier(0)
 	{
 	}
 
@@ -85,12 +86,16 @@ namespace Pitstop {
 			{
 				if (joystick->getType() != RawInputJoystick::Type::XInput)
 				{
+					XInputDevice* xinput = new XInputDevice(m_NextXInputIdentifier++);
+					if (xinput->attach(*joystick))
+					{
+						xinput->setPluggedIn(true);
+
+						m_XInputDevices.insert(joystick->getHandle(), xinput);
+					}
+
 					device_list.push_back(joystick->getDevice());
 				}
-
-				XInputDevice* xinput = new XInputDevice(0);
-				bool success = xinput->attach(*joystick);
-				xinput->setPluggedIn(true);
 			}
 
 			if (device_list.size() > 0)
@@ -141,6 +146,14 @@ namespace Pitstop {
 			RawInputJoystick* joystick = found.value();
 
 			joystick->process(*raw_input);
+		}
+
+		QHash<HANDLE, XInputDevice*>::iterator found_xinput = m_XInputDevices.find(raw_input->header.hDevice);
+		if (found_xinput != m_XInputDevices.end())
+		{
+			XInputDevice* xinput = found_xinput.value();
+
+			xinput->writeOutput();
 		}
 	}
 

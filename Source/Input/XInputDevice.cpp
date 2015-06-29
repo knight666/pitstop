@@ -77,4 +77,29 @@ namespace Pitstop {
 			nullptr);
 	}
 
+	void XInputDevice::writeOutput()
+	{
+		uint8_t input[28] = { 0 };
+		uint8_t output[8] = { 0 };
+
+		input[ 0] = 0x1C;
+		input[ 4] = (uint8_t)m_ControllerIndex + 1;
+		input[ 9] = 0x14;
+
+		input[11] |= 1 << 4; // A
+
+		DWORD written = 0;
+
+		if (::DeviceIoControl(
+			m_DeviceHandle,
+			0x2A400C,
+			input, 28,
+			output, 8,
+			&written,
+			nullptr) == FALSE)
+		{
+			DWORD last_error = ::GetLastError();
+		}
+	}
+
 }; // namespace Pitstop
