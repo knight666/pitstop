@@ -4,8 +4,9 @@
 #include <QtGui/QGuiApplication>
 
 #include "Application/MainWindow.h"
-#include "Input/RawInputManager.h"
+#include "Input/Process/InputProcessorDualShock4.h"
 #include "Input/Usb/UsbController.h"
+#include "Input/RawInputManager.h"
 
 namespace Pitstop {
 
@@ -16,6 +17,8 @@ namespace Pitstop {
 		, m_UsbController(new UsbController())
 	{
 		installNativeEventFilter(this);
+
+		m_RawInput->registerInputProcessor(InputProcessorDualShock4::create);
 	}
 
 	Application::~Application()

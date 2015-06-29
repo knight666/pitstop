@@ -4,6 +4,7 @@
 #include <QtCore/QRegularExpression>
 
 #include "Input/Process/InputProcessorBase.h"
+#include "Input/RawInputManager.h"
 
 namespace Pitstop {
 
@@ -101,8 +102,8 @@ namespace Pitstop {
 
 		// Add input processor
 
-		m_Processor = new InputProcessorBase(*this);
-		return m_Processor->setup();
+		m_Processor = m_Manager.createInputProcessor(*this);
+		return (m_Processor != nullptr) ? m_Processor->setup() : true;
 	}
 
 	bool RawInputJoystick::process(const RAWINPUT& message)
