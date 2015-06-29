@@ -70,6 +70,8 @@
     <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h" />
     <ClInclude Include="Source\Input\Usb\UsbController.h" />
     <ClInclude Include="Source\Input\Usb\UsbDevice.h" />
+    <ClInclude Include="Source\Input\VirtualInputDevice.h" />
+    <ClInclude Include="Source\Input\VirtualInputManager.h" />
     <ClInclude Include="Source\Input\XInputDevice.h" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +104,8 @@
     <ClCompile Include="Source\Input\RawInputManager.cpp" />
     <ClCompile Include="Source\Input\Usb\UsbController.cpp" />
     <ClCompile Include="Source\Input\Usb\UsbDevice.cpp" />
+    <ClCompile Include="Source\Input\VirtualInputDevice.cpp" />
+    <ClCompile Include="Source\Input\VirtualInputManager.cpp" />
     <ClCompile Include="Source\Input\XInputDevice.cpp" />
     <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>
