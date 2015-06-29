@@ -20,6 +20,10 @@
     <ClCompile Include="Source\Input\XInputDevice.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\Usb\UsbController.cpp">
+      <Filter>Input\Usb</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Usb\UsbDevice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -42,6 +46,9 @@
     </Filter>
     <Filter Include="Input\Process">
       <UniqueIdentifier>{055cabb2-3790-4f02-bbd3-0d5a64b4fc8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input\Usb">
+      <UniqueIdentifier>{1aced2b9-fe6e-453c-8932-54a8f3d7d24c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +78,12 @@
     </ClInclude>
     <ClInclude Include="Source\Input\XInputState.h">
       <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Usb\UsbController.h">
+      <Filter>Input\Usb</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Usb\UsbDevice.h">
+      <Filter>Input\Usb</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

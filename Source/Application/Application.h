@@ -2,14 +2,14 @@
 
 #include "Base/Main.h"
 
-#include "Input/RawInputManager.h"
-
 #include <QtCore/QAbstractNativeEventFilter>
 #include <QtWidgets/QApplication>
 
 namespace Pitstop {
 
 	class MainWindow;
+	class RawInputManager;
+	class UsbController;
 
 	class Application
 		: public QApplication
@@ -31,6 +31,7 @@ namespace Pitstop {
 
 		MainWindow* m_MainWindow;
 		RawInputManager* m_RawInput;
+		UsbController* m_UsbController;
 
 	}; // class Application
 
