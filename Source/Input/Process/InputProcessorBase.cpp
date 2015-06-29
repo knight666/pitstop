@@ -50,6 +50,8 @@ namespace Pitstop {
 			return false;
 		}
 
+		// Setup digital input
+
 		m_ButtonCapabilities.resize(m_Capabilities.NumberInputButtonCaps);
 		USHORT button_caps_count = m_Capabilities.NumberInputButtonCaps;
 		if (::HidP_GetButtonCaps(
@@ -72,6 +74,8 @@ namespace Pitstop {
 			}
 		}
 
+		// Setup analog axes
+
 		m_ValueCapabilities.resize(m_Capabilities.NumberInputValueCaps);
 		USHORT value_caps_count = m_Capabilities.NumberInputValueCaps;
 		if (::HidP_GetValueCaps(
@@ -89,6 +93,10 @@ namespace Pitstop {
 		{
 			m_AxisValues[values.Range.UsageMin] = 0;
 		}
+
+		// Add bindings
+
+		createBindings();
 
 		return true;
 	}
@@ -168,6 +176,11 @@ namespace Pitstop {
 		}
 
 		return true;
+	}
+
+	void InputProcessorBase::addBinding(const QString& name, InputType type)
+	{
+		m_Bindings[name] = InputBinding(type);
 	}
 
 }; // namespace Pitstop

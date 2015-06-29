@@ -24,10 +24,24 @@ namespace Pitstop {
 			InputState_Released = 0x04,
 		};
 
+		enum class InputType
+		{
+			Digital,
+			Analog
+		};
+
 		struct InputBinding
 		{
-			bool digital;
-			float analog;
+			InputBinding(InputType type = InputType::Analog)
+				: type(type)
+				, digitalValue(false)
+				, analogValue(0.0f)
+			{
+			}
+
+			InputType type;
+			bool digitalValue;
+			float analogValue;
 		};
 
 		typedef InputProcessorBase* (FactoryMethod(RawInputJoystick&));
@@ -43,8 +57,12 @@ namespace Pitstop {
 
 	protected:
 
+		virtual void createBindings() = 0;
+
 		virtual bool processDigital(USAGE identifier, bool pressed) = 0;
 		virtual bool processAnalog(USAGE identifier, LONG value) = 0;
+
+		void addBinding(const QString& name, InputType type);
 
 	protected:
 
