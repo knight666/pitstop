@@ -14,16 +14,15 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="verticalLayoutWidget">
+   <widget class="Pitstop::BindingsList" name="bindingsList" native="true">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>371</width>
-      <height>531</height>
+      <width>321</width>
+      <height>541</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="labelsContainer"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -38,6 +37,14 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BindingsList</class>
+   <extends>QWidget</extends>
+   <header>Widgets/BindingsList.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
