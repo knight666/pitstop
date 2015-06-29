@@ -113,6 +113,27 @@ namespace Pitstop {
 		return true;
 	}
 
+	InputProcessorBase* RawInputManager::createInputProcessor(RawInputJoystick& joystick)
+	{
+		InputProcessorBase* result = nullptr;
+
+		for (std::function<InputProcessorBase::FactoryMethod>& factory : m_InputProcessorFactories)
+		{
+			result = factory(joystick);
+			if (result != nullptr)
+			{
+				break;
+			}
+		}
+
+		return result;
+	}
+
+	void RawInputManager::registerInputProcessor(InputProcessorBase::FactoryMethod method)
+	{
+		m_InputProcessorFactories.push_back(std::bind(method, std::placeholders::_1));
+	}
+
 	void RawInputManager::processInputMessage(WPARAM wParam, LPARAM lParam)
 	{
 		UINT raw_size = 0;

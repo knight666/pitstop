@@ -24,7 +24,7 @@ namespace Pitstop {
 			InputState_Released = 0x04,
 		};
 
-		typedef std::function<InputProcessorBase*(RawInputJoystick&)> FactoryMethod;
+		typedef InputProcessorBase* (FactoryMethod(RawInputJoystick&));
 
 		InputProcessorBase(RawInputJoystick& joystick);
 		virtual ~InputProcessorBase();
