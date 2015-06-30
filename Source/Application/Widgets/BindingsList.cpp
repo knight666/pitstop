@@ -60,7 +60,16 @@ namespace Pitstop {
 			QHash<QString, QLabel*>::iterator found = m_Labels.find(it.key());
 			if (found != m_Labels.end())
 			{
-				found.value()->setText(QString("%1: %2").arg(it.key()).arg(binding.digitalValue));
+				QString text = QString("%1: %2").arg(it.key());
+				if (binding.type == InputProcessorBase::InputType::Digital)
+				{
+					text.arg(binding.digitalValue);
+				}
+				else
+				{
+					text.arg(binding.analogValue);
+				}
+				found.value()->setText(text);
 			}
 		}
 
