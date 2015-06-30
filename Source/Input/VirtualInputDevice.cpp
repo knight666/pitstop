@@ -65,12 +65,22 @@ namespace Pitstop {
 		{
 			if (state.buttonState[i])
 			{
-				input[10 + (i / 7)] = (uint8_t)(1 << (i % 8));
+				input[10 + (i / 8)] = (uint8_t)(1 << (i % 8));
 			}
 		}
 
 		input[12] = (uint8_t)(state.axisState[(size_t)XInputState::Axis::LeftTrigger] * 255.0f);
 		input[13] = (uint8_t)(state.axisState[(size_t)XInputState::Axis::RightTrigger] * 255.0f);
+
+		uint16_t left_stick[2] = {
+			state.axisState[(size_t)XInputState::Axis::LeftStickHorizontal] * (float)UINT16_MAX,
+			state.axisState[(size_t)XInputState::Axis::LeftStickVertical] * (float)UINT16_MAX,
+		};
+
+		input[14] = (uint8_t)left_stick[0] & 0xFF;
+		input[15] = (uint8_t)(left_stick[0] >> 8) & 0xFF;
+		input[16] = (uint8_t)left_stick[1] & 0xFF;
+		input[17] = (uint8_t)(left_stick[1] >> 8) & 0xFF;
 
 		QVector<uint8_t> output(8);
 
@@ -79,7 +89,11 @@ namespace Pitstop {
 
 	bool VirtualInputDevice::mapToXinput(XInputState& state, const QHash<QString, InputProcessorBase::InputBinding>& bindings)
 	{
-		state.buttonState[(uint8_t)XInputState::Button::A] = bindings["Cross"].digitalValue;
+		state.buttonState[(uint8_t)XInputState::Button::A] = bindings["RightStickDown"].digitalValue;
+		state.buttonState[(uint8_t)XInputState::Button::B] = bindings["RightStickRight"].digitalValue;
+		state.buttonState[(uint8_t)XInputState::Button::X] = bindings["RightStickLeft"].digitalValue;
+		state.buttonState[(uint8_t)XInputState::Button::Y] = bindings["RightStickUp"].digitalValue;
+		state.axisState[(uint8_t)XInputState::Axis::LeftStickHorizontal] = bindings["Wheel"].analogValue;
 
 		return true;
 	}
