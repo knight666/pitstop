@@ -128,14 +128,10 @@ namespace Pitstop {
 			break;
 
 		case 0x39:
-			{
-				// Directional pad
-
-				m_Bindings["Up"].digitalValue = (value == 6 || value == 0 || value == 1);
-				m_Bindings["Right"].digitalValue = (value == 1 || value == 2 || value == 3);
-				m_Bindings["Down"].digitalValue = (value == 3 || value == 4 || value == 5);
-				m_Bindings["Left"].digitalValue = (value == 5 || value == 6 || value == 7);
-			}
+			m_Bindings["Up"].digitalValue = (value == 7 || value == 0 || value == 1);
+			m_Bindings["Right"].digitalValue = (value == 1 || value == 2 || value == 3);
+			m_Bindings["Down"].digitalValue = (value == 3 || value == 4 || value == 5);
+			m_Bindings["Left"].digitalValue = (value == 5 || value == 6 || value == 7);
 			break;
 
 		default:
