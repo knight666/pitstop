@@ -38,6 +38,12 @@
     <ClCompile Include="Source\Application\MainWindow.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\VirtualInputDevice.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\VirtualInputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -104,6 +110,12 @@
     </ClInclude>
     <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h">
       <Filter>Input\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\VirtualInputDevice.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\VirtualInputManager.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
