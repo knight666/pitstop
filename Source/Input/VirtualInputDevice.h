@@ -20,15 +20,17 @@ namespace Pitstop {
 		VirtualInputDevice(VirtualInputManager& manager, uint8_t index);
 		~VirtualInputDevice();
 
+		HANDLE getJoystickHandle() const;
+
+		void setJoystick(RawInputJoystick& joystick);
+
+		void setUsbDevice(UsbDevice& usb);
+
 		void update();
 
 	private:
 
 		bool mapToXinput(XInputState& state, const QHash<QString, InputProcessorBase::InputBinding>& bindings);
-
-		void setJoystick(RawInputJoystick& joystick);
-
-		void setUsbDevice(UsbDevice& usb);
 
 	private:
 

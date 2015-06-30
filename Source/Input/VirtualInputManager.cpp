@@ -19,35 +19,32 @@ namespace Pitstop {
 		qDeleteAll(m_Devices);
 	}
 
-	void VirtualInputManager::bindJoystick(uint8_t index, RawInputJoystick& joystick)
+	VirtualInputDevice* VirtualInputManager::getDeviceByIndex(uint8_t index) const
 	{
-		if (index >= MAX_DEVICES)
-		{
-			return;
-		}
-
-		VirtualInputDevice* device = m_Devices[index];
-		device->setJoystick(joystick);
-		m_RawInputMapping[joystick.getHandle()] = device;
+		return (index < m_Devices.size()) ? m_Devices[index] : nullptr;
 	}
 
-	void VirtualInputManager::bindUsbDevice(uint8_t index, UsbDevice& usb)
+	VirtualInputDevice* VirtualInputManager::getDeviceByHandle(HANDLE handle) const
 	{
-		if (index >= MAX_DEVICES)
+		for (VirtualInputDevice* device : m_Devices)
 		{
-			return;
+			if (device->getJoystickHandle() == device)
+			{
+				return device;
+			}
 		}
 
-		VirtualInputDevice* device = m_Devices[index];
-		device->setUsbDevice(usb);
+		return nullptr;
 	}
 
-	void VirtualInputManager::update(HANDLE device)
+	void VirtualInputManager::update(HANDLE handle)
 	{
-		QHash<HANDLE, VirtualInputDevice*>::iterator found = m_RawInputMapping.find(device);
-		if (found != m_RawInputMapping.end())
+		for (VirtualInputDevice* device : m_Devices)
 		{
-			found.value()->update();
+			if (device->getJoystickHandle() == handle)
+			{
+				device->update();
+			}
 		}
 	}
 
