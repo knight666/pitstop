@@ -20,6 +20,11 @@ namespace Pitstop {
 		virtual bool processDigital(USAGE identifier, bool pressed) override;
 		virtual bool processAnalog(USAGE identifier, LONG value) override;
 
+	private:
+
+		LONG m_LeftStickValues[2];
+		LONG m_RightStickValues[2];
+
 	}; // class InputProcessorDualShock4
 
 }; // namespace Pitstop
