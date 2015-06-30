@@ -14,16 +14,30 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="Pitstop::BindingsList" name="bindingsList" native="true">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>321</width>
-      <height>541</height>
-     </rect>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tabDevices">
+       <attribute name="title">
+        <string>Devices</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="Pitstop::BindingsList" name="bindingsList" native="true"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabJoysticks">
+       <attribute name="title">
+        <string>Joysticks</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -39,7 +53,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>BindingsList</class>
+   <class>Pitstop::BindingsList</class>
    <extends>QWidget</extends>
    <header>Widgets/BindingsList.h</header>
    <container>1</container>
