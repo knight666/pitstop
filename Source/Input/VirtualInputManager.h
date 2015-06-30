@@ -2,11 +2,12 @@
 
 #include "Base/Main.h"
 
+#include "Input/VirtualInputDevice.h"
+
 namespace Pitstop {
 
 	class RawInputJoystick;
 	class UsbDevice;
-	class VirtualInputDevice;
 
 	class VirtualInputManager
 	{

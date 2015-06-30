@@ -10,6 +10,7 @@ namespace Pitstop {
 	class MainWindow;
 	class RawInputManager;
 	class UsbController;
+	class VirtualInputManager;
 
 	class Application
 		: public QApplication
@@ -31,6 +32,7 @@ namespace Pitstop {
 
 		RawInputManager* m_RawInput;
 		UsbController* m_UsbController;
+		VirtualInputManager* m_VirtualInput;
 		MainWindow* m_MainWindow;
 
 	}; // class Application

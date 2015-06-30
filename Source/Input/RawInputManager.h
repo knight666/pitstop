@@ -32,7 +32,7 @@ namespace Pitstop {
 				InputType::create);
 		}
 
-		void processInputMessage(WPARAM wParam, LPARAM lParam);
+		void processInputMessage(const RAWINPUT& message, HANDLE device);
 
 	private:
 
