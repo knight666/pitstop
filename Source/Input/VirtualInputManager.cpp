@@ -1,6 +1,5 @@
 #include "Input/VirtualInputManager.h"
 
-#include "Input/VirtualInputDevice.h"
 #include "Input/RawInputJoystick.h"
 
 #define MAX_DEVICES 4
