@@ -63,11 +63,11 @@ namespace Pitstop {
 				QString text = QString("%1: %2").arg(it.key());
 				if (binding.type == InputProcessorBase::InputType::Digital)
 				{
-					text.arg(binding.digitalValue);
+					text = text.arg(binding.digitalValue);
 				}
 				else
 				{
-					text.arg(binding.analogValue);
+					text = text.arg(binding.analogValue);
 				}
 				found.value()->setText(text);
 			}
