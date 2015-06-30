@@ -46,6 +46,12 @@ namespace Pitstop {
 		if (joystick != nullptr)
 		{
 			m_VirtualInput->bindJoystick(0, *joystick);
+
+			UsbDevice* usb = m_UsbController->getDeviceByIndex(0);
+			usb->setPluggedIn(true);
+
+			m_VirtualInput->bindUsbDevice(0, *usb);
+
 			m_MainWindow->bindJoystick(*joystick);
 		}
 		m_MainWindow->show();

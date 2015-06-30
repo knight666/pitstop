@@ -1,7 +1,5 @@
 #include "Input/Usb/UsbController.h"
 
-#include "Input/Usb/UsbDevice.h"
-
 namespace Pitstop {
 
 	UsbController::UsbController()
@@ -11,13 +9,13 @@ namespace Pitstop {
 
 	UsbController::~UsbController()
 	{
+		qDeleteAll(m_Devices);
+
 		if (m_HubInfo != NULL)
 		{
-			delete m_HubInfo;
+			::SetupDiDestroyDeviceInfoList(m_HubInfo);
 			m_HubInfo = NULL;
 		}
-
-		qDeleteAll(m_Devices);
 	}
 
 	UsbDevice* UsbController::getDeviceByIndex(uint8_t index)

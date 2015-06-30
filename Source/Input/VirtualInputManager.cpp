@@ -31,6 +31,17 @@ namespace Pitstop {
 		m_RawInputMapping[joystick.getHandle()] = device;
 	}
 
+	void VirtualInputManager::bindUsbDevice(uint8_t index, UsbDevice& usb)
+	{
+		if (index >= MAX_DEVICES)
+		{
+			return;
+		}
+
+		VirtualInputDevice* device = m_Devices[index];
+		device->setUsbDevice(usb);
+	}
+
 	void VirtualInputManager::update(HANDLE device)
 	{
 		QHash<HANDLE, VirtualInputDevice*>::iterator found = m_RawInputMapping.find(device);
