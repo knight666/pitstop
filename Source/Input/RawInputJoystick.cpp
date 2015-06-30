@@ -22,7 +22,7 @@ namespace Pitstop {
 		memset(&m_Device, 0, sizeof(m_Device));
 		m_Device.usUsagePage = info.hid.usUsagePage;
 		m_Device.usUsage = info.hid.usUsage;
-		m_Device.dwFlags = 0;
+		m_Device.dwFlags = RIDEV_INPUTSINK;
 		m_Device.hwndTarget = window;
 	}
 
