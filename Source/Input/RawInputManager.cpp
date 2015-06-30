@@ -145,43 +145,17 @@ namespace Pitstop {
 		m_InputProcessorFactories.insert(key, std::bind(method, std::placeholders::_1));
 	}
 
-	void RawInputManager::processInputMessage(WPARAM wParam, LPARAM lParam)
+	void RawInputManager::processInputMessage(const RAWINPUT& message, HANDLE device)
 	{
-		UINT raw_size = 0;
-		if (::GetRawInputData(
-			(HRAWINPUT)lParam,
-			RID_INPUT,
-			NULL,
-			&raw_size,
-			sizeof(RAWINPUTHEADER)) == (UINT)-1)
-		{
-			return;
-		}
-
-		QVector<uint8_t> raw_data;
-		raw_data.resize(raw_size);
-		RAWINPUT* raw_input = (RAWINPUT*)&raw_data[0];
-
-		if (::GetRawInputData(
-			(HRAWINPUT)lParam,
-			RID_INPUT,
-			raw_input,
-			&raw_size,
-			sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
-			raw_input->header.dwType != RIM_TYPEHID)
-		{
-			return;
-		}
-
-		QHash<HANDLE, RawInputJoystick*>::iterator found = m_Joysticks.find(raw_input->header.hDevice);
+		QHash<HANDLE, RawInputJoystick*>::iterator found = m_Joysticks.find(device);
 		if (found != m_Joysticks.end())
 		{
 			RawInputJoystick* joystick = found.value();
 
-			joystick->process(*raw_input);
+			joystick->process(message);
 		}
 
-		QHash<HANDLE, XInputDevice*>::iterator found_xinput = m_XInputDevices.find(raw_input->header.hDevice);
+		QHash<HANDLE, XInputDevice*>::iterator found_xinput = m_XInputDevices.find(device);
 		if (found_xinput != m_XInputDevices.end())
 		{
 			XInputDevice* xinput = found_xinput.value();

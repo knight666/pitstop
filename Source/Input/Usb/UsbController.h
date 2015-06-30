@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Base/Main.h"
+#include "Input/Usb/UsbDevice.h"
 
 namespace Pitstop {
 
-	class UsbDevice;
 	struct XInputState;
 
 	class UsbController
