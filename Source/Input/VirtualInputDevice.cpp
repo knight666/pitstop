@@ -43,14 +43,14 @@ namespace Pitstop {
 		QVector<uint8_t> input(28);
 
 		input[0] = 0x1C;
-		input[4] = m_Index;
+		input[4] = m_Index + 1;
 		input[9] = 0x14;
 
 		for (size_t i = 0; i < (size_t)XInputState::Button::_COUNT; ++i)
 		{
 			if (state.buttonState[i])
 			{
-				input[10 + (i / 7)] = (uint8_t)(1 << i);
+				input[10 + (i / 7)] = (uint8_t)(1 << (i % 8));
 			}
 		}
 
@@ -64,7 +64,7 @@ namespace Pitstop {
 
 	bool VirtualInputDevice::mapToXinput(XInputState& state, const QHash<QString, InputProcessorBase::InputBinding>& bindings)
 	{
-		state.buttonState[(uint8_t)XInputState::Button::A] = bindings["X"].digitalValue;
+		state.buttonState[(uint8_t)XInputState::Button::A] = bindings["Cross"].digitalValue;
 
 		return true;
 	}

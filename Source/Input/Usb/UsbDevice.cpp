@@ -14,6 +14,7 @@ namespace Pitstop {
 
 	UsbDevice::~UsbDevice()
 	{
+		setPluggedIn(false);
 	}
 
 	void UsbDevice::setPluggedIn(bool value)
@@ -27,7 +28,7 @@ namespace Pitstop {
 		input[0] = 0x10;
 		input[4] = m_Identifier;
 
-		QVector<uint8_t> output(8);
+		QVector<uint8_t> output;
 
 		write(value ? 0x002A4000 : 0x002A4004, input, output);
 
@@ -36,38 +37,24 @@ namespace Pitstop {
 
 	bool UsbDevice::write(DWORD command, QVector<uint8_t>& input, QVector<uint8_t>& output)
 	{
-		/*0x2A400C
-
-		input[0] = 0x1C;
-		input[4] = m_Identifier;
-		input[9] = 0x14;
-
-		for (size_t i = 0; i < (size_t)XInputState::Button::_COUNT; ++i)
-		{
-			if ((state.buttonState[i] & ProcessorBase::InputState_Down) != 0)
-			{
-				input[10 + (i / 7)] = (uint8_t)(1 << i);
-			}
-		}
-
-		input[12] = (uint8_t)(state.axisState[(size_t)XInputState::Axis::LeftTrigger] * 255.0f);
-		input[13] = (uint8_t)(state.axisState[(size_t)XInputState::Axis::RightTrigger] * 255.0f);
-
-		// TODO: Sticks*/
-
-		if (input.size() == 0 ||
-			output.size() == 0)
+		if (input.size() == 0)
 		{
 			return false;
 		}
+
+		LPVOID input_ptr = &input[0];
+		DWORD input_size = input.size();
+
+		LPVOID output_ptr = (output.size() > 0) ? &output[0] : nullptr;
+		DWORD output_size = output.size();
 
 		DWORD written = 0;
 
 		if (::DeviceIoControl(
 			m_Controller.getHubHandle(),
 			command,
-			&input[0], (DWORD)input.size(),
-			&output[0], (DWORD)output.size(),
+			input_ptr, input_size,
+			output_ptr, output_size,
 			&written,
 			nullptr) == FALSE)
 		{
