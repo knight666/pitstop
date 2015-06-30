@@ -68,6 +68,7 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h" />
     <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h" />
+    <ClInclude Include="Source\Input\Process\InputProcessorFFBWheel.h" />
     <ClInclude Include="Source\Input\Usb\UsbController.h" />
     <ClInclude Include="Source\Input\Usb\UsbDevice.h" />
     <ClInclude Include="Source\Input\VirtualInputDevice.h" />
@@ -100,6 +101,7 @@
     <ClCompile Include="Source\Application\Widgets\BindingsList.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorBase.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorDualShock4.cpp" />
+    <ClCompile Include="Source\Input\Process\InputProcessorFFBWheel.cpp" />
     <ClCompile Include="Source\Input\RawInputJoystick.cpp" />
     <ClCompile Include="Source\Input\RawInputManager.cpp" />
     <ClCompile Include="Source\Input\Usb\UsbController.cpp" />
