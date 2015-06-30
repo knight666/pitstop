@@ -19,6 +19,21 @@ namespace Pitstop {
 	{
 	}
 
+	HANDLE VirtualInputDevice::getJoystickHandle() const
+	{
+		return (m_Joystick != nullptr) ? m_Joystick->getHandle() : NULL;
+	}
+
+	void VirtualInputDevice::setJoystick(RawInputJoystick& joystick)
+	{
+		m_Joystick = &joystick;
+	}
+
+	void VirtualInputDevice::setUsbDevice(UsbDevice& usb)
+	{
+		m_Usb = &usb;
+	}
+
 	void VirtualInputDevice::update()
 	{
 		if (m_Joystick == nullptr)
@@ -67,16 +82,6 @@ namespace Pitstop {
 		state.buttonState[(uint8_t)XInputState::Button::A] = bindings["Cross"].digitalValue;
 
 		return true;
-	}
-
-	void VirtualInputDevice::setJoystick(RawInputJoystick& joystick)
-	{
-		m_Joystick = &joystick;
-	}
-
-	void VirtualInputDevice::setUsbDevice(UsbDevice& usb)
-	{
-		m_Usb = &usb;
 	}
 
 }; // namespace Pitstop

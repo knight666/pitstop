@@ -42,15 +42,17 @@ namespace Pitstop {
 			return false;
 		}
 
+		VirtualInputDevice* device = m_VirtualInput->getDeviceByIndex(0);
+
 		RawInputJoystick* joystick = m_RawInput->getJoystick();
 		if (joystick != nullptr)
 		{
-			m_VirtualInput->bindJoystick(0, *joystick);
+			device->setJoystick(*joystick);
 
 			UsbDevice* usb = m_UsbController->getDeviceByIndex(0);
 			usb->setPluggedIn(true);
 
-			m_VirtualInput->bindUsbDevice(0, *usb);
+			device->setUsbDevice(*usb);
 
 			m_MainWindow->bindJoystick(*joystick);
 		}

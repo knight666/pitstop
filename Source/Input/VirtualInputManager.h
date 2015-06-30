@@ -17,11 +17,10 @@ namespace Pitstop {
 		VirtualInputManager();
 		~VirtualInputManager();
 
-		void bindJoystick(uint8_t index, RawInputJoystick& joystick);
+		VirtualInputDevice* getDeviceByIndex(uint8_t index) const;
+		VirtualInputDevice* getDeviceByHandle(HANDLE handle) const;
 
-		void bindUsbDevice(uint8_t index, UsbDevice& usb);
-
-		void update(HANDLE device);
+		void update(HANDLE handle);
 
 	private:
 
