@@ -6,7 +6,6 @@
 namespace Pitstop {
 
 	class RawInputJoystick;
-	class XInputDevice;
 
 	class RawInputManager
 	{
@@ -41,8 +40,6 @@ namespace Pitstop {
 	private:
 
 		QHash<HANDLE, RawInputJoystick*> m_Joysticks;
-		QHash<HANDLE, XInputDevice*> m_XInputDevices;
-		size_t m_NextXInputIdentifier;
 		QHash<uint32_t, std::function<InputProcessorBase::FactoryMethod>> m_InputProcessorFactories;
 
 	}; // class RawInputManager
