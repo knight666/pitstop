@@ -67,38 +67,73 @@ namespace Pitstop {
 	{
 		MSG* msg = (MSG*)message;
 
-		if (eventType == "windows_generic_MSG" &&
-			msg->message == WM_INPUT)
+		if (eventType != "windows_generic_MSG")
 		{
-			UINT raw_size = 0;
-			if (::GetRawInputData(
-				(HRAWINPUT)msg->lParam,
-				RID_INPUT,
-				NULL,
-				&raw_size,
-				sizeof(RAWINPUTHEADER)) != (UINT)-1)
-			{
-				QVector<uint8_t> raw_data;
-				raw_data.resize(raw_size);
-				RAWINPUT* raw_input = (RAWINPUT*)&raw_data[0];
+			return false;
+		}
 
+		switch (msg->message)
+		{
+
+		case WM_INPUT:
+			{
+				UINT raw_size = 0;
 				if (::GetRawInputData(
 					(HRAWINPUT)msg->lParam,
 					RID_INPUT,
-					raw_input,
+					NULL,
 					&raw_size,
-					sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
-					raw_input->header.dwType == RIM_TYPEHID)
+					sizeof(RAWINPUTHEADER)) != (UINT)-1)
 				{
-					m_RawInput->processInputMessage(*raw_input, raw_input->header.hDevice);
+					QVector<uint8_t> raw_data;
+					raw_data.resize(raw_size);
+					RAWINPUT* raw_input = (RAWINPUT*)&raw_data[0];
 
-					m_VirtualInput->update(raw_input->header.hDevice);
+					if (::GetRawInputData(
+						(HRAWINPUT)msg->lParam,
+						RID_INPUT,
+						raw_input,
+						&raw_size,
+						sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
+						raw_input->header.dwType == RIM_TYPEHID)
+					{
+						m_RawInput->processInputMessage(*raw_input, raw_input->header.hDevice);
 
-					m_MainWindow->updateBindings();
+						m_VirtualInput->update(raw_input->header.hDevice);
+
+						m_MainWindow->updateBindings();
+					}
 				}
 			}
-
 			return true;
+
+		case WM_INPUT_DEVICE_CHANGE:
+			{
+				// Get device info
+
+				HANDLE device = (HANDLE)msg->lParam;
+
+				RID_DEVICE_INFO info = { 0 };
+				info.cbSize = sizeof(RID_DEVICE_INFO);
+				if (::GetRawInputDeviceInfoW(
+					device,
+					RIDI_DEVICEINFO,
+					&info,
+					(PUINT)&info.cbSize) != (UINT)-1 &&
+					info.dwType == RIM_TYPEHID)
+				{
+					if (msg->wParam == GIDC_ARRIVAL)
+					{
+						m_RawInput->setDeviceConnected(device, true);
+					}
+					else if (msg->wParam == GIDC_REMOVAL)
+					{
+						m_RawInput->setDeviceConnected(device, false);
+					}
+				}
+			}
+			return true;
+
 		}
 
 		return false;
