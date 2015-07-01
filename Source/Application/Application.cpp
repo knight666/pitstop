@@ -108,35 +108,13 @@ namespace Pitstop {
 			return true;
 
 		case WM_INPUT_DEVICE_CHANGE:
-			{
-				// Get device info
-
-				HANDLE device = (HANDLE)msg->lParam;
-
-				RID_DEVICE_INFO info = { 0 };
-				info.cbSize = sizeof(RID_DEVICE_INFO);
-				if (::GetRawInputDeviceInfoW(
-					device,
-					RIDI_DEVICEINFO,
-					&info,
-					(PUINT)&info.cbSize) != (UINT)-1 &&
-					info.dwType == RIM_TYPEHID)
-				{
-					if (msg->wParam == GIDC_ARRIVAL)
-					{
-						m_RawInput->setDeviceConnected(device, true);
-					}
-					else if (msg->wParam == GIDC_REMOVAL)
-					{
-						m_RawInput->setDeviceConnected(device, false);
-					}
-				}
-			}
+			m_RawInput->processConnectionChanged(msg->lParam, msg->wParam);
 			return true;
 
-		}
+		default:
+			return false;
 
-		return false;
+		}
 	}
 
 }; // namespace Pitstop
