@@ -85,19 +85,28 @@ namespace Pitstop {
 
 	bool VirtualInputDevice::mapToXinput(XInputState& state, const QHash<QString, InputProcessorBase::InputBinding>& bindings)
 	{
-		state.buttonState[(uint8_t)XInputState::Button::Up] = bindings["LeftStickUp"].digitalValue;
-		state.buttonState[(uint8_t)XInputState::Button::Down] = bindings["LeftStickDown"].digitalValue;
-		state.buttonState[(uint8_t)XInputState::Button::Left] = bindings["LeftStickLeft"].digitalValue;
-		state.buttonState[(uint8_t)XInputState::Button::Right] = bindings["LeftStickRight"].digitalValue;
-		state.buttonState[(uint8_t)XInputState::Button::A] = bindings["RightStickDown"].digitalValue;
+		// Look behind
+		state.buttonState[(uint8_t)XInputState::Button::A] = bindings["RightThumbButton"].digitalValue;
 		state.buttonState[(uint8_t)XInputState::Button::B] = bindings["RightStickRight"].digitalValue;
 		state.buttonState[(uint8_t)XInputState::Button::X] = bindings["RightStickLeft"].digitalValue;
 		state.buttonState[(uint8_t)XInputState::Button::Y] = bindings["RightStickUp"].digitalValue;
-		state.buttonState[(uint8_t)XInputState::Button::Back] = bindings["LeftThumbButton"].digitalValue;
-		state.buttonState[(uint8_t)XInputState::Button::Start] = bindings["RightThumbButton"].digitalValue;
 
-		float wheel = std::min(std::max(-1.0f, bindings["Wheel"].analogValue * 2.5f), 1.0f);
+		// Horn
+		state.buttonState[(uint8_t)XInputState::Button::LeftThumb] = bindings["LeftThumbButton"].digitalValue;
+
+		// Change camera
+		state.buttonState[(uint8_t)XInputState::Button::Left] = bindings["RightStickDown"].digitalValue;
+
+		float wheel = std::min(std::max(-1.0f, bindings["Wheel"].analogValue * 5.0f), 1.0f);
 		state.axisState[(uint8_t)XInputState::Axis::LeftStickHorizontal] = wheel;
+
+		float look_around =
+			bindings["RightGearShiftUp"].digitalValue ? 1.0f :
+			bindings["LeftGearShiftDown"].digitalValue ? -1.0f :
+			0.0f;
+
+		state.axisState[(uint8_t)XInputState::Axis::RightStickHorizontal] = look_around;
+
 		state.axisState[(uint8_t)XInputState::Axis::LeftTrigger] = bindings["LeftFootPaddle"].analogValue;
 		state.axisState[(uint8_t)XInputState::Axis::RightTrigger] = bindings["RightFootPaddle"].analogValue;
 
