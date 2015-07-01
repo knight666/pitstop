@@ -9,9 +9,9 @@ namespace Pitstop {
 		enum class Button
 		{
 			Up,
-			Right,
-			Left,
 			Down,
+			Left,
+			Right,
 			Start,
 			Back,
 			LeftThumb,
