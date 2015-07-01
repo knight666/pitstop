@@ -17,6 +17,8 @@ namespace Pitstop {
 
 		bool initialize(HWND window);
 
+		void processConnectionChanged(LPARAM lParam, WPARAM wParam);
+
 		// TEMP
 		RawInputJoystick* getJoystick() const;
 
@@ -39,6 +41,7 @@ namespace Pitstop {
 
 	private:
 
+		bool m_Initialized;
 		QHash<HANDLE, RawInputJoystick*> m_Joysticks;
 		QHash<uint32_t, std::function<InputProcessorBase::FactoryMethod>> m_InputProcessorFactories;
 

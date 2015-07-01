@@ -10,6 +10,7 @@ namespace Pitstop {
 
 	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name)
 		: m_Manager(manager)
+		, m_Connected(true)
 		, m_VendorIdentifier(0)
 		, m_ProductIdentifier(0)
 		, m_Handle(handle)
@@ -22,13 +23,24 @@ namespace Pitstop {
 		memset(&m_Device, 0, sizeof(m_Device));
 		m_Device.usUsagePage = info.hid.usUsagePage;
 		m_Device.usUsage = info.hid.usUsage;
-		m_Device.dwFlags = RIDEV_INPUTSINK;
+		m_Device.dwFlags = RIDEV_INPUTSINK | RIDEV_DEVNOTIFY;
 		m_Device.hwndTarget = window;
 	}
 
 	RawInputJoystick::~RawInputJoystick()
 	{
 		delete m_InputProcessor;
+	}
+	
+	void RawInputJoystick::setConnected(HANDLE handle, bool value)
+	{
+		if (m_Connected == value)
+		{
+			return;
+		}
+
+		m_Handle = handle;
+		m_Connected = value;
 	}
 
 	bool RawInputJoystick::setup()
