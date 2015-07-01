@@ -82,7 +82,20 @@ namespace Pitstop {
 		{
 
 		case 0x30:
-			m_Bindings["Wheel"].analogValue = ((float)value / 2048.0f) - 1.0f;
+			{
+				float normalized = ((float)value / 2048.0f) - 1.0f;
+				float magnitude = fabs(normalized);
+
+				static const float dead_zone = 100.0f / 4096.0f;
+				if (magnitude < dead_zone)
+				{
+					m_Bindings["Wheel"].analogValue = 0.0f;
+				}
+				else
+				{
+					m_Bindings["Wheel"].analogValue = normalized * ((magnitude - dead_zone) / (1.0f - dead_zone));
+				}
+			}
 			break;
 
 		case 0x31:
