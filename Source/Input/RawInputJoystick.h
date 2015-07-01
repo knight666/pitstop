@@ -21,6 +21,9 @@ namespace Pitstop {
 		RawInputJoystick(RawInputManager& manager, HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name);
 		~RawInputJoystick();
 
+		bool isConnected() { return m_Connected; }
+		void setConnected(HANDLE handle, bool value);
+
 		const QString& getDescription() const { return m_Description; }
 
 		const QString& getCategory() const { return m_Category; }
@@ -56,6 +59,7 @@ namespace Pitstop {
 	private:
 
 		RawInputManager& m_Manager;
+		bool m_Connected;
 		QString m_Description;
 		QString m_Category;
 		Type m_Type;

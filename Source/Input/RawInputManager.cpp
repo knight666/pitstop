@@ -6,6 +6,7 @@
 namespace Pitstop {
 
 	RawInputManager::RawInputManager()
+		: m_Initialized(false)
 	{
 	}
 
@@ -35,7 +36,11 @@ namespace Pitstop {
 
 			RID_DEVICE_INFO info = { 0 };
 			info.cbSize = sizeof(RID_DEVICE_INFO);
-			if (::GetRawInputDeviceInfoW(device_info.hDevice, RIDI_DEVICEINFO, &info, (PUINT)&info.cbSize) == (UINT)-1)
+			if (::GetRawInputDeviceInfoW(
+				device_info.hDevice,
+				RIDI_DEVICEINFO,
+				&info,
+				(PUINT)&info.cbSize) == (UINT)-1)
 			{
 				continue;
 			}
@@ -43,14 +48,22 @@ namespace Pitstop {
 			// Get device name
 
 			UINT device_name_size = 0;
-			if (::GetRawInputDeviceInfoW(device_info.hDevice, RIDI_DEVICENAME, nullptr, &device_name_size) != 0)
+			if (::GetRawInputDeviceInfoW(
+				device_info.hDevice,
+				RIDI_DEVICENAME,
+				nullptr,
+				&device_name_size) != 0)
 			{
 				continue;
 			}
 
 			QVector<ushort> device_name_data;
 			device_name_data.resize((int)device_name_size);
-			::GetRawInputDeviceInfoW(device_info.hDevice, RIDI_DEVICENAME, &device_name_data[0], &device_name_size);
+			::GetRawInputDeviceInfoW(
+				device_info.hDevice,
+				RIDI_DEVICENAME,
+				&device_name_data[0],
+				&device_name_size);
 
 			QString device_name = QString::fromUtf16(&device_name_data[0], device_name_data.size() * sizeof(ushort));
 
@@ -100,7 +113,127 @@ namespace Pitstop {
 			}
 		}
 
+		m_Initialized = true;
+
 		return true;
+	}
+
+	void RawInputManager::processConnectionChanged(LPARAM lParam, WPARAM wParam)
+	{
+		// Check if initialized
+
+		if (!m_Initialized)
+		{
+			return;
+		}
+
+		HANDLE device = (HANDLE)lParam;
+
+		// Match joystick by GUID
+
+		if (wParam == GIDC_ARRIVAL)
+		{
+			// Check if the device is a Human Interface Device
+
+			RID_DEVICE_INFO info = { 0 };
+			info.cbSize = sizeof(RID_DEVICE_INFO);
+			if (::GetRawInputDeviceInfoW(
+				device,
+				RIDI_DEVICEINFO,
+				&info,
+				(PUINT)&info.cbSize) == (UINT)-1 ||
+				info.dwType != RIM_TYPEHID)
+			{
+				return;
+			}
+
+			// Get device path
+
+			UINT device_path_size = 0;
+			if (::GetRawInputDeviceInfoW(
+				device,
+				RIDI_DEVICENAME,
+				nullptr,
+				&device_path_size) != 0)
+			{
+				return;
+			}
+
+			QVector<ushort> device_path_data;
+			device_path_data.resize((int)device_path_size);
+			::GetRawInputDeviceInfoW(
+				device,
+				RIDI_DEVICENAME,
+				&device_path_data[0],
+				&device_path_size);
+
+			QString device_path = QString::fromUtf16(
+				&device_path_data[0],
+				device_path_data.size() * sizeof(ushort));
+
+			// Only interested in joysticks
+
+			if (device_path.indexOf("VID_") == -1 ||
+				device_path.indexOf("PID_") == -1 )
+			{
+				return;
+			}
+
+			// Extract GUID
+
+			QRegExp extract_guid("(\\{.+\\})");
+			if (extract_guid.indexIn(device_path) < 0)
+			{
+				return;
+			}
+
+			GUID guid;
+			::CLSIDFromString(extract_guid.cap(1).utf16(), &guid);
+
+			// Update joystick
+
+			RawInputJoystick* joystick = nullptr;
+
+			for (QHash<HANDLE, RawInputJoystick*>::iterator it = m_Joysticks.begin(); it != m_Joysticks.end(); ++it)
+			{
+				if (it.value()->getGuid() == guid &&
+					it.value()->getType() != RawInputJoystick::Type::XInput)
+				{
+					joystick = it.value();
+
+					m_Joysticks.erase(it);
+					m_Joysticks.insert(device, joystick);
+
+					break;
+				}
+			}
+
+			if (joystick != nullptr)
+			{
+				joystick->setConnected(device, true);
+			}
+		}
+		else if (wParam == GIDC_REMOVAL)
+		{
+			// Update joystick
+
+			RawInputJoystick* joystick = nullptr;
+
+			for (QHash<HANDLE, RawInputJoystick*>::iterator it = m_Joysticks.begin(); it != m_Joysticks.end(); ++it)
+			{
+				if (it.value()->getHandle() == device)
+				{
+					joystick = it.value();
+
+					break;
+				}
+			}
+
+			if (joystick != nullptr)
+			{
+				joystick->setConnected(device, false);
+			}
+		}
 	}
 
 	RawInputJoystick* RawInputManager::getJoystick() const

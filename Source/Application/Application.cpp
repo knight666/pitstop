@@ -67,41 +67,54 @@ namespace Pitstop {
 	{
 		MSG* msg = (MSG*)message;
 
-		if (eventType == "windows_generic_MSG" &&
-			msg->message == WM_INPUT)
+		if (eventType != "windows_generic_MSG")
 		{
-			UINT raw_size = 0;
-			if (::GetRawInputData(
-				(HRAWINPUT)msg->lParam,
-				RID_INPUT,
-				NULL,
-				&raw_size,
-				sizeof(RAWINPUTHEADER)) != (UINT)-1)
-			{
-				QVector<uint8_t> raw_data;
-				raw_data.resize(raw_size);
-				RAWINPUT* raw_input = (RAWINPUT*)&raw_data[0];
+			return false;
+		}
 
+		switch (msg->message)
+		{
+
+		case WM_INPUT:
+			{
+				UINT raw_size = 0;
 				if (::GetRawInputData(
 					(HRAWINPUT)msg->lParam,
 					RID_INPUT,
-					raw_input,
+					NULL,
 					&raw_size,
-					sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
-					raw_input->header.dwType == RIM_TYPEHID)
+					sizeof(RAWINPUTHEADER)) != (UINT)-1)
 				{
-					m_RawInput->processInputMessage(*raw_input, raw_input->header.hDevice);
+					QVector<uint8_t> raw_data;
+					raw_data.resize(raw_size);
+					RAWINPUT* raw_input = (RAWINPUT*)&raw_data[0];
 
-					m_VirtualInput->update(raw_input->header.hDevice);
+					if (::GetRawInputData(
+						(HRAWINPUT)msg->lParam,
+						RID_INPUT,
+						raw_input,
+						&raw_size,
+						sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
+						raw_input->header.dwType == RIM_TYPEHID)
+					{
+						m_RawInput->processInputMessage(*raw_input, raw_input->header.hDevice);
 
-					m_MainWindow->updateBindings();
+						m_VirtualInput->update(raw_input->header.hDevice);
+
+						m_MainWindow->updateBindings();
+					}
 				}
 			}
-
 			return true;
-		}
 
-		return false;
+		case WM_INPUT_DEVICE_CHANGE:
+			m_RawInput->processConnectionChanged(msg->lParam, msg->wParam);
+			return true;
+
+		default:
+			return false;
+
+		}
 	}
 
 }; // namespace Pitstop
