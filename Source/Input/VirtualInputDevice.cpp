@@ -95,7 +95,9 @@ namespace Pitstop {
 		state.buttonState[(uint8_t)XInputState::Button::Y] = bindings["RightStickUp"].digitalValue;
 		state.buttonState[(uint8_t)XInputState::Button::Back] = bindings["LeftThumbButton"].digitalValue;
 		state.buttonState[(uint8_t)XInputState::Button::Start] = bindings["RightThumbButton"].digitalValue;
-		state.axisState[(uint8_t)XInputState::Axis::LeftStickHorizontal] = bindings["Wheel"].analogValue;
+
+		float wheel = std::min(std::max(-1.0f, bindings["Wheel"].analogValue * 2.5f), 1.0f);
+		state.axisState[(uint8_t)XInputState::Axis::LeftStickHorizontal] = wheel;
 		state.axisState[(uint8_t)XInputState::Axis::LeftTrigger] = bindings["LeftFootPaddle"].analogValue;
 		state.axisState[(uint8_t)XInputState::Axis::RightTrigger] = bindings["RightFootPaddle"].analogValue;
 
