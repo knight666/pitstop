@@ -17,6 +17,8 @@ namespace Pitstop {
 
 		bool initialize(HWND window);
 
+		void setDeviceConnected(HANDLE device, bool connected);
+
 		// TEMP
 		RawInputJoystick* getJoystick() const;
 

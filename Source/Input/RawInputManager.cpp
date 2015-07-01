@@ -103,6 +103,11 @@ namespace Pitstop {
 		return true;
 	}
 
+	void RawInputManager::setDeviceConnected(HANDLE device, bool connected)
+	{
+		int i = 0;
+	}
+
 	RawInputJoystick* RawInputManager::getJoystick() const
 	{
 		for (RawInputJoystick* joystick : m_Joysticks)
