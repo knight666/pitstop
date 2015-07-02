@@ -5,11 +5,10 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QWidget>
 
-class Ui_JoystickForm;
+#include "Input/RawInputJoystick.h"
+#include "ui_WidgetJoystick.h"
 
 namespace Pitstop {
-
-	class RawInputJoystick;
 
 	class WidgetJoystick
 		: public QWidget
@@ -18,15 +17,13 @@ namespace Pitstop {
 
 	public:
 
-		WidgetJoystick(QWidget* parent = nullptr);
+		WidgetJoystick(RawInputJoystickPtr joystick, QWidget* parent = nullptr);
 		~WidgetJoystick();
-
-		void bind(RawInputJoystick& joystick);
 
 	private:
 
-		Ui_JoystickForm* m_Form;
-		RawInputJoystick* m_Joystick;
+		Ui_JoystickForm m_Form;
+		RawInputJoystickPtr m_Joystick;
 
 	}; // class WidgetJoystick
 
