@@ -19,8 +19,8 @@ namespace Pitstop {
 		: QApplication(argc, argv, flags)
 		, m_RawInput(new RawInputManager())
 		, m_UsbController(new UsbController())
-		, m_VirtualInput(new VirtualInputManager())
-		, m_MainWindow(new MainWindow(*m_RawInput))
+		, m_VirtualInput(new VirtualInputManager(*m_RawInput))
+		, m_MainWindow(new MainWindow())
 	{
 		installNativeEventFilter(this);
 
@@ -46,7 +46,7 @@ namespace Pitstop {
 
 		VirtualInputDevice* device = m_VirtualInput->getDeviceByIndex(0);
 
-		RawInputJoystick* joystick = m_RawInput->getJoystick();
+		RawInputJoystickPtr joystick = m_RawInput->getJoystick();
 		if (joystick != nullptr)
 		{
 			device->setJoystick(*joystick);
@@ -65,46 +65,18 @@ namespace Pitstop {
 
 	bool Application::nativeEventFilter(const QByteArray& eventType, void* message, long* result)
 	{
-		MSG* msg = (MSG*)message;
-
 		if (eventType != "windows_generic_MSG")
 		{
 			return false;
 		}
 
+		MSG* msg = (MSG*)message;
+
 		switch (msg->message)
 		{
 
 		case WM_INPUT:
-			{
-				UINT raw_size = 0;
-				if (::GetRawInputData(
-					(HRAWINPUT)msg->lParam,
-					RID_INPUT,
-					NULL,
-					&raw_size,
-					sizeof(RAWINPUTHEADER)) != (UINT)-1)
-				{
-					QVector<uint8_t> raw_data;
-					raw_data.resize(raw_size);
-					RAWINPUT* raw_input = (RAWINPUT*)&raw_data[0];
-
-					if (::GetRawInputData(
-						(HRAWINPUT)msg->lParam,
-						RID_INPUT,
-						raw_input,
-						&raw_size,
-						sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
-						raw_input->header.dwType == RIM_TYPEHID)
-					{
-						m_RawInput->processInputMessage(*raw_input, raw_input->header.hDevice);
-
-						m_VirtualInput->update(raw_input->header.hDevice);
-
-						m_MainWindow->updateBindings();
-					}
-				}
-			}
+			m_RawInput->processInput(msg->lParam, msg->wParam);
 			return true;
 
 		case WM_INPUT_DEVICE_CHANGE:

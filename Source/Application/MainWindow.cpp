@@ -1,12 +1,11 @@
 #include "Application/MainWindow.h"
 
-#include "Input/RawInputManager.h"
+#include "Input/RawInputJoystick.h"
 
 namespace Pitstop {
 
-	MainWindow::MainWindow(RawInputManager& rawInput)
+	MainWindow::MainWindow()
 		: QMainWindow(nullptr, 0)
-		, m_RawInput(rawInput)
 	{
 		m_Form.setupUi(this);
 	}
@@ -17,17 +16,7 @@ namespace Pitstop {
 
 	void MainWindow::bindJoystick(RawInputJoystick& joystick)
 	{
-		if (joystick.getInputProcessor() == nullptr)
-		{
-			return;
-		}
-
-		m_Form.bindingsList->bind(*joystick.getInputProcessor());
-	}
-
-	void MainWindow::updateBindings()
-	{
-		m_Form.bindingsList->update();
+		m_Form.bindingsList->bind(joystick);
 	}
 
 }; // namespace Pitstop

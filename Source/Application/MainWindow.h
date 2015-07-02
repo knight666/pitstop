@@ -11,15 +11,16 @@ namespace Pitstop {
 
 	class InputProcessorBase;
 	class RawInputJoystick;
-	class RawInputManager;
 
 	class MainWindow
 		: public QMainWindow
 	{
 
+		Q_OBJECT
+
 	public:
 
-		MainWindow(RawInputManager& rawInput);
+		MainWindow();
 		~MainWindow();
 
 		void bindJoystick(RawInputJoystick& joystick);
@@ -27,7 +28,6 @@ namespace Pitstop {
 
 	private:
 
-		RawInputManager& m_RawInput;
 		Ui_MainWindow m_Form;
 
 	}; // class MainWindow
