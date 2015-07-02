@@ -118,6 +118,49 @@ namespace Pitstop {
 		return true;
 	}
 
+	void RawInputManager::processInput(LPARAM lParam, WPARAM wParam)
+	{
+		// Get raw input message
+
+		UINT raw_size = 0;
+		if (::GetRawInputData(
+			(HRAWINPUT)lParam,
+			RID_INPUT,
+			NULL,
+			&raw_size,
+			sizeof(RAWINPUTHEADER)) == (UINT)-1)
+		{
+			return;
+		}
+
+		QVector<uint8_t> raw_data;
+		raw_data.resize(raw_size);
+		RAWINPUT* raw_input = (RAWINPUT*)&raw_data[0];
+
+		// Check if input was for a Human Interface device
+
+		if (::GetRawInputData(
+			(HRAWINPUT)lParam,
+			RID_INPUT,
+			raw_input,
+			&raw_size,
+			sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
+			raw_input->header.dwType != RIM_TYPEHID)
+		{
+			return;
+		}
+
+		// Update joystick
+
+		RawInputJoystick* joystick = getJoystickByHandle(raw_input->header.hDevice);
+		if (joystick != nullptr)
+		{
+			joystick->process(*raw_input);
+		}
+
+		emit signalJoystickInput(joystick);
+	}
+
 	void RawInputManager::processConnectionChanged(LPARAM lParam, WPARAM wParam)
 	{
 		// Check if initialized
@@ -244,6 +287,17 @@ namespace Pitstop {
 			{
 				return joystick;
 			}
+		}
+
+		return nullptr;
+	}
+
+	RawInputJoystick* RawInputManager::getJoystickByHandle(HANDLE device) const
+	{
+		QHash<HANDLE, RawInputJoystick*>::const_iterator found = m_Joysticks.find(device);
+		if (found != m_Joysticks.end())
+		{
+			return found.value();
 		}
 
 		return nullptr;

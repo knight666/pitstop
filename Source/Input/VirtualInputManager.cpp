@@ -48,4 +48,20 @@ namespace Pitstop {
 		}
 	}
 
+	void VirtualInputManager::slotJoystickInput(RawInputJoystick* joystick)
+	{
+		if (joystick == nullptr)
+		{
+			return;
+		}
+
+		for (VirtualInputDevice* device : m_Devices)
+		{
+			if (device->getJoystickHandle() == joystick->getHandle())
+			{
+				device->update();
+			}
+		}
+	}
+
 }; // namespace Pitstop

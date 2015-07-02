@@ -26,6 +26,14 @@ namespace Pitstop {
 
 		m_RawInput->registerInputProcessor<InputProcessorDualShock4>();
 		m_RawInput->registerInputProcessor<InputProcessorFFBWheel>();
+
+		connect(
+			m_RawInput, SIGNAL(signalJoystickInput(RawInputJoystick*)),
+			m_VirtualInput, SLOT(slotJoystickInput(RawInputJoystick*)));
+
+		connect(
+			m_RawInput, SIGNAL(signalJoystickInput(RawInputJoystick*)),
+			m_MainWindow, SLOT(slotJoystickInput(RawInputJoystick*)));
 	}
 
 	Application::~Application()
@@ -76,35 +84,7 @@ namespace Pitstop {
 		{
 
 		case WM_INPUT:
-			{
-				UINT raw_size = 0;
-				if (::GetRawInputData(
-					(HRAWINPUT)msg->lParam,
-					RID_INPUT,
-					NULL,
-					&raw_size,
-					sizeof(RAWINPUTHEADER)) != (UINT)-1)
-				{
-					QVector<uint8_t> raw_data;
-					raw_data.resize(raw_size);
-					RAWINPUT* raw_input = (RAWINPUT*)&raw_data[0];
-
-					if (::GetRawInputData(
-						(HRAWINPUT)msg->lParam,
-						RID_INPUT,
-						raw_input,
-						&raw_size,
-						sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
-						raw_input->header.dwType == RIM_TYPEHID)
-					{
-						m_RawInput->processInputMessage(*raw_input, raw_input->header.hDevice);
-
-						m_VirtualInput->update(raw_input->header.hDevice);
-
-						m_MainWindow->updateBindings();
-					}
-				}
-			}
+			m_RawInput->processInput(msg->lParam, msg->wParam);
 			return true;
 
 		case WM_INPUT_DEVICE_CHANGE:

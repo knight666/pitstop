@@ -8,7 +8,10 @@ namespace Pitstop {
 	class RawInputJoystick;
 
 	class RawInputManager
+		: public QObject
 	{
+
+		Q_OBJECT
 
 	public:
 
@@ -17,10 +20,12 @@ namespace Pitstop {
 
 		bool initialize(HWND window);
 
+		void processInput(LPARAM lParam, WPARAM wParam);
 		void processConnectionChanged(LPARAM lParam, WPARAM wParam);
 
 		// TEMP
 		RawInputJoystick* getJoystick() const;
+		RawInputJoystick* getJoystickByHandle(HANDLE device) const;
 
 		InputProcessorBase* createInputProcessor(RawInputJoystick& joystick);
 
@@ -34,6 +39,10 @@ namespace Pitstop {
 		}
 
 		void processInputMessage(const RAWINPUT& message, HANDLE device);
+
+	signals:
+
+		void signalJoystickInput(RawInputJoystick* joystick);
 
 	private:
 
