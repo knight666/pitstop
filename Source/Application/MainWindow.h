@@ -17,6 +17,8 @@ namespace Pitstop {
 		: public QMainWindow
 	{
 
+		Q_OBJECT
+
 	public:
 
 		MainWindow(RawInputManager& rawInput);
@@ -24,6 +26,10 @@ namespace Pitstop {
 
 		void bindJoystick(RawInputJoystick& joystick);
 		void updateBindings();
+
+	public slots:
+
+		void slotJoystickInput(RawInputJoystick* joystick);
 
 	private:
 

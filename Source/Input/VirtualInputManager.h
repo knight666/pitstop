@@ -10,7 +10,10 @@ namespace Pitstop {
 	class UsbDevice;
 
 	class VirtualInputManager
+		: public QObject
 	{
+
+		Q_OBJECT
 
 	public:
 
@@ -21,6 +24,10 @@ namespace Pitstop {
 		VirtualInputDevice* getDeviceByHandle(HANDLE handle) const;
 
 		void update(HANDLE handle);
+
+	public slots:
+
+		void slotJoystickInput(RawInputJoystick* joystick);
 
 	private:
 

@@ -30,4 +30,9 @@ namespace Pitstop {
 		m_Form.bindingsList->update();
 	}
 
+	void MainWindow::slotJoystickInput(RawInputJoystick* joystick)
+	{
+
+	}
+
 }; // namespace Pitstop
