@@ -26,10 +26,6 @@ namespace Pitstop {
 
 		m_RawInput->registerInputProcessor<InputProcessorDualShock4>();
 		m_RawInput->registerInputProcessor<InputProcessorFFBWheel>();
-
-		connect(
-			m_RawInput, SIGNAL(signalJoystickInput(RawInputJoystick*)),
-			m_MainWindow, SLOT(slotJoystickInput(RawInputJoystick*)));
 	}
 
 	Application::~Application()
