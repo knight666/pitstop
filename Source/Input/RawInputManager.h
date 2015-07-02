@@ -46,12 +46,15 @@ namespace Pitstop {
 
 	private:
 
+		RawInputJoystickPtr createJoystick(HANDLE device);
 		void registerInputProcessor(uint16_t vendor, uint16_t product, InputProcessorBase::FactoryMethod method);
 
 	private:
 
 		bool m_Initialized;
-		QHash<HANDLE, RawInputJoystickPtr> m_Joysticks;
+		HWND m_Window;
+		QHash<HANDLE, RawInputJoystickPtr> m_JoysticksByHandle;
+		QHash<QString, RawInputJoystickPtr> m_JoysticksByGuid;
 		QHash<uint32_t, std::function<InputProcessorBase::FactoryMethod>> m_InputProcessorFactories;
 
 	}; // class RawInputManager
