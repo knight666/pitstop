@@ -12,7 +12,7 @@ namespace Pitstop {
 
 	RawInputManager::~RawInputManager()
 	{
-		qDeleteAll(m_Joysticks);
+		m_Joysticks.clear();
 	}
 
 	bool RawInputManager::initialize(HWND window)
@@ -76,14 +76,21 @@ namespace Pitstop {
 				continue;
 			}
 
-			RawInputJoystick* joystick = new RawInputJoystick(*this, device_info.hDevice, info, window, device_name);
+			RawInputJoystickPtr joystick(
+				new RawInputJoystick(
+					*this,
+					device_info.hDevice,
+					info,
+					window,
+					device_name));
+
 			if (joystick->setup())
 			{
 				m_Joysticks.insert(joystick->getHandle(), joystick);
 			}
 			else
 			{
-				delete joystick;
+				joystick.clear();
 			}
 		}
 
@@ -94,7 +101,7 @@ namespace Pitstop {
 			// Register raw input devices
 
 			QVector<RAWINPUTDEVICE> device_list;
-			for (RawInputJoystick* joystick : m_Joysticks)
+			for (RawInputJoystickPtr joystick : m_Joysticks)
 			{
 				if (joystick->getType() != RawInputJoystick::Type::XInput)
 				{
@@ -152,7 +159,7 @@ namespace Pitstop {
 
 		// Update joystick
 
-		RawInputJoystick* joystick = getJoystickByHandle(raw_input->header.hDevice);
+		RawInputJoystickPtr joystick = getJoystickByHandle(raw_input->header.hDevice);
 		if (joystick != nullptr)
 		{
 			joystick->process(*raw_input);
@@ -233,9 +240,9 @@ namespace Pitstop {
 
 			// Update joystick
 
-			RawInputJoystick* joystick = nullptr;
+			RawInputJoystickPtr joystick;
 
-			for (QHash<HANDLE, RawInputJoystick*>::iterator it = m_Joysticks.begin(); it != m_Joysticks.end(); ++it)
+			for (QHash<HANDLE, RawInputJoystickPtr>::iterator it = m_Joysticks.begin(); it != m_Joysticks.end(); ++it)
 			{
 				if (it.value()->getGuid() == guid &&
 					it.value()->getType() != RawInputJoystick::Type::XInput)
@@ -257,9 +264,9 @@ namespace Pitstop {
 		{
 			// Update joystick
 
-			RawInputJoystick* joystick = nullptr;
+			RawInputJoystickPtr joystick;
 
-			for (QHash<HANDLE, RawInputJoystick*>::iterator it = m_Joysticks.begin(); it != m_Joysticks.end(); ++it)
+			for (QHash<HANDLE, RawInputJoystickPtr>::iterator it = m_Joysticks.begin(); it != m_Joysticks.end(); ++it)
 			{
 				if (it.value()->getHandle() == device)
 				{
@@ -276,9 +283,9 @@ namespace Pitstop {
 		}
 	}
 
-	RawInputJoystick* RawInputManager::getJoystick() const
+	RawInputJoystickPtr RawInputManager::getJoystick() const
 	{
-		for (RawInputJoystick* joystick : m_Joysticks)
+		for (const RawInputJoystickPtr& joystick : m_Joysticks)
 		{
 			if (joystick->getType() != RawInputJoystick::Type::XInput)
 			{
@@ -286,18 +293,18 @@ namespace Pitstop {
 			}
 		}
 
-		return nullptr;
+		return RawInputJoystickPtr();
 	}
 
-	RawInputJoystick* RawInputManager::getJoystickByHandle(HANDLE device) const
+	RawInputJoystickPtr RawInputManager::getJoystickByHandle(HANDLE device) const
 	{
-		QHash<HANDLE, RawInputJoystick*>::const_iterator found = m_Joysticks.find(device);
+		QHash<HANDLE, RawInputJoystickPtr>::const_iterator found = m_Joysticks.find(device);
 		if (found != m_Joysticks.end())
 		{
 			return found.value();
 		}
 
-		return nullptr;
+		return RawInputJoystickPtr();
 	}
 
 	InputProcessorBase* RawInputManager::createInputProcessor(RawInputJoystick& joystick)
@@ -321,10 +328,10 @@ namespace Pitstop {
 
 	void RawInputManager::processInputMessage(const RAWINPUT& message, HANDLE device)
 	{
-		QHash<HANDLE, RawInputJoystick*>::iterator found = m_Joysticks.find(device);
+		QHash<HANDLE, RawInputJoystickPtr>::iterator found = m_Joysticks.find(device);
 		if (found != m_Joysticks.end())
 		{
-			RawInputJoystick* joystick = found.value();
+			RawInputJoystickPtr& joystick = found.value();
 
 			joystick->process(message);
 		}

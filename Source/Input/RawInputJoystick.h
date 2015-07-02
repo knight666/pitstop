@@ -81,4 +81,6 @@ namespace Pitstop {
 
 	}; // class RawInputJoystick
 
+	typedef QSharedPointer<RawInputJoystick> RawInputJoystickPtr;
+
 }; // namespace Pitstop
