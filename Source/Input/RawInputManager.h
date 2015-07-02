@@ -24,8 +24,8 @@ namespace Pitstop {
 		void processConnectionChanged(LPARAM lParam, WPARAM wParam);
 
 		// TEMP
-		RawInputJoystick* getJoystick() const;
-		RawInputJoystick* getJoystickByHandle(HANDLE device) const;
+		RawInputJoystickPtr getJoystick() const;
+		RawInputJoystickPtr getJoystickByHandle(HANDLE device) const;
 
 		InputProcessorBase* createInputProcessor(RawInputJoystick& joystick);
 
@@ -42,7 +42,7 @@ namespace Pitstop {
 
 	signals:
 
-		void signalJoystickInput(RawInputJoystick* joystick);
+		void signalJoystickInput(RawInputJoystickPtr joystick);
 
 	private:
 
@@ -51,7 +51,7 @@ namespace Pitstop {
 	private:
 
 		bool m_Initialized;
-		QHash<HANDLE, RawInputJoystick*> m_Joysticks;
+		QHash<HANDLE, RawInputJoystickPtr> m_Joysticks;
 		QHash<uint32_t, std::function<InputProcessorBase::FactoryMethod>> m_InputProcessorFactories;
 
 	}; // class RawInputManager

@@ -46,7 +46,7 @@ namespace Pitstop {
 
 		VirtualInputDevice* device = m_VirtualInput->getDeviceByIndex(0);
 
-		RawInputJoystick* joystick = m_RawInput->getJoystick();
+		RawInputJoystickPtr joystick = m_RawInput->getJoystick();
 		if (joystick != nullptr)
 		{
 			device->setJoystick(*joystick);
