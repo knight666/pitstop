@@ -19,17 +19,13 @@ namespace Pitstop {
 		: QApplication(argc, argv, flags)
 		, m_RawInput(new RawInputManager())
 		, m_UsbController(new UsbController())
-		, m_VirtualInput(new VirtualInputManager())
+		, m_VirtualInput(new VirtualInputManager(*m_RawInput))
 		, m_MainWindow(new MainWindow(*m_RawInput))
 	{
 		installNativeEventFilter(this);
 
 		m_RawInput->registerInputProcessor<InputProcessorDualShock4>();
 		m_RawInput->registerInputProcessor<InputProcessorFFBWheel>();
-
-		connect(
-			m_RawInput, SIGNAL(signalJoystickInput(RawInputJoystick*)),
-			m_VirtualInput, SLOT(slotJoystickInput(RawInputJoystick*)));
 
 		connect(
 			m_RawInput, SIGNAL(signalJoystickInput(RawInputJoystick*)),
@@ -73,12 +69,12 @@ namespace Pitstop {
 
 	bool Application::nativeEventFilter(const QByteArray& eventType, void* message, long* result)
 	{
-		MSG* msg = (MSG*)message;
-
 		if (eventType != "windows_generic_MSG")
 		{
 			return false;
 		}
+
+		MSG* msg = (MSG*)message;
 
 		switch (msg->message)
 		{
