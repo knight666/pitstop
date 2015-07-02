@@ -65,6 +65,27 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputManager.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_RawInputJoystick.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_RawInputJoystick.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetJoystick.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetJoystick.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetJoystick.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -102,9 +123,6 @@
     <ClInclude Include="Source\Application\Application.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\RawInputJoystick.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h">
       <Filter>GeneratedFiles</Filter>
     </ClInclude>
@@ -126,11 +144,14 @@
     <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h">
       <Filter>Input\Process</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\VirtualInputDevice.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Input\Process\InputProcessorFFBWheel.h">
       <Filter>Input\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_WidgetJoystick.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_BindingsList.h">
+      <Filter>GeneratedFiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +172,18 @@
     </CustomBuild>
     <CustomBuild Include="Source\Input\VirtualInputManager.h">
       <Filter>Input</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\RawInputJoystick.h">
+      <Filter>Input</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\VirtualInputDevice.h">
+      <Filter>Input</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.ui">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.h">
+      <Filter>Application\Widgets</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
