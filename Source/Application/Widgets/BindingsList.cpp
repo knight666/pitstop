@@ -60,38 +60,6 @@ namespace Pitstop {
 		update();
 	}
 
-	void BindingsList::update()
-	{
-		if (m_Joystick == nullptr ||
-			m_Joystick->getInputProcessor() == nullptr)
-		{
-			return;
-		}
-
-		const QHash<QString, InputProcessorBase::InputBinding>& bindings = m_Joystick->getInputProcessor()->getBindings();
-		for (QHash<QString, InputProcessorBase::InputBinding>::const_iterator it = bindings.begin(); it != bindings.end(); ++it)
-		{
-			const InputProcessorBase::InputBinding& binding = it.value();
-
-			QHash<QString, QLabel*>::iterator found = m_Labels.find(it.key());
-			if (found != m_Labels.end())
-			{
-				QString text = QString("%1: %2").arg(it.key());
-				if (binding.type == InputProcessorBase::InputType::Digital)
-				{
-					text = text.arg(binding.digitalValue);
-				}
-				else
-				{
-					text = text.arg(binding.analogValue);
-				}
-				found.value()->setText(text);
-			}
-		}
-
-		layout()->update();
-	}
-
 	void BindingsList::slotJoystickInput(RawInputJoystick* joystick, bool processed)
 	{
 		if (m_Joystick != joystick ||

@@ -29,8 +29,6 @@ namespace Pitstop {
 
 		void setUsbDevice(UsbDevice& usb);
 
-		void update();
-
 	public slots:
 
 		void slotJoystickInput(RawInputJoystick* joystick, bool processed);
