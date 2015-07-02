@@ -20,7 +20,7 @@ namespace Pitstop {
 		, m_RawInput(new RawInputManager())
 		, m_UsbController(new UsbController())
 		, m_VirtualInput(new VirtualInputManager(*m_RawInput))
-		, m_MainWindow(new MainWindow())
+		, m_MainWindow(new MainWindow(*m_RawInput))
 	{
 		installNativeEventFilter(this);
 
@@ -43,6 +43,8 @@ namespace Pitstop {
 		{
 			return false;
 		}
+
+		m_MainWindow->initialize();
 
 		VirtualInputDevice* device = m_VirtualInput->getDeviceByIndex(0);
 
