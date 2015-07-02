@@ -20,7 +20,7 @@ namespace Pitstop {
 		, m_RawInput(new RawInputManager())
 		, m_UsbController(new UsbController())
 		, m_VirtualInput(new VirtualInputManager(*m_RawInput))
-		, m_MainWindow(new MainWindow(*m_RawInput))
+		, m_MainWindow(new MainWindow())
 	{
 		installNativeEventFilter(this);
 

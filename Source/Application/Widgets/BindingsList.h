@@ -26,7 +26,6 @@ namespace Pitstop {
 		~BindingsList();
 
 		void bind(RawInputJoystick& joystick);
-		void update();
 
 	public slots:
 
