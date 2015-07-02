@@ -12,7 +12,7 @@ namespace Ui
 
 namespace Pitstop {
 
-	class InputProcessorBase;
+	class RawInputJoystick;
 
 	class BindingsList
 		: public QWidget
@@ -24,13 +24,13 @@ namespace Pitstop {
 		BindingsList(QWidget* parent = nullptr);
 		~BindingsList();
 
-		void bind(InputProcessorBase& processor);
+		void bind(RawInputJoystick& joystick);
 		void update();
 
 	private:
 
 		Ui::BindingsList* m_Form;
-		InputProcessorBase* m_Processor;
+		RawInputJoystick* m_Joystick;
 		QHash<QString, QLabel*> m_Labels;
 
 	}; // class BindingsList

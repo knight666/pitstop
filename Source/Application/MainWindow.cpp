@@ -9,20 +9,21 @@ namespace Pitstop {
 		, m_RawInput(rawInput)
 	{
 		m_Form.setupUi(this);
+
+		connect(
+			&m_RawInput, SIGNAL(signalJoystickInput(RawInputJoystick*)),
+			this, SLOT(slotJoystickInput(RawInputJoystick*)));
 	}
 
 	MainWindow::~MainWindow()
 	{
+		disconnect(
+			this, SLOT(slotJoystickInput(RawInputJoystick*)));
 	}
 
 	void MainWindow::bindJoystick(RawInputJoystick& joystick)
 	{
-		if (joystick.getInputProcessor() == nullptr)
-		{
-			return;
-		}
-
-		m_Form.bindingsList->bind(*joystick.getInputProcessor());
+		m_Form.bindingsList->bind(joystick);
 	}
 
 	void MainWindow::updateBindings()
