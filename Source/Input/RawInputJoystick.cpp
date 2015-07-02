@@ -120,7 +120,16 @@ namespace Pitstop {
 
 	bool RawInputJoystick::process(const RAWINPUT& message)
 	{
-		return (m_InputProcessor != nullptr) ? m_InputProcessor->process(message) : false;
+		bool result = false;
+
+		if (m_InputProcessor != nullptr)
+		{
+			result = m_InputProcessor->process(message);
+		}
+
+		emit signalJoystickInput(this, result);
+
+		return result;
 	}
 
 	bool RawInputJoystick::retrieveFromRegistry(QString& target, const QString& path, const QString& keyName)

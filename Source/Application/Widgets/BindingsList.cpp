@@ -17,6 +17,9 @@ namespace Pitstop {
 
 	BindingsList::~BindingsList()
 	{
+		disconnect(
+			this, SLOT(slotJoystickInput(RawInputJoystick*, bool)));
+
 		delete m_Form;
 	}
 
@@ -24,13 +27,17 @@ namespace Pitstop {
 	{
 		QVBoxLayout* bindings_layout = qobject_cast<QVBoxLayout*>(layout());
 
+		qDeleteAll(m_Labels);
+
+		connect(
+			&joystick, SIGNAL(signalJoystickInput(RawInputJoystick*, bool)),
+			this, SLOT(slotJoystickInput(RawInputJoystick*, bool)));
+
 		m_Joystick = &joystick;
 
 		InputProcessorBase* processor = m_Joystick->getInputProcessor();
 		if (processor == nullptr)
 		{
-			qDeleteAll(m_Labels);
-
 			return;
 		}
 
@@ -62,6 +69,44 @@ namespace Pitstop {
 		}
 
 		const QHash<QString, InputProcessorBase::InputBinding>& bindings = m_Joystick->getInputProcessor()->getBindings();
+		for (QHash<QString, InputProcessorBase::InputBinding>::const_iterator it = bindings.begin(); it != bindings.end(); ++it)
+		{
+			const InputProcessorBase::InputBinding& binding = it.value();
+
+			QHash<QString, QLabel*>::iterator found = m_Labels.find(it.key());
+			if (found != m_Labels.end())
+			{
+				QString text = QString("%1: %2").arg(it.key());
+				if (binding.type == InputProcessorBase::InputType::Digital)
+				{
+					text = text.arg(binding.digitalValue);
+				}
+				else
+				{
+					text = text.arg(binding.analogValue);
+				}
+				found.value()->setText(text);
+			}
+		}
+
+		layout()->update();
+	}
+
+	void BindingsList::slotJoystickInput(RawInputJoystick* joystick, bool processed)
+	{
+		if (m_Joystick != joystick ||
+			joystick == nullptr)
+		{
+			return;
+		}
+
+		InputProcessorBase* processor = m_Joystick->getInputProcessor();
+		if (processor == nullptr)
+		{
+			return;
+		}
+
+		const QHash<QString, InputProcessorBase::InputBinding>& bindings = processor->getBindings();
 		for (QHash<QString, InputProcessorBase::InputBinding>::const_iterator it = bindings.begin(); it != bindings.end(); ++it)
 		{
 			const InputProcessorBase::InputBinding& binding = it.value();

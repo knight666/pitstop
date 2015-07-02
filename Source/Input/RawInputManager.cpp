@@ -157,8 +157,6 @@ namespace Pitstop {
 		{
 			joystick->process(*raw_input);
 		}
-
-		emit signalJoystickInput(joystick);
 	}
 
 	void RawInputManager::processConnectionChanged(LPARAM lParam, WPARAM wParam)
@@ -244,7 +242,6 @@ namespace Pitstop {
 				{
 					joystick = it.value();
 
-					m_Joysticks.erase(it);
 					m_Joysticks.insert(device, joystick);
 
 					break;
