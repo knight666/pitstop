@@ -7,23 +7,26 @@
 namespace Pitstop {
 
 	class RawInputJoystick;
+	class RawInputManager;
 	class UsbDevice;
 
 	class VirtualInputManager
+		: public QObject
 	{
+
+		Q_OBJECT
 
 	public:
 
-		VirtualInputManager();
+		VirtualInputManager(RawInputManager& rawInput);
 		~VirtualInputManager();
 
 		VirtualInputDevice* getDeviceByIndex(uint8_t index) const;
 		VirtualInputDevice* getDeviceByHandle(HANDLE handle) const;
 
-		void update(HANDLE handle);
-
 	private:
 
+		RawInputManager& m_RawInput;
 		QVector<VirtualInputDevice*> m_Devices;
 		QHash<HANDLE, VirtualInputDevice*> m_RawInputMapping;
 

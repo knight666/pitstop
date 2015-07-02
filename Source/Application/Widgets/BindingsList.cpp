@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QLabel>
 
-#include "Input/RawInputManager.h"
+#include "Input/Process/InputProcessorBase.h"
 #include "ui_BindingsList.h"
 
 namespace Pitstop {
@@ -10,26 +10,43 @@ namespace Pitstop {
 	BindingsList::BindingsList(QWidget* parent)
 		: QWidget(parent)
 		, m_Form(new Ui::BindingsList)
-		, m_Processor(nullptr)
+		, m_Joystick(nullptr)
 	{
 		m_Form->setupUi(this);
 	}
 
 	BindingsList::~BindingsList()
 	{
+		disconnect(
+			this, SLOT(slotJoystickInput(RawInputJoystick*, bool)));
+
 		delete m_Form;
 	}
 
-	void BindingsList::bind(InputProcessorBase& processor)
+	void BindingsList::bind(RawInputJoystick& joystick)
 	{
-		QList<InputProcessorBase::InputBinding> bindings = processor.getBindings().values();
+		QVBoxLayout* bindings_layout = qobject_cast<QVBoxLayout*>(layout());
+
+		qDeleteAll(m_Labels);
+
+		connect(
+			&joystick, SIGNAL(signalJoystickInput(RawInputJoystick*, bool)),
+			this, SLOT(slotJoystickInput(RawInputJoystick*, bool)));
+
+		m_Joystick = &joystick;
+
+		InputProcessorBase* processor = m_Joystick->getInputProcessor();
+		if (processor == nullptr)
+		{
+			return;
+		}
+
+		QList<InputProcessorBase::InputBinding> bindings = processor->getBindings().values();
 
 		qSort(bindings.begin(), bindings.end(),
 			[] (const InputProcessorBase::InputBinding& left, const InputProcessorBase::InputBinding& right) {
 				return left.index < right.index;
 		});
-
-		QVBoxLayout* bindings_layout = qobject_cast<QVBoxLayout*>(layout());
 
 		for (InputProcessorBase::InputBinding& binding : bindings)
 		{
@@ -40,19 +57,24 @@ namespace Pitstop {
 			m_Labels[binding.name] = label;
 		}
 
-		m_Processor = &processor;
-
 		update();
 	}
 
-	void BindingsList::update()
+	void BindingsList::slotJoystickInput(RawInputJoystick* joystick, bool processed)
 	{
-		if (m_Processor == nullptr)
+		if (m_Joystick != joystick ||
+			joystick == nullptr)
 		{
 			return;
 		}
 
-		const QHash<QString, InputProcessorBase::InputBinding>& bindings = m_Processor->getBindings();
+		InputProcessorBase* processor = m_Joystick->getInputProcessor();
+		if (processor == nullptr)
+		{
+			return;
+		}
+
+		const QHash<QString, InputProcessorBase::InputBinding>& bindings = processor->getBindings();
 		for (QHash<QString, InputProcessorBase::InputBinding>::const_iterator it = bindings.begin(); it != bindings.end(); ++it)
 		{
 			const InputProcessorBase::InputBinding& binding = it.value();

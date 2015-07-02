@@ -47,6 +47,24 @@
     <ClCompile Include="Source\Input\Process\InputProcessorFFBWheel.cpp">
       <Filter>Input\Process</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_RawInputManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_RawInputManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MainWindow.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MainWindow.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -84,17 +102,11 @@
     <ClInclude Include="Source\Application\Application.h">
       <Filter>Application</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\RawInputManager.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Input\RawInputJoystick.h">
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h">
       <Filter>GeneratedFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Application\MainWindow.h">
-      <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\XInputDevice.h">
       <Filter>Input</Filter>
@@ -117,9 +129,6 @@
     <ClInclude Include="Source\Input\VirtualInputDevice.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\VirtualInputManager.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Input\Process\InputProcessorFFBWheel.h">
       <Filter>Input\Process</Filter>
     </ClInclude>
@@ -133,6 +142,15 @@
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\BindingsList.ui">
       <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\RawInputManager.h">
+      <Filter>Input</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\MainWindow.h">
+      <Filter>Application</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\VirtualInputManager.h">
+      <Filter>Input</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

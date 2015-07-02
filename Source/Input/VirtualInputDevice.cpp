@@ -17,6 +17,8 @@ namespace Pitstop {
 
 	VirtualInputDevice::~VirtualInputDevice()
 	{
+		disconnect(
+			this, SLOT(slotJoystickInput(RawInputJoystick*, bool)));
 	}
 
 	HANDLE VirtualInputDevice::getJoystickHandle() const
@@ -26,6 +28,10 @@ namespace Pitstop {
 
 	void VirtualInputDevice::setJoystick(RawInputJoystick& joystick)
 	{
+		connect(
+			&joystick, SIGNAL(signalJoystickInput(RawInputJoystick*, bool)),
+			this, SLOT(slotJoystickInput(RawInputJoystick*, bool)));
+
 		m_Joystick = &joystick;
 	}
 
@@ -34,12 +40,17 @@ namespace Pitstop {
 		m_Usb = &usb;
 	}
 
-	void VirtualInputDevice::update()
+	void VirtualInputDevice::slotJoystickInput(RawInputJoystick* joystick, bool processed)
 	{
-		if (m_Joystick == nullptr)
+		if (joystick != m_Joystick ||
+			joystick == nullptr)
 		{
 			return;
 		}
+
+		// Map input to XInput
+
+		XInputState state = { 0 };
 
 		InputProcessorBase* processor = m_Joystick->getInputProcessor();
 		if (processor == nullptr)
@@ -47,10 +58,14 @@ namespace Pitstop {
 			return;
 		}
 
-		XInputState state = { 0 };
+		if (!mapToXinput(state, processor->getBindings()))
+		{
+			return;
+		}
 
-		if (!mapToXinput(state, processor->getBindings()) ||
-			m_Usb == nullptr)
+		// Send to USB device
+
+		if (m_Usb == nullptr)
 		{
 			return;
 		}

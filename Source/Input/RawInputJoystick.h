@@ -8,7 +8,10 @@ namespace Pitstop {
 	class RawInputManager;
 
 	class RawInputJoystick
+		: public QObject
 	{
+
+		Q_OBJECT
 
 	public:
 
@@ -50,6 +53,10 @@ namespace Pitstop {
 
 		bool process(const RAWINPUT& message);
 
+	signals:
+
+		void signalJoystickInput(RawInputJoystick* joystick, bool processed);
+
 	private:
 
 		bool retrieveFromRegistry(QString& target, const QString& path, const QString& keyName);
@@ -73,5 +80,7 @@ namespace Pitstop {
 		InputProcessorBase* m_InputProcessor;
 
 	}; // class RawInputJoystick
+
+	typedef QSharedPointer<RawInputJoystick> RawInputJoystickPtr;
 
 }; // namespace Pitstop

@@ -1,12 +1,13 @@
 #include "Input/VirtualInputManager.h"
 
-#include "Input/RawInputJoystick.h"
+#include "Input/RawInputManager.h"
 
 #define MAX_DEVICES 4
 
 namespace Pitstop {
 
-	VirtualInputManager::VirtualInputManager()
+	VirtualInputManager::VirtualInputManager(RawInputManager& rawInput)
+		: m_RawInput(rawInput)
 	{
 		for (uint8_t i = 0; i < MAX_DEVICES; ++i)
 		{
@@ -35,17 +36,6 @@ namespace Pitstop {
 		}
 
 		return nullptr;
-	}
-
-	void VirtualInputManager::update(HANDLE handle)
-	{
-		for (VirtualInputDevice* device : m_Devices)
-		{
-			if (device->getJoystickHandle() == handle)
-			{
-				device->update();
-			}
-		}
 	}
 
 }; // namespace Pitstop

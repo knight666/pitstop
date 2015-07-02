@@ -50,6 +50,7 @@
 #include <QtCore/QRegExp>
 #include <QtCore/QSet>
 #include <QtCore/QSettings>
+#include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
