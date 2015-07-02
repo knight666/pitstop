@@ -8,7 +8,10 @@ namespace Pitstop {
 	class RawInputManager;
 
 	class RawInputJoystick
+		: public QObject
 	{
+
+		Q_OBJECT
 
 	public:
 
@@ -49,6 +52,10 @@ namespace Pitstop {
 		bool setup();
 
 		bool process(const RAWINPUT& message);
+
+	signals:
+
+		void signalJoystickInput(RawInputJoystick* joystick, bool processed);
 
 	private:
 

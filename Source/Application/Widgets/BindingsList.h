@@ -12,6 +12,7 @@ namespace Ui
 
 namespace Pitstop {
 
+	class RawInputManager;
 	class RawInputJoystick;
 
 	class BindingsList
@@ -26,6 +27,10 @@ namespace Pitstop {
 
 		void bind(RawInputJoystick& joystick);
 		void update();
+
+	public slots:
+
+		void slotJoystickInput(RawInputJoystick* joystick, bool processed);
 
 	private:
 

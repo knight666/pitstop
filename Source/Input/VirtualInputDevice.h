@@ -11,7 +11,10 @@ namespace Pitstop {
 	struct XInputState;
 
 	class VirtualInputDevice
+		: public QObject
 	{
+
+		Q_OBJECT
 
 		friend class VirtualInputManager;
 
@@ -27,6 +30,10 @@ namespace Pitstop {
 		void setUsbDevice(UsbDevice& usb);
 
 		void update();
+
+	public slots:
+
+		void slotJoystickInput(RawInputJoystick* joystick, bool processed);
 
 	private:
 

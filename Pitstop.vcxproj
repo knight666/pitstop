@@ -70,10 +70,22 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MainWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_RawInputJoystick.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_RawInputJoystick.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_RawInputManager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_RawInputManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputDevice.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputDevice.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputManager.cpp">
@@ -134,7 +146,12 @@
     <ClInclude Include="Source\Input\Process\InputProcessorFFBWheel.h" />
     <ClInclude Include="Source\Input\Usb\UsbController.h" />
     <ClInclude Include="Source\Input\Usb\UsbDevice.h" />
-    <ClInclude Include="Source\Input\RawInputJoystick.h" />
+    <CustomBuild Include="Source\Input\RawInputJoystick.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
     <CustomBuild Include="Source\Input\RawInputManager.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -147,7 +164,12 @@
       <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
-    <ClInclude Include="Source\Input\VirtualInputDevice.h" />
+    <CustomBuild Include="Source\Input\VirtualInputDevice.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
     <ClInclude Include="Source\Input\XInputDevice.h" />
     <ClInclude Include="Source\Input\XInputState.h" />
   </ItemGroup>

@@ -24,10 +24,6 @@ namespace Pitstop {
 		VirtualInputDevice* getDeviceByIndex(uint8_t index) const;
 		VirtualInputDevice* getDeviceByHandle(HANDLE handle) const;
 
-	public slots:
-
-		void slotJoystickInput(RawInputJoystick* joystick);
-
 	private:
 
 		RawInputManager& m_RawInput;
