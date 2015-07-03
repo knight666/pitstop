@@ -29,4 +29,6 @@ namespace Pitstop {
 
 	}; // class UsbDevice
 
+	typedef QSharedPointer<UsbDevice> UsbDevicePtr;
+
 }; // namespace Pitstop

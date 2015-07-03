@@ -51,12 +51,12 @@ namespace Pitstop {
 		RawInputJoystickPtr joystick = m_RawInput->getJoystick();
 		if (joystick != nullptr)
 		{
-			device->setJoystick(*joystick);
+			device->setJoystick(joystick);
 
-			UsbDevice* usb = m_UsbController->getDeviceByIndex(0);
+			UsbDevicePtr usb = m_UsbController->getDeviceByIndex(0);
 			usb->setPluggedIn(true);
 
-			device->setUsbDevice(*usb);
+			device->setUsbDevice(usb);
 
 			m_MainWindow->bindJoystick(*joystick);
 		}
