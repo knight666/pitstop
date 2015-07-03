@@ -12,6 +12,7 @@
 #include "Input/Usb/UsbController.h"
 #include "Input/RawInputManager.h"
 #include "Input/VirtualInputManager.h"
+#include "Logging/SinkFile.h"
 
 namespace Pitstop {
 
@@ -22,6 +23,10 @@ namespace Pitstop {
 		, m_VirtualInput(new VirtualInputManager(*m_RawInput))
 		, m_MainWindow(new MainWindow())
 	{
+		Logging::Logger::get().addSink(Logging::SinkPtr(new Logging::SinkFile(g_ApplicationDir.absoluteFilePath("Pitstop.log"))));
+
+		PS_LOG_INFO("Application") << "Hello!";
+
 		installNativeEventFilter(this);
 
 		m_RawInput->registerInputProcessor<InputProcessorDualShock4>();
@@ -38,6 +43,8 @@ namespace Pitstop {
 
 	int Application::run()
 	{
+		Logging::Logger::get().synchronize();
+
 		if (!m_RawInput->initialize((HWND)m_MainWindow->winId()) ||
 			!m_UsbController->initialize())
 		{
