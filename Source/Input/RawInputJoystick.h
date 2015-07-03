@@ -56,6 +56,7 @@ namespace Pitstop {
 
 	signals:
 
+		void signalConnected(RawInputJoystick& joystick, bool connected);
 		void signalJoystickInput(RawInputJoystick* joystick, bool processed);
 
 	private:

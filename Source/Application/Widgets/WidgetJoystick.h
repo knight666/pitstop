@@ -13,12 +13,17 @@ namespace Pitstop {
 	class WidgetJoystick
 		: public QWidget
 	{
+
 		Q_OBJECT
 
 	public:
 
 		WidgetJoystick(RawInputJoystickPtr joystick, QWidget* parent = nullptr);
 		~WidgetJoystick();
+
+	public slots:
+
+		void slotJoystickConnected(RawInputJoystick& joystick, bool connected);
 
 	private:
 
