@@ -4,9 +4,15 @@
 
 int main(int argc, char** argv)
 {
-	Pitstop::Application application(argc, argv);
-
+	g_ApplicationDir = QDir::homePath() + "/Pitstop";
 	g_ApplicationDir.mkpath(".");
 
-	return application.run();
+	Logging::Logger::initialize();
+
+	Pitstop::Application application(argc, argv);
+	int result = application.run();
+
+	Logging::Logger::destroy();
+
+	return result;
 }

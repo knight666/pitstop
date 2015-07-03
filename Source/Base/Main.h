@@ -66,4 +66,7 @@ extern "C" {
 	#include <hidsdi.h>
 };
 
-static const QDir g_ApplicationDir = QDir::homePath() + "/Pitstop";
+static QDir g_ApplicationDir;
+
+#include "Logging/Context.h"
+#include "Logging/Logger.h"

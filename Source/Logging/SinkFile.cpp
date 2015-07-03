@@ -3,7 +3,7 @@
 namespace Logging {
 
 	SinkFile::SinkFile(const QString& filename)
-		: m_File(QDir::current().absoluteFilePath(filename))
+		: m_File(filename)
 	{
 		// clear file
 

@@ -11,7 +11,6 @@ namespace Logging {
 	Logger::Logger()
 		: m_Synchronized(false)
 	{
-		addSink(Logging::SinkPtr(new Logging::SinkFile("output.log")));
 	}
 
 	Logger::~Logger()
