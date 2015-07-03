@@ -2,7 +2,6 @@
 
 #include <QtWidgets/QVBoxLayout>
 
-#include "Application/Widgets/WidgetJoystick.h"
 #include "Input/RawInputManager.h"
 
 namespace Pitstop {
@@ -12,10 +11,16 @@ namespace Pitstop {
 		, m_RawInput(rawInput)
 	{
 		m_Form.setupUi(this);
+
+		connect(
+			&m_RawInput, SIGNAL(signalJoystickConnected(RawInputJoystickPtr, bool)),
+			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
 	}
 
 	MainWindow::~MainWindow()
 	{
+		disconnect(
+			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
 	}
 
 	void MainWindow::bindJoystick(RawInputJoystick& joystick)
@@ -25,17 +30,26 @@ namespace Pitstop {
 
 	void MainWindow::initialize()
 	{
-		RawInputJoystickPtr joystick = m_RawInput.getJoystick();
-		if (joystick == nullptr)
+	}
+
+	void MainWindow::slotJoystickConnected(RawInputJoystickPtr joystick, bool connected)
+	{
+		QHash<QString, WidgetJoystickPtr>::iterator found = m_JoystickWidgets.find(joystick->getGuidString());
+		if (found != m_JoystickWidgets.end())
 		{
 			return;
 		}
 
+		WidgetJoystickPtr widget(
+			new WidgetJoystick(joystick, m_Form.tabJoysticks));
+
 		QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(m_Form.tabJoysticks->layout());
+		if (layout != nullptr)
+		{
+			layout->addWidget(widget.data());
+		}
 
-		WidgetJoystick* widget = new WidgetJoystick(joystick, m_Form.tabJoysticks);
-
-		layout->addWidget(widget);
+		m_JoystickWidgets.insert(joystick->getGuidString(), widget);
 	}
 
 }; // namespace Pitstop
