@@ -47,6 +47,7 @@ namespace Pitstop {
 
 	private:
 
+		QString getDevicePath(HANDLE device);
 		RawInputJoystickPtr createJoystick(HANDLE device);
 		void registerInputProcessor(uint16_t vendor, uint16_t product, InputProcessorBase::FactoryMethod method);
 
