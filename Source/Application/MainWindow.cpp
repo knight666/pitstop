@@ -34,7 +34,7 @@ namespace Pitstop {
 
 	void MainWindow::slotJoystickConnected(RawInputJoystickPtr joystick, bool connected)
 	{
-		QHash<QString, WidgetJoystickPtr>::iterator found = m_JoystickWidgets.find(joystick->getGuidString());
+		QHash<QString, WidgetJoystickPtr>::iterator found = m_JoystickWidgets.find(joystick->getDevicePath());
 		if (found != m_JoystickWidgets.end())
 		{
 			return;
@@ -49,7 +49,7 @@ namespace Pitstop {
 			layout->addWidget(widget.data());
 		}
 
-		m_JoystickWidgets.insert(joystick->getGuidString(), widget);
+		m_JoystickWidgets.insert(joystick->getDevicePath(), widget);
 	}
 
 }; // namespace Pitstop

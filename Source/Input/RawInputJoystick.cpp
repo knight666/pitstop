@@ -18,7 +18,6 @@ namespace Pitstop {
 		, m_InputProcessor(nullptr)
 	{
 		memset(&m_Device, 0, sizeof(m_Device));
-		m_Device.dwFlags = RIDEV_INPUTSINK | RIDEV_DEVNOTIFY;
 		m_Device.hwndTarget = window;
 	}
 
@@ -78,6 +77,8 @@ namespace Pitstop {
 
 		// Check if managed by XInput
 
+		m_Device.dwFlags = RIDEV_DEVNOTIFY;
+
 		if (m_DevicePath.indexOf("IG_") >= 0)
 		{
 			m_Type = Type::XInput;
@@ -85,6 +86,10 @@ namespace Pitstop {
 		else
 		{
 			m_Type = Type::Raw;
+
+			// Ensure input is received even when the window loses focus
+
+			m_Device.dwFlags |= RIDEV_INPUTSINK;
 		}
 
 		// Get category
@@ -175,7 +180,8 @@ namespace Pitstop {
 	{
 		bool result = false;
 
-		if (m_InputProcessor != nullptr)
+		if (m_Type != Type::XInput &&
+			m_InputProcessor != nullptr)
 		{
 			result = m_InputProcessor->process(message);
 		}
