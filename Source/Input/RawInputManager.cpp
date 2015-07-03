@@ -180,6 +180,31 @@ namespace Pitstop {
 		return nullptr;
 	}
 
+	QString RawInputManager::getDevicePath(HANDLE device)
+	{
+		UINT device_path_size = 0;
+		if (::GetRawInputDeviceInfoW(
+			device,
+			RIDI_DEVICENAME,
+			nullptr,
+			&device_path_size) != 0)
+		{
+			return QString();
+		}
+
+		QVector<ushort> device_path_data;
+		device_path_data.resize((int)device_path_size);
+		::GetRawInputDeviceInfoW(
+			device,
+			RIDI_DEVICENAME,
+			&device_path_data[0],
+			&device_path_size);
+
+		return QString::fromUtf16(
+			&device_path_data[0],
+			device_path_data.size());
+	}
+
 	RawInputJoystickPtr RawInputManager::createJoystick(HANDLE device)
 	{
 		// Check if handle is already known
@@ -206,49 +231,59 @@ namespace Pitstop {
 
 		// Get device path
 
-		UINT device_path_size = 0;
-		if (::GetRawInputDeviceInfoW(
-			device,
-			RIDI_DEVICENAME,
-			nullptr,
-			&device_path_size) != 0)
+		QString device_path = getDevicePath(device);
+		if (device_path.isEmpty())
 		{
 			return RawInputJoystickPtr();
 		}
 
-		QVector<ushort> device_path_data;
-		device_path_data.resize((int)device_path_size);
-		::GetRawInputDeviceInfoW(
-			device,
-			RIDI_DEVICENAME,
-			&device_path_data[0],
-			&device_path_size);
+		QString joystick_key = device_path;
 
-		QString device_path = QString::fromUtf16(
-			&device_path_data[0],
-			device_path_data.size());
+		// Extract XInput identifier
+
+		uint8_t xinput_index = (uint8_t)-1;
+		QRegExp extract_xinput("&IG_([A-Fa-f0-9]+)");
+		if (extract_xinput.indexIn(joystick_key) >= 0)
+		{
+			xinput_index = (uint8_t)extract_xinput.cap(1).toUInt(nullptr, 16);
+
+			joystick_key.replace(QRegExp("&IG_[A-Fa-f0-9]+"), "");
+		}
 
 		// Create joystick
 
-		QHash<QString, RawInputJoystickPtr>::iterator found_guid = m_JoysticksByPath.find(device_path);
-		if (found_guid != m_JoysticksByPath.end())
-		{
-			return found_guid.value();
-		}
+		RawInputJoystickPtr joystick;
 
-		RawInputJoystickPtr joystick(
-			new RawInputJoystick(
-			*this,
-			m_Window));
-
-		if (joystick->setup(device, info, device_path))
+		QHash<QString, RawInputJoystickPtr>::iterator found_path = m_JoysticksByPath.find(joystick_key);
+		if (found_path != m_JoysticksByPath.end())
 		{
-			m_JoysticksByHandle.insert(joystick->getHandle(), joystick);
-			m_JoysticksByPath.insert(device_path, joystick);
+			joystick = found_path.value();
 		}
 		else
 		{
-			joystick.clear();
+			joystick = RawInputJoystickPtr(
+				new RawInputJoystick(
+					*this,
+					m_Window));
+
+			if (joystick->setup(
+				device,
+				info,
+				device_path))
+			{
+				m_JoysticksByPath.insert(joystick_key, joystick);
+			}
+			else
+			{
+				joystick.clear();
+			}
+		}
+
+		if (joystick != nullptr)
+		{
+			joystick->setXinputIndex(xinput_index);
+
+			m_JoysticksByHandle.insert(device, joystick);
 		}
 
 		return joystick;

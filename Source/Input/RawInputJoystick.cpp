@@ -10,6 +10,7 @@ namespace Pitstop {
 
 	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HWND window)
 		: m_Manager(manager)
+		, m_XinputIndex((uint8_t)-1)
 		, m_Connected(false)
 		, m_VendorIdentifier(0)
 		, m_ProductIdentifier(0)

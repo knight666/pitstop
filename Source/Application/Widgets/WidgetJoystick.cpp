@@ -8,11 +8,11 @@ namespace Pitstop {
 	{
 		m_Form.setupUi(this);
 
-		m_Form.lblName->setText(joystick->getDescription());
-
 		connect(
 			m_Joystick.data(), SIGNAL(signalConnected(RawInputJoystick&, bool)),
 			this, SLOT(slotJoystickConnected(RawInputJoystick&, bool)));
+
+		slotJoystickConnected(*joystick, joystick->isConnected());
 	}
 
 	WidgetJoystick::~WidgetJoystick()
@@ -29,8 +29,9 @@ namespace Pitstop {
 		}
 
 		m_Form.lblName->setText(
-			QString("%1 (%2)")
+			QString("%1 [%2] (%3)")
 				.arg(m_Joystick->getDescription())
+				.arg(m_Joystick->getXinputIndex())
 				.arg(connected ? "CONNECTED" : "DISCONNECTED")
 		);
 	}
