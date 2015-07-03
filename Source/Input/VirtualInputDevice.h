@@ -2,11 +2,11 @@
 
 #include "Base/Main.h"
 #include "Input/Process/InputProcessorBase.h"
+#include "Input/Usb/UsbDevice.h"
+#include "Input/RawInputJoystick.h"
 
 namespace Pitstop {
 
-	class RawInputJoystick;
-	class UsbDevice;
 	class VirtualInputManager;
 	struct XInputState;
 
@@ -25,9 +25,9 @@ namespace Pitstop {
 
 		HANDLE getJoystickHandle() const;
 
-		void setJoystick(RawInputJoystick& joystick);
+		void setJoystick(RawInputJoystickPtr joystick);
 
-		void setUsbDevice(UsbDevice& usb);
+		void setUsbDevice(UsbDevicePtr usb);
 
 	public slots:
 
@@ -41,8 +41,8 @@ namespace Pitstop {
 
 		VirtualInputManager& m_Manager;
 		uint8_t m_Index;
-		RawInputJoystick* m_Joystick;
-		UsbDevice* m_Usb;
+		RawInputJoystickPtr m_Joystick;
+		UsbDevicePtr m_Usb;
 
 	}; // class VirtualInputDevice
 
