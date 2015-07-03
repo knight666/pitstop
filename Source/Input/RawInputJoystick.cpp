@@ -127,7 +127,9 @@ namespace Pitstop {
 			{
 				m_Description = QString::fromUtf16(
 					&device_name_data[0],
-					device_name_data.size());
+					(int)wcslen((const wchar_t*)&device_name_data[0]));
+
+				translated = !m_Description.isEmpty();
 			}
 
 			::CloseHandle(hid_handle);
