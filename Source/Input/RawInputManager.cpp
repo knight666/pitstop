@@ -248,10 +248,12 @@ namespace Pitstop {
 		{
 			RawInputJoystickPtr joystick = found_guid.value();
 
-			// New handle for existing device
-			m_JoysticksByHandle.insert(device, joystick);
+			if (joystick->getType() != RawInputJoystick::Type::XInput)
+			{
+				// Device is not a virtual controller for a joystick
 
-			return joystick;
+				return joystick;
+			}
 		}
 		
 		// Create joystick
@@ -267,11 +269,7 @@ namespace Pitstop {
 		if (joystick->setup())
 		{
 			m_JoysticksByHandle.insert(joystick->getHandle(), joystick);
-
-			if (joystick->getType() != RawInputJoystick::Type::XInput)
-			{
-				m_JoysticksByGuid.insert(joystick->getGuidString(), joystick);
-			}
+			m_JoysticksByGuid[joystick->getGuidString()] = joystick;
 		}
 		else
 		{
