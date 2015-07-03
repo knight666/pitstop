@@ -34,6 +34,8 @@ namespace Pitstop {
 				.arg(m_Joystick->getXinputIndex())
 				.arg(connected ? "CONNECTED" : "DISCONNECTED")
 		);
+
+		m_Form.btnLink->setDisabled(joystick.getType() == RawInputJoystick::Type::XInput);
 	}
 
 }; // namespace Pitstop
