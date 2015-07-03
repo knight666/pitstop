@@ -48,10 +48,14 @@ namespace Pitstop {
 		{
 			RawInputJoystickPtr joystick = createJoystick(device_info.hDevice);
 
-			if (joystick != nullptr &&
-				joystick->getType() != RawInputJoystick::Type::XInput)
+			if (joystick != nullptr)
 			{
-				device_list.push_back(joystick->getDevice());
+				if (joystick->getType() != RawInputJoystick::Type::XInput)
+				{
+					device_list.push_back(joystick->getDevice());
+				}
+
+				emit signalJoystickConnected(joystick, true);
 			}
 		}
 
@@ -129,23 +133,14 @@ namespace Pitstop {
 
 		// Find and update joystick
 
-		if (wParam == GIDC_ARRIVAL)
+		RawInputJoystickPtr joystick = createJoystick(device);
+		if (joystick != nullptr)
 		{
-			RawInputJoystickPtr joystick = createJoystick(device);
+			bool connected = wParam == GIDC_ARRIVAL;
 
-			if (joystick != nullptr)
-			{
-				joystick->setConnected(device, true);
-			}
-		}
-		else if (wParam == GIDC_REMOVAL)
-		{
-			RawInputJoystickPtr joystick = createJoystick(device);
+			joystick->setConnected(device, connected);
 
-			if (joystick != nullptr)
-			{
-				joystick->setConnected(device, false);
-			}
+			emit signalJoystickConnected(joystick, connected);
 		}
 	}
 
@@ -241,32 +236,34 @@ namespace Pitstop {
 			return RawInputJoystickPtr();
 		}
 
-		// Check if joystick is already tracked
+		QString guid_string = extract_guid.cap(1);
 
-		QHash<QString, RawInputJoystickPtr>::iterator found_guid = m_JoysticksByGuid.find(extract_guid.cap(1));
+		// Create or overwrite joystick
+
+		RawInputJoystickPtr joystick;
+
+		QHash<QString, RawInputJoystickPtr>::iterator found_guid = m_JoysticksByGuid.find(guid_string);
 		if (found_guid != m_JoysticksByGuid.end())
 		{
-			RawInputJoystickPtr joystick = found_guid.value();
+			joystick = found_guid.value();
 
 			if (joystick->getType() != RawInputJoystick::Type::XInput)
 			{
-				// Device is not a virtual controller for a joystick
+				// Same GUID, but not a virtual controller for a joystick
 
 				return joystick;
 			}
 		}
-		
-		// Create joystick
 
-		RawInputJoystickPtr joystick(
-			new RawInputJoystick(
-			*this,
-			device,
-			info,
-			m_Window,
-			device_path));
+		if (joystick == nullptr)
+		{
+			joystick.reset(
+				new RawInputJoystick(
+					*this,
+					m_Window));
+		}
 
-		if (joystick->setup())
+		if (joystick->setup(device, info, device_path))
 		{
 			m_JoysticksByHandle.insert(joystick->getHandle(), joystick);
 			m_JoysticksByGuid[joystick->getGuidString()] = joystick;

@@ -21,7 +21,7 @@ namespace Pitstop {
 			XInput,
 		};
 
-		RawInputJoystick(RawInputManager& manager, HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name);
+		RawInputJoystick(RawInputManager& manager, HWND window);
 		~RawInputJoystick();
 
 		bool isConnected() { return m_Connected; }
@@ -50,7 +50,7 @@ namespace Pitstop {
 
 		InputProcessorBase* getInputProcessor() { return m_InputProcessor; }
 
-		bool setup();
+		bool setup(HANDLE handle, const RID_DEVICE_INFO& info, const QString& path);
 
 		bool process(const RAWINPUT& message);
 

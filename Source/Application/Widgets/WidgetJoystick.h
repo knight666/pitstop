@@ -32,4 +32,6 @@ namespace Pitstop {
 
 	}; // class WidgetJoystick
 
+	typedef QSharedPointer<WidgetJoystick> WidgetJoystickPtr;
+
 }; // namespace Pitstop
