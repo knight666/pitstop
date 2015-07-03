@@ -226,7 +226,7 @@ namespace Pitstop {
 
 		QString device_path = QString::fromUtf16(
 			&device_path_data[0],
-			device_path_data.size() * sizeof(ushort));
+			device_path_data.size());
 
 		// Extract GUID
 

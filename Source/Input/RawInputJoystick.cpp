@@ -96,10 +96,37 @@ namespace Pitstop {
 
 		// Get translated name
 
-		if (!retrieveFromRegistry(
-			m_Description,
-			QString("SYSTEM\\CurrentControlSet\\Control\\MediaProperties\\PrivateProperties\\Joystick\\OEM\\VID_%1&PID_%2").arg(vid).arg(pid),
-			"OEMName"))
+		bool translated = false;
+
+		HANDLE hid_handle = ::CreateFileW(
+			path.utf16(),
+			GENERIC_READ | GENERIC_WRITE,
+			FILE_SHARE_READ | FILE_SHARE_WRITE,
+			NULL,
+			OPEN_EXISTING,
+			0,
+			NULL);
+
+		if (hid_handle != NULL)
+		{
+			QVector<ushort> device_name_data(128);
+
+			translated = ::HidD_GetProductString(
+				hid_handle,
+				&device_name_data[0],
+				device_name_data.size() * sizeof(ushort)) == TRUE;
+
+			if (translated)
+			{
+				m_Description = QString::fromUtf16(
+					&device_name_data[0],
+					device_name_data.size());
+			}
+
+			::CloseHandle(hid_handle);
+		}
+
+		if (!translated)
 		{
 			// Fallback, get device description from driver information
 
