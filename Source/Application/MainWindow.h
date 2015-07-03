@@ -25,10 +25,7 @@ namespace Pitstop {
 		MainWindow(RawInputManager& rawInput);
 		~MainWindow();
 
-		void initialize();
-
 		void bindJoystick(RawInputJoystick& joystick);
-		void updateBindings();
 
 	public slots:
 

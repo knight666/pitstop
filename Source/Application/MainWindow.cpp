@@ -28,10 +28,6 @@ namespace Pitstop {
 		m_Form.bindingsList->bind(joystick);
 	}
 
-	void MainWindow::initialize()
-	{
-	}
-
 	void MainWindow::slotJoystickConnected(RawInputJoystickPtr joystick, bool connected)
 	{
 		QHash<QString, WidgetJoystickPtr>::iterator found = m_JoystickWidgets.find(joystick->getDevicePath());

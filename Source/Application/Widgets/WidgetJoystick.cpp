@@ -32,8 +32,7 @@ namespace Pitstop {
 			QString("%1 [%2] (%3)")
 				.arg(m_Joystick->getDescription())
 				.arg(m_Joystick->getXinputIndex())
-				.arg(connected ? "CONNECTED" : "DISCONNECTED")
-		);
+				.arg(connected ? "CONNECTED" : "DISCONNECTED"));
 
 		m_Form.btnLink->setDisabled(joystick.getType() == RawInputJoystick::Type::XInput);
 	}
