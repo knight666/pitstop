@@ -64,6 +64,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_BindingsList.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Logger.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Logger.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_MainWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
@@ -123,6 +129,9 @@
     <ClCompile Include="Source\Input\VirtualInputDevice.cpp" />
     <ClCompile Include="Source\Input\VirtualInputManager.cpp" />
     <ClCompile Include="Source\Input\XInputDevice.cpp" />
+    <ClCompile Include="Source\Logging\Context.cpp" />
+    <ClCompile Include="Source\Logging\Logger.cpp" />
+    <ClCompile Include="Source\Logging\SinkFile.cpp" />
     <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +181,16 @@
     </CustomBuild>
     <ClInclude Include="Source\Input\XInputDevice.h" />
     <ClInclude Include="Source\Input\XInputState.h" />
+    <ClInclude Include="Source\Logging\Context.h" />
+    <ClInclude Include="Source\Logging\Levels.h" />
+    <CustomBuild Include="Source\Logging\Logger.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
+    <ClInclude Include="Source\Logging\Sink.h" />
+    <ClInclude Include="Source\Logging\SinkFile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
