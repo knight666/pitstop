@@ -14,7 +14,7 @@ namespace Pitstop {
 	RawInputManager::~RawInputManager()
 	{
 		m_JoysticksByHandle.clear();
-		m_JoysticksByGuid.clear();
+		m_JoysticksByPath.clear();
 	}
 
 	bool RawInputManager::initialize(HWND window)
@@ -50,7 +50,7 @@ namespace Pitstop {
 
 			if (joystick != nullptr)
 			{
-				if (joystick->getType() != RawInputJoystick::Type::XInput)
+				//if (joystick->getType() != RawInputJoystick::Type::XInput)
 				{
 					device_list.push_back(joystick->getDevice());
 				}
@@ -228,45 +228,23 @@ namespace Pitstop {
 			&device_path_data[0],
 			device_path_data.size());
 
-		// Extract GUID
+		// Create joystick
 
-		QRegExp extract_guid("(\\{.+\\})");
-		if (extract_guid.indexIn(device_path) < 0)
+		QHash<QString, RawInputJoystickPtr>::iterator found_guid = m_JoysticksByPath.find(device_path);
+		if (found_guid != m_JoysticksByPath.end())
 		{
-			return RawInputJoystickPtr();
+			return found_guid.value();
 		}
 
-		QString guid_string = extract_guid.cap(1);
-
-		// Create or overwrite joystick
-
-		RawInputJoystickPtr joystick;
-
-		QHash<QString, RawInputJoystickPtr>::iterator found_guid = m_JoysticksByGuid.find(guid_string);
-		if (found_guid != m_JoysticksByGuid.end())
-		{
-			joystick = found_guid.value();
-
-			if (joystick->getType() != RawInputJoystick::Type::XInput)
-			{
-				// Same GUID, but not a virtual controller for a joystick
-
-				return joystick;
-			}
-		}
-
-		if (joystick == nullptr)
-		{
-			joystick.reset(
-				new RawInputJoystick(
-					*this,
-					m_Window));
-		}
+		RawInputJoystickPtr joystick(
+			new RawInputJoystick(
+			*this,
+			m_Window));
 
 		if (joystick->setup(device, info, device_path))
 		{
 			m_JoysticksByHandle.insert(joystick->getHandle(), joystick);
-			m_JoysticksByGuid[joystick->getGuidString()] = joystick;
+			m_JoysticksByPath.insert(device_path, joystick);
 		}
 		else
 		{

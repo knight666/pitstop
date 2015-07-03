@@ -55,7 +55,7 @@ namespace Pitstop {
 		bool m_Initialized;
 		HWND m_Window;
 		QHash<HANDLE, RawInputJoystickPtr> m_JoysticksByHandle;
-		QHash<QString, RawInputJoystickPtr> m_JoysticksByGuid;
+		QHash<QString, RawInputJoystickPtr> m_JoysticksByPath;
 		QHash<uint32_t, std::function<InputProcessorBase::FactoryMethod>> m_InputProcessorFactories;
 
 	}; // class RawInputManager
