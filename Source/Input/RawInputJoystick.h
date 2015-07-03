@@ -51,7 +51,9 @@ namespace Pitstop {
 		const GUID& getGuid() const { return m_Guid; }
 		const QString& getGuidString() const { return m_GuidString; }
 
-		InputProcessorBase* getInputProcessor() { return m_InputProcessor; }
+		InputProcessorBase* getInputProcessor() const { return m_InputProcessor; }
+
+		QSharedPointer<QImage> getThumbnail() const { return m_Thumbnail; }
 
 		bool setup(HANDLE handle, const RID_DEVICE_INFO& info, const QString& path);
 
@@ -85,6 +87,7 @@ namespace Pitstop {
 		GUID m_Guid;
 		QString m_GuidString;
 		InputProcessorBase* m_InputProcessor;
+		QSharedPointer<QImage> m_Thumbnail;
 
 	}; // class RawInputJoystick
 
