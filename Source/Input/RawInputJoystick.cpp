@@ -61,6 +61,7 @@ namespace Pitstop {
 		}
 
 		m_GuidString = extract_guid.cap(1);
+		::CLSIDFromString(m_GuidString.utf16(), &m_Guid);
 
 		// Extract VID and PID
 
@@ -155,7 +156,9 @@ namespace Pitstop {
 			}
 		}
 
-		::CLSIDFromString(m_GuidString.utf16(), &m_Guid);
+		// Get thumbnail
+
+		m_Thumbnail = m_Manager.getJoystickThumbnail(m_VendorIdentifier, m_ProductIdentifier);
 
 		// Add input processor
 

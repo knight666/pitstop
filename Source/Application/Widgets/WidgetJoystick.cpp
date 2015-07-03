@@ -28,23 +28,12 @@ namespace Pitstop {
 			return;
 		}
 
-		QImage controller;
+		QSharedPointer<QImage> thumbnail = joystick.getThumbnail();
 
-		if (m_Joystick->getVendorIdentifier() == 0x045E &&
-			m_Joystick->getProductIdentifier() == 0x02D1)
+		if (thumbnail != nullptr &&
+			!thumbnail.isNull())
 		{
-			controller.load(QDir::currentPath() + "/media/images/xbox-one-controller.png");
-		}
-		else if (
-			m_Joystick->getVendorIdentifier() == 0x045E &&
-			m_Joystick->getProductIdentifier() == 0x028E)
-		{
-			controller.load(QDir::currentPath() + "/media/images/xbox-360-controller.png");
-		}
-
-		if (!controller.isNull())
-		{
-			m_Form.lblImage->setPixmap(QPixmap::fromImage(controller));
+			m_Form.lblImage->setPixmap(QPixmap::fromImage(*thumbnail));
 			m_Form.lblImage->adjustSize();
 		}
 

@@ -27,6 +27,8 @@ namespace Pitstop {
 		RawInputJoystickPtr getJoystick() const;
 		RawInputJoystickPtr getJoystickByHandle(HANDLE device) const;
 
+		QSharedPointer<QImage> getJoystickThumbnail(uint16_t vendor, uint16_t product) const;
+
 		InputProcessorBase* createInputProcessor(RawInputJoystick& joystick);
 
 		template <typename InputType>
@@ -38,8 +40,6 @@ namespace Pitstop {
 				InputType::create);
 		}
 
-		void processInputMessage(const RAWINPUT& message, HANDLE device);
-
 	signals:
 
 		void signalJoystickConnected(RawInputJoystickPtr joystick, bool connected);
@@ -50,6 +50,7 @@ namespace Pitstop {
 		QString getDevicePath(HANDLE device);
 		RawInputJoystickPtr createJoystick(HANDLE device);
 		void registerInputProcessor(uint16_t vendor, uint16_t product, InputProcessorBase::FactoryMethod method);
+		void addThumbnailImage(uint16_t vendor, uint16_t product, const QString& thumbnailPath);
 
 	private:
 
@@ -57,6 +58,7 @@ namespace Pitstop {
 		HWND m_Window;
 		QHash<HANDLE, RawInputJoystickPtr> m_JoysticksByHandle;
 		QHash<QString, RawInputJoystickPtr> m_JoysticksByPath;
+		QHash<uint32_t, QSharedPointer<QImage>> m_JoystickThumbnails;
 		QHash<uint32_t, std::function<InputProcessorBase::FactoryMethod>> m_InputProcessorFactories;
 
 	}; // class RawInputManager

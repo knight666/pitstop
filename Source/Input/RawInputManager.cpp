@@ -1,5 +1,7 @@
 #include "Input/RawInputManager.h"
 
+#include <QtGui/QImage>
+
 #include "Input/Process/InputProcessorBase.h"
 #include "Input/RawInputJoystick.h"
 
@@ -9,12 +11,15 @@ namespace Pitstop {
 		: m_Initialized(false)
 		, m_Window(NULL)
 	{
+		addThumbnailImage(0x045E, 0x028E, "/media/images/xbox-360-controller.png");
+		addThumbnailImage(0x045E, 0x02D1, "/media/images/xbox-one-controller.png");
 	}
 
 	RawInputManager::~RawInputManager()
 	{
 		m_JoysticksByHandle.clear();
 		m_JoysticksByPath.clear();
+		m_JoystickThumbnails.clear();
 	}
 
 	bool RawInputManager::initialize(HWND window)
@@ -168,9 +173,23 @@ namespace Pitstop {
 		return RawInputJoystickPtr();
 	}
 
+	QSharedPointer<QImage> RawInputManager::getJoystickThumbnail(uint16_t vendor, uint16_t product) const
+	{
+		uint32_t key = (vendor << 16) | product;
+
+		QHash<uint32_t, QSharedPointer<QImage>>::const_iterator found = m_JoystickThumbnails.find(key);
+		if (found != m_JoystickThumbnails.end())
+		{
+			return found.value();
+		}
+
+		return QSharedPointer<QImage>();
+	}
+
 	InputProcessorBase* RawInputManager::createInputProcessor(RawInputJoystick& joystick)
 	{
 		uint32_t key = (joystick.getVendorIdentifier() << 16) | joystick.getProductIdentifier();
+
 		QHash<uint32_t, std::function<InputProcessorBase::FactoryMethod>>::iterator found = m_InputProcessorFactories.find(key);
 		if (found != m_InputProcessorFactories.end())
 		{
@@ -296,14 +315,18 @@ namespace Pitstop {
 		m_InputProcessorFactories.insert(key, std::bind(method, std::placeholders::_1));
 	}
 
-	void RawInputManager::processInputMessage(const RAWINPUT& message, HANDLE device)
+	void RawInputManager::addThumbnailImage(uint16_t vendor, uint16_t product, const QString& thumbnailPath)
 	{
-		QHash<HANDLE, RawInputJoystickPtr>::iterator found = m_JoysticksByHandle.find(device);
-		if (found != m_JoysticksByHandle.end())
-		{
-			RawInputJoystickPtr& joystick = found.value();
+		uint32_t key = (vendor << 16) | product;
 
-			joystick->process(message);
+		QSharedPointer<QImage> thumbnail(new QImage);
+		if (thumbnail->load(QDir::currentPath() + thumbnailPath))
+		{
+			m_JoystickThumbnails.insert(key, thumbnail);
+		}
+		else
+		{
+			thumbnail.reset();
 		}
 	}
 
