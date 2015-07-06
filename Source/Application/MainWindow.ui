@@ -67,44 +67,11 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tabJoysticks">
+      <widget class="Pitstop::TabJoysticks" name="tabJoysticks">
        <attribute name="title">
         <string>Joysticks</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QScrollArea" name="scrollArea">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Plain</enum>
-          </property>
-          <property name="sizeAdjustPolicy">
-           <enum>QAbstractScrollArea::AdjustIgnored</enum>
-          </property>
-          <property name="widgetResizable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>758</width>
-             <height>497</height>
-            </rect>
-           </property>
-           <property name="autoFillBackground">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </widget>
-        </item>
-       </layout>
+       <layout class="QVBoxLayout" name="verticalLayout"/>
       </widget>
      </widget>
     </item>
@@ -127,6 +94,12 @@
    <class>Pitstop::BindingsList</class>
    <extends>QWidget</extends>
    <header>Widgets/BindingsList.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Pitstop::TabJoysticks</class>
+   <extends>QWidget</extends>
+   <header>TabJoysticks.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
