@@ -34,6 +34,15 @@ namespace Pitstop {
 			return;
 		}
 
+		if (value)
+		{
+			PS_LOG_INFO(RawInputJoystick) << "\"" << getDescription() << "\" was connected. (handle: " << m_Handle << " -> " << handle << ")";
+		}
+		else
+		{
+			PS_LOG_INFO(RawInputJoystick) << "\"" << getDescription() << "\" was disconnected.";
+		}
+
 		m_Handle = handle;
 		m_Connected = value;
 
