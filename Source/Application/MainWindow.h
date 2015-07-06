@@ -5,12 +5,14 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 
+#include "Application/Widgets/WidgetJoystick.h"
 #include "ui_MainWindow.h"
 
 namespace Pitstop {
 
 	class InputProcessorBase;
 	class RawInputJoystick;
+	class RawInputManager;
 
 	class MainWindow
 		: public QMainWindow
@@ -20,15 +22,20 @@ namespace Pitstop {
 
 	public:
 
-		MainWindow();
+		MainWindow(RawInputManager& rawInput);
 		~MainWindow();
 
 		void bindJoystick(RawInputJoystick& joystick);
-		void updateBindings();
+
+	public slots:
+
+		void slotJoystickConnected(RawInputJoystickPtr joystick, bool connected);
 
 	private:
 
+		RawInputManager& m_RawInput;
 		Ui_MainWindow m_Form;
+		QHash<QString, WidgetJoystickPtr> m_JoystickWidgets;
 
 	}; // class MainWindow
 
