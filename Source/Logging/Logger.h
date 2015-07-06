@@ -4,13 +4,13 @@
 
 #include "Logging/Sink.h"
 
-#define PS_LOG_INFO(_module)   Logging::Context(Logging::Levels::Information, #_module, __FILE__, __LINE__)
-#define PS_LOG_TRACE(_module)  Logging::Context(Logging::Levels::Trace, #_module, __FILE__, __LINE__)
-#define PS_LOG_WARN(_module)   Logging::Context(Logging::Levels::Warning, #_module, __FILE__, __LINE__)
-#define PS_LOG_ERROR(_module)  Logging::Context(Logging::Levels::Error, #_module, __FILE__, __LINE__)
-#define PS_LOG_FATAL(_module)  Logging::Context(Logging::Levels::Fatal, #_module, __FILE__, __LINE__)
+#define PS_LOG_INFO(_module)   Pitstop::Context(Pitstop::Levels::Information, #_module, __FILE__, __LINE__)
+#define PS_LOG_TRACE(_module)  Pitstop::Context(Pitstop::Levels::Trace, #_module, __FILE__, __LINE__)
+#define PS_LOG_WARN(_module)   Pitstop::Context(Pitstop::Levels::Warning, #_module, __FILE__, __LINE__)
+#define PS_LOG_ERROR(_module)  Pitstop::Context(Pitstop::Levels::Error, #_module, __FILE__, __LINE__)
+#define PS_LOG_FATAL(_module)  Pitstop::Context(Pitstop::Levels::Fatal, #_module, __FILE__, __LINE__)
 
-namespace Logging {
+namespace Pitstop {
 
 	class Logger
 		: public QObject
@@ -45,4 +45,4 @@ namespace Logging {
 
 	};
 
-}; // namespace Logging
+}; // namespace Pitstop

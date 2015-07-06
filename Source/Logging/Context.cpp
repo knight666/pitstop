@@ -2,7 +2,7 @@
 
 #include "Logging/Logger.h"
 
-namespace Logging {
+namespace Pitstop {
 
 	Context::Context(Levels level, const char* module, const char* file, int line)
 		: QTextStream(&m_Message)
@@ -24,4 +24,4 @@ namespace Logging {
 		Logger::get().write(m_Level, m_Module, m_File, m_Line, message.constData());
 	}
 
-}; // namespace Logging
+}; // namespace Pitstop

@@ -3,7 +3,7 @@
 #include "Base/Main.h"
 #include "Logging/Levels.h"
 
-namespace Logging {
+namespace Pitstop {
 
 	class Sink
 	{
@@ -19,4 +19,4 @@ namespace Logging {
 	typedef QSharedPointer<Sink> SinkPtr;
 	typedef QVector<SinkPtr> SinkList;
 
-}; // namespace Logging
+}; // namespace Pitstop

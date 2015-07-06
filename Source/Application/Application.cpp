@@ -25,7 +25,7 @@ namespace Pitstop {
 	{
 		setApplicationName("Pitstop");
 
-		Logging::Logger::initialize();
+		Logger::initialize();
 
 		PS_LOG_INFO("Application") << "Hello!";
 
@@ -42,7 +42,7 @@ namespace Pitstop {
 		delete m_RawInput;
 		delete m_MainWindow;
 
-		Logging::Logger::destroy();
+		Logger::destroy();
 	}
 
 	int Application::run()

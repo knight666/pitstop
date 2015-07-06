@@ -2,7 +2,7 @@
 
 #include "Base/Main.h"
 
-namespace Logging {
+namespace Pitstop {
 
 	enum class Levels
 	{
@@ -25,4 +25,4 @@ namespace Logging {
 		return LevelToStringMap[(size_t)level];
 	}
 
-}; // namespace Logging
+}; // namespace Pitstop

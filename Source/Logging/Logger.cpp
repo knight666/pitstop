@@ -4,7 +4,7 @@
 
 #include "Logging/SinkFile.h"
 
-namespace Logging {
+namespace Pitstop {
 
 	Logger* Logger::s_Instance = nullptr;
 
@@ -34,12 +34,12 @@ namespace Logging {
 		s_Instance = nullptr;
 	}
 
-	void Logger::addSink(Logging::SinkPtr a_Sink)
+	void Logger::addSink(SinkPtr a_Sink)
 	{
 		m_Sinks.push_back(a_Sink);
 	}
 
-	void Logger::write(Logging::Levels level, const char* module, const char* filename, int line, const char* message)
+	void Logger::write(Levels level, const char* module, const char* filename, int line, const char* message)
 	{
 		QMutexLocker locker(&m_Lock);
 
@@ -55,10 +55,10 @@ namespace Logging {
 			now->tm_min,
 			now->tm_sec);
 
-		for (Logging::SinkPtr& sink : m_Sinks)
+		for (SinkPtr& sink : m_Sinks)
 		{
 			sink->Write(level, module, timestamp, filename, line, message);
 		}
 	}
 
-}; // namespace Logging
+}; // namespace Pitstop
