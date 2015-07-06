@@ -11,6 +11,7 @@ namespace Logging {
 	Logger::Logger()
 		: m_Synchronized(false)
 	{
+		addSink(SinkPtr(new SinkFile("Pitstop.log")));
 	}
 
 	Logger::~Logger()
