@@ -3,10 +3,13 @@
 namespace Logging {
 
 	SinkFile::SinkFile(const QString& filename)
-		: m_File(filename)
 	{
 		// clear file
 
+		QDir directory(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+		QString path = directory.absoluteFilePath(filename);
+
+		m_File.setFileName(path);
 		if (m_File.open(QIODevice::WriteOnly))
 		{
 			m_File.close();

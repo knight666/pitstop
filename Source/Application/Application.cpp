@@ -23,7 +23,9 @@ namespace Pitstop {
 		, m_VirtualInput(new VirtualInputManager(*m_RawInput))
 		, m_MainWindow(new MainWindow())
 	{
-		Logging::Logger::get().addSink(Logging::SinkPtr(new Logging::SinkFile(g_ApplicationDir.absoluteFilePath("Pitstop.log"))));
+		setApplicationName("Pitstop");
+
+		Logging::Logger::initialize();
 
 		PS_LOG_INFO("Application") << "Hello!";
 
@@ -39,6 +41,8 @@ namespace Pitstop {
 		delete m_UsbController;
 		delete m_RawInput;
 		delete m_MainWindow;
+
+		Logging::Logger::destroy();
 	}
 
 	int Application::run()

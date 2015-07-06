@@ -52,6 +52,7 @@
 #include <QtCore/QSettings>
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
+#include <QtCore/QStandardPaths>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
@@ -65,8 +66,6 @@
 extern "C" {
 	#include <hidsdi.h>
 };
-
-static QDir g_ApplicationDir;
 
 #include "Logging/Context.h"
 #include "Logging/Logger.h"
