@@ -25,8 +25,10 @@ namespace Pitstop {
 
 		HANDLE getJoystickHandle() const;
 
+		const RawInputJoystickPtr& getJoystick() const { return m_Joystick; }
 		void setJoystick(RawInputJoystickPtr joystick);
 
+		const UsbDevicePtr& getUsbDevice() const { return m_Usb; }
 		void setUsbDevice(UsbDevicePtr usb);
 
 	public slots:
@@ -45,5 +47,7 @@ namespace Pitstop {
 		UsbDevicePtr m_Usb;
 
 	}; // class VirtualInputDevice
+
+	typedef QSharedPointer<VirtualInputDevice> VirtualInputDevicePtr;
 
 }; // namespace Pitstop

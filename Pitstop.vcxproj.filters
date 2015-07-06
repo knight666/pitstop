@@ -134,6 +134,15 @@
     <ClCompile Include="Source\Application\TabDevices.cpp">
       <Filter>Application</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetDevice.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -225,6 +234,9 @@
     <ClInclude Include="GeneratedFiles\ui_TabDevices.h">
       <Filter>GeneratedFiles</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_WidgetDevice.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Source\Application\MainWindow.ui">
@@ -271,6 +283,12 @@
     </CustomBuild>
     <CustomBuild Include="Source\Application\TabDevices.ui">
       <Filter>Application</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetDevice.h">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetDevice.ui">
+      <Filter>Application\Widgets</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
