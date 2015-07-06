@@ -27,7 +27,7 @@ namespace Pitstop {
 
 		Logger::initialize();
 
-		PS_LOG_INFO("Application") << "Hello!";
+		PS_LOG_INFO(Application) << "Initializing application.";
 
 		installNativeEventFilter(this);
 
@@ -37,6 +37,8 @@ namespace Pitstop {
 
 	Application::~Application()
 	{
+		PS_LOG_INFO(Application) << "Closing application.";
+
 		delete m_VirtualInput;
 		delete m_UsbController;
 		delete m_RawInput;
@@ -47,9 +49,17 @@ namespace Pitstop {
 
 	int Application::run()
 	{
-		if (!m_RawInput->initialize((HWND)m_MainWindow->winId()) ||
-			!m_UsbController->initialize())
+		if (!m_RawInput->initialize((HWND)m_MainWindow->winId()))
 		{
+			PS_LOG_ERROR(RawInput) << "Failed to initialize raw input.";
+
+			return false;
+		}
+
+		if (!m_UsbController->initialize())
+		{
+			PS_LOG_ERROR(UsbController) << "Failed to initialize virtual USB hub.";
+
 			return false;
 		}
 
