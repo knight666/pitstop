@@ -3,7 +3,7 @@
 #include "Base/Main.h"
 #include "Logging/Sink.h"
 
-namespace Logging {
+namespace Pitstop {
 
 	class SinkFile
 		: public Sink
@@ -21,4 +21,4 @@ namespace Logging {
 
 	};
 
-}; // namespace Logging
+}; // namespace Pitstop

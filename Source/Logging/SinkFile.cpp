@@ -1,6 +1,6 @@
 #include "Logging/SinkFile.h"
 
-namespace Logging {
+namespace Pitstop {
 
 	SinkFile::SinkFile(const QString& filename)
 	{
@@ -36,4 +36,4 @@ namespace Logging {
 		}
 	}
 
-}; // namespace Logging
+}; // namespace Pitstop

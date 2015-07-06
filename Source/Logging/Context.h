@@ -3,7 +3,7 @@
 #include "Base/Main.h"
 #include "Logging/Levels.h"
 
-namespace Logging {
+namespace Pitstop {
 
 	class Context
 		: public QTextStream
@@ -24,4 +24,4 @@ namespace Logging {
 
 	};
 
-}; // namespace Logging
+}; // namespace Pitstop
