@@ -20,6 +20,21 @@ namespace Pitstop {
 		}
 	}
 
+	UsbDevicePtr UsbController::createDevice()
+	{
+		UsbDevicePtr device;
+
+		if (m_Devices.size() < 4)
+		{
+			PS_LOG_INFO(Usb) << "Creating device " << m_Devices.size();
+
+			device = UsbDevicePtr(new UsbDevice(*this, (uint8_t)m_Devices.size() + 1));
+			m_Devices.push_back(device);
+		}
+
+		return device;
+	}
+
 	UsbDevicePtr UsbController::getDeviceByIndex(uint8_t index)
 	{
 		return
@@ -42,6 +57,8 @@ namespace Pitstop {
 			DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
 		if (m_HubInfo == NULL)
 		{
+			PS_LOG_ERROR(Usb) << "Failed to retrieve handle to virtual USB hub.";
+
 			return false;
 		}
 
@@ -55,6 +72,8 @@ namespace Pitstop {
 			0,
 			&device_interface_data) == FALSE)
 		{
+			PS_LOG_ERROR(Usb) << "Failed to initialize device interface.";
+
 			return false;
 		}
 
@@ -71,6 +90,8 @@ namespace Pitstop {
 			&buffer_size,
 			&device_detail_data) == TRUE)
 		{
+			PS_LOG_ERROR(Usb) << "Failed to retrieve size of device interface.";
+
 			return false;
 		}
 
@@ -88,6 +109,8 @@ namespace Pitstop {
 			&buffer_size,
 			&device_detail_data) == FALSE)
 		{
+			PS_LOG_ERROR(Usb) << "Failed to retrieve device interface data.";
+
 			return false;
 		}
 
@@ -104,15 +127,12 @@ namespace Pitstop {
 			NULL);
 		if (m_HubHandle == NULL)
 		{
+			PS_LOG_ERROR(Usb) << "Failed to open handle to USB hub.";
+
 			return false;
 		}
 
-		for (uint8_t i = 0; i < 4; ++i)
-		{
-			UsbDevicePtr device(new UsbDevice(*this, i + 1));
-
-			m_Devices.push_back(device);
-		}
+		PS_LOG_INFO(Usb) << "Initialized.";
 
 		return true;
 	}

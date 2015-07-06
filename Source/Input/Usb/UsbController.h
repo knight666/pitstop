@@ -17,6 +17,7 @@ namespace Pitstop {
 
 		HANDLE getHubHandle() const { return m_HubHandle; }
 
+		UsbDevicePtr createDevice();
 		UsbDevicePtr getDeviceByIndex(uint8_t index);
 
 		bool initialize();

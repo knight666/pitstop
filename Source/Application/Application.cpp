@@ -70,7 +70,7 @@ namespace Pitstop {
 		{
 			device->setJoystick(joystick);
 
-			UsbDevicePtr usb = m_UsbController->getDeviceByIndex(0);
+			UsbDevicePtr usb = m_UsbController->createDevice();
 			usb->setPluggedIn(true);
 
 			device->setUsbDevice(usb);
