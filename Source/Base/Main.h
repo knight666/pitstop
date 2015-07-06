@@ -67,5 +67,6 @@ extern "C" {
 	#include <hidsdi.h>
 };
 
+#include "Base/Utils.h"
 #include "Logging/Context.h"
 #include "Logging/Logger.h"
