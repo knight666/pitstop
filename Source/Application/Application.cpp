@@ -12,6 +12,7 @@
 #include "Input/Usb/UsbController.h"
 #include "Input/RawInputManager.h"
 #include "Input/VirtualInputManager.h"
+#include "Logging/SinkFile.h"
 
 namespace Pitstop {
 
@@ -22,6 +23,12 @@ namespace Pitstop {
 		, m_VirtualInput(new VirtualInputManager(*m_RawInput))
 		, m_MainWindow(new MainWindow())
 	{
+		setApplicationName("Pitstop");
+
+		Logger::initialize();
+
+		PS_LOG_INFO(Application) << "Initializing application.";
+
 		installNativeEventFilter(this);
 
 		m_RawInput->registerInputProcessor<InputProcessorDualShock4>();
@@ -30,17 +37,29 @@ namespace Pitstop {
 
 	Application::~Application()
 	{
+		PS_LOG_INFO(Application) << "Closing application.";
+
 		delete m_VirtualInput;
 		delete m_UsbController;
 		delete m_RawInput;
 		delete m_MainWindow;
+
+		Logger::destroy();
 	}
 
 	int Application::run()
 	{
-		if (!m_RawInput->initialize((HWND)m_MainWindow->winId()) ||
-			!m_UsbController->initialize())
+		if (!m_RawInput->initialize((HWND)m_MainWindow->winId()))
 		{
+			PS_LOG_ERROR(RawInput) << "Failed to initialize raw input.";
+
+			return false;
+		}
+
+		if (!m_UsbController->initialize())
+		{
+			PS_LOG_ERROR(UsbController) << "Failed to initialize virtual USB hub.";
+
 			return false;
 		}
 
