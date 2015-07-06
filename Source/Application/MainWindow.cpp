@@ -12,6 +12,8 @@ namespace Pitstop {
 	{
 		m_Form.setupUi(this);
 
+		m_Form.scrollAreaWidgetContents->setLayout(new QVBoxLayout(m_Form.scrollAreaWidgetContents));
+
 		connect(
 			&m_RawInput, SIGNAL(signalJoystickConnected(RawInputJoystickPtr, bool)),
 			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
@@ -37,9 +39,9 @@ namespace Pitstop {
 		}
 
 		WidgetJoystickPtr widget(
-			new WidgetJoystick(joystick, m_Form.tabJoysticks));
+			new WidgetJoystick(joystick, m_Form.scrollAreaWidgetContents));
 
-		QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(m_Form.tabJoysticks->layout());
+		QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(m_Form.scrollAreaWidgetContents->layout());
 		if (layout != nullptr)
 		{
 			layout->addWidget(widget.data());
