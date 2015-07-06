@@ -282,18 +282,13 @@ namespace Pitstop {
 			return RawInputJoystickPtr();
 		}
 
-		uint8_t xinput_index = (uint8_t)-1;
-
-		// Create unique joystick key from device path
-
-		QString joystick_key = device_path;
+		// Extract properties from device path
 
 		QRegExp match_path(
 			"\\\\\\\\?\\HID#"
 			"VID_([0-9A-Fa-f]+)"
 			"&PID_([0-9A-Fa-f]+)"
-			"(&IG_([0-9A-Fa-f]+))?"
-			"(&MI_([0-9A-Fa-f]+))?"
+			"(&(\\w+)_?([0-9A-Fa-f]+))?"
 			"(\\#[0-9A-Fa-f\\&]+\\#)"
 			"(\\{[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}\\})");
 
@@ -304,19 +299,22 @@ namespace Pitstop {
 			return RawInputJoystickPtr();
 		}
 
-		QStringList found = match_path.capturedTexts();
+		// Create unique joystick key from device path
+
+		QString joystick_key = device_path;
+
+		uint8_t device_xinput = (uint8_t)-1;
 
 		if (match_path.cap(3).size() > 0)
 		{
 			joystick_key.replace(match_path.cap(3), "");
 
-			// Extract XInput identifier
+			if (match_path.cap(4) == "IG")
+			{
+				// Extract XInput identifier
 
-			xinput_index = (uint8_t)match_path.cap(4).toUInt(nullptr, 16);
-		}
-		else if (match_path.cap(5).size() > 0)
-		{
-			joystick_key.replace(match_path.cap(5), "");
+				device_xinput = (uint8_t)match_path.cap(5).toUInt(nullptr, 16);
+			}
 		}
 
 		// Create joystick
@@ -356,7 +354,7 @@ namespace Pitstop {
 
 		if (joystick != nullptr)
 		{
-			joystick->setXinputIndex(xinput_index);
+			joystick->setXinputIndex(device_xinput);
 
 			m_JoysticksByHandle.insert(device, joystick);
 		}
