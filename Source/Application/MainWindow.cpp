@@ -11,6 +11,7 @@ namespace Pitstop {
 		m_Form.setupUi(this);
 
 		m_Form.tabJoysticks->setup(rawInput);
+		m_Form.tabDevices->setup(rawInput);
 	}
 
 	MainWindow::~MainWindow()
