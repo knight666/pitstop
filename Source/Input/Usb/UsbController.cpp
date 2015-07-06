@@ -9,6 +9,8 @@ namespace Pitstop {
 
 	UsbController::~UsbController()
 	{
+		PS_LOG_INFO(UsbController) << "Destroying USB controller.";
+
 		qDeleteAll(m_Devices);
 
 		if (m_HubInfo != NULL)
@@ -25,6 +27,8 @@ namespace Pitstop {
 
 	bool UsbController::initialize()
 	{
+		PS_LOG_INFO(UsbController) << "Initializing USB controller.";
+
 		GUID guid;
 		::CLSIDFromString(L"{F679F562-3164-42CE-A4DB-E7DDBE723909}", &guid);
 
