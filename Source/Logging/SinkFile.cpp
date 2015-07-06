@@ -7,9 +7,9 @@ namespace Pitstop {
 		// clear file
 
 		QDir directory(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-		QString path = directory.absoluteFilePath(filename);
+		directory.mkpath(".");
 
-		m_File.setFileName(path);
+		m_File.setFileName(directory.absoluteFilePath(filename));
 		if (m_File.open(QIODevice::WriteOnly))
 		{
 			m_File.close();
