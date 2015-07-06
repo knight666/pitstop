@@ -1,12 +1,15 @@
 #pragma once
 
 #include "Base/Main.h"
-#include "Input/RawInputJoystick.h"
-#include "Application/Widgets/WidgetJoystick.h"
+#include "Application/Widgets/WidgetDevice.h"
 
 #include "ui_TabDevices.h"
 
 namespace Pitstop {
+
+	class RawInputManager;
+	class UsbController;
+	class VirtualInputManager;
 
 	class TabDevices
 		: public QWidget
@@ -19,11 +22,19 @@ namespace Pitstop {
 		TabDevices(QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
 		~TabDevices();
 
-		void setup(RawInputManager& rawInput);
+		void setup(
+			RawInputManager& rawInput,
+			UsbController& usb,
+			VirtualInputManager& virtualInput);
 
 	private:
 
 		Ui_TabDevices m_Form;
+
+		RawInputManager* m_RawInput;
+		UsbController* m_UsbController;
+		VirtualInputManager* m_VirtualInput;
+		QVector<WidgetDevicePtr> m_Devices;
 
 	}; // class TabDevices
 

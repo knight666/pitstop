@@ -6,6 +6,7 @@
 #include <QtWidgets/QWidget>
 
 #include "Input/RawInputJoystick.h"
+
 #include "ui_WidgetJoystick.h"
 
 namespace Pitstop {

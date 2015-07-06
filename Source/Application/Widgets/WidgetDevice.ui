@@ -1,31 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>JoystickForm</class>
- <widget class="QWidget" name="JoystickForm">
+ <class>DeviceForm</class>
+ <widget class="QWidget" name="DeviceForm">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>462</width>
-    <height>165</height>
+    <width>610</width>
+    <height>172</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">QWidget#JoystickForm {
-	border: 2px solid #343434;
-	margin: 2px;
-}</string>
-  </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="2">
+    <widget class="QComboBox" name="cmbJoystick">
+     <item>
+      <property name="text">
+       <string>&lt;None&gt;</string>
+      </property>
+     </item>
+    </widget>
+   </item>
    <item row="1" column="0">
     <widget class="QLabel" name="lblImage">
      <property name="sizePolicy">
@@ -55,14 +52,14 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="QFrame" name="frmButtons">
+    <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QGridLayout" name="gridLayout_2">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -75,45 +72,41 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="QPushButton" name="btnInfo">
+      <item row="1" column="1">
+       <widget class="QPushButton" name="btnConnect">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>0</height>
-         </size>
-        </property>
         <property name="text">
-         <string>Info</string>
+         <string>Connect</string>
         </property>
        </widget>
       </item>
-      <item>
-       <widget class="QPushButton" name="btnLink">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>0</height>
-         </size>
-        </property>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cmbProfile">
+        <item>
+         <property name="text">
+          <string>&lt;None&gt;</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>New...</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblProfile">
         <property name="text">
-         <string>Link</string>
+         <string>Profile:</string>
         </property>
        </widget>
       </item>
-      <item>
+      <item row="2" column="1">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -127,13 +120,6 @@
        </spacer>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="lblName">
-     <property name="text">
-      <string>##NAME##</string>
-     </property>
     </widget>
    </item>
   </layout>
