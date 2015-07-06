@@ -52,6 +52,7 @@
 #include <QtCore/QSettings>
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStack>
+#include <QtCore/QStandardPaths>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
@@ -66,4 +67,6 @@ extern "C" {
 	#include <hidsdi.h>
 };
 
-static const QDir g_ApplicationDir = QDir::homePath() + "/Pitstop";
+#include "Base/Utils.h"
+#include "Logging/Context.h"
+#include "Logging/Logger.h"

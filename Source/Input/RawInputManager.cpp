@@ -12,17 +12,22 @@ namespace Pitstop {
 
 	RawInputManager::~RawInputManager()
 	{
+		PS_LOG_INFO(RawInput) << "Destroying raw input.";
+
 		m_Joysticks.clear();
 	}
 
 	bool RawInputManager::initialize(HWND window)
 	{
+		PS_LOG_INFO(RawInput) << "Initializing raw input.";
+
 		QVector<RAWINPUTDEVICELIST> device_info_list;
 
 		UINT device_count = 0;
 		if (::GetRawInputDeviceList(nullptr, &device_count, sizeof(RAWINPUTDEVICELIST)) == (UINT)-1)
 		{
 			DWORD errorCode = GetLastError();
+			PS_LOG_ERROR(RawInput) << "Failed to retrieve raw input device list. (error: \"" << windowsErrorToString(errorCode) << "\" code: " << errorCode << ")";
 
 			return false;
 		}
@@ -93,6 +98,8 @@ namespace Pitstop {
 				joystick.clear();
 			}
 		}
+
+		PS_LOG_INFO(RawInput) << "Found " << m_Joysticks.size() << " joysticks.";
 
 		if (m_Joysticks.size() > 0)
 		{

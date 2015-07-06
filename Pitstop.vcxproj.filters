@@ -65,6 +65,36 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputManager.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Logging\Context.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logging\Logger.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Logging\SinkFile.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_RawInputJoystick.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_RawInputJoystick.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Logger.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Logger.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Base\Utils.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -94,6 +124,9 @@
     <Filter Include="Application\Widgets">
       <UniqueIdentifier>{d08accf9-c4c0-4430-8b60-b4abfa06d43e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Logging">
+      <UniqueIdentifier>{9f28b14d-0745-49a0-bf84-936424ac99d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Base\Main.h">
@@ -101,9 +134,6 @@
     </ClInclude>
     <ClInclude Include="Source\Application\Application.h">
       <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\RawInputJoystick.h">
-      <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h">
       <Filter>GeneratedFiles</Filter>
@@ -126,11 +156,23 @@
     <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h">
       <Filter>Input\Process</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\VirtualInputDevice.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Input\Process\InputProcessorFFBWheel.h">
       <Filter>Input\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logging\Context.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logging\Levels.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logging\Sink.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Logging\SinkFile.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Base\Utils.h">
+      <Filter>Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +193,15 @@
     </CustomBuild>
     <CustomBuild Include="Source\Input\VirtualInputManager.h">
       <Filter>Input</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\RawInputJoystick.h">
+      <Filter>Input</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\VirtualInputDevice.h">
+      <Filter>Input</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Logging\Logger.h">
+      <Filter>Logging</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
