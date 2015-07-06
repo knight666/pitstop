@@ -26,9 +26,12 @@ namespace Pitstop {
 
 	void VirtualInputDevice::setJoystick(RawInputJoystickPtr joystick)
 	{
-		connect(
-			joystick.data(), SIGNAL(signalJoystickInput(RawInputJoystick*, bool)),
-			this, SLOT(slotJoystickInput(RawInputJoystick*, bool)));
+		if (joystick != nullptr)
+		{
+			connect(
+				joystick.data(), SIGNAL(signalJoystickInput(RawInputJoystick*, bool)),
+				this, SLOT(slotJoystickInput(RawInputJoystick*, bool)));
+		}
 
 		m_Joystick = joystick;
 	}

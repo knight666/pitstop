@@ -15,17 +15,27 @@ namespace Pitstop {
 
 	public:
 
-		WidgetDevice(VirtualInputDevicePtr device, QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
+		WidgetDevice(RawInputManager& rawInput, VirtualInputDevicePtr device, QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
 		~WidgetDevice();
+
+	private slots:
+
+		void slotJoystickConnected(RawInputJoystickPtr joystick, bool connected);
+
+		void on_cmbJoystick_currentIndexChanged(int index);
 
 	private:
 
 		void setupDevice(VirtualInputDevicePtr device);
+		void updateJoysticks();
+		void updateThumbnail();
 
 	private:
 
-		Ui_DeviceForm m_Form;
+		RawInputManager& m_RawInput;
 		VirtualInputDevicePtr m_Device;
+
+		Ui_DeviceForm m_Form;
 
 	}; // class WidgetDevice
 

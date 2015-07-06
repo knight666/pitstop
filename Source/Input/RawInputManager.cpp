@@ -183,6 +183,18 @@ namespace Pitstop {
 		return RawInputJoystickPtr();
 	}
 
+	QVector<RawInputJoystickPtr> RawInputManager::getJoysticks() const
+	{
+		QVector<RawInputJoystickPtr> joysticks;
+
+		for (const RawInputJoystickPtr& joystick : m_JoysticksByPath)
+		{
+			joysticks.push_back(joystick);
+		}
+
+		return joysticks;
+	}
+
 	QSharedPointer<QImage> RawInputManager::getJoystickThumbnail(uint16_t vendor, uint16_t product) const
 	{
 		uint32_t key = (vendor << 16) | product;
