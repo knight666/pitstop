@@ -25,8 +25,6 @@ namespace Logging {
 		static void initialize();
 		static void destroy();
 
-		void synchronize();
-
 		void addSink(SinkPtr sink);
 
 		void write(Levels level, const char* module, const char* filename, int line, const char* message);
@@ -44,18 +42,6 @@ namespace Logging {
 
 		SinkList m_Sinks;
 		QMutex m_Lock;
-
-		struct CachedMessage
-		{
-			QByteArray timestamp;
-			Levels level;
-			QByteArray module;
-			QByteArray filename;
-			int line;
-			QByteArray message;
-		};
-		QVector<CachedMessage> m_Cached;
-		bool m_Synchronized;
 
 	};
 

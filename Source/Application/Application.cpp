@@ -47,8 +47,6 @@ namespace Pitstop {
 
 	int Application::run()
 	{
-		Logging::Logger::get().synchronize();
-
 		if (!m_RawInput->initialize((HWND)m_MainWindow->winId()) ||
 			!m_UsbController->initialize())
 		{
