@@ -116,6 +116,15 @@
     <ClCompile Include="Source\Base\Utils.cpp">
       <Filter>Base</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_TabJoysticks.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_TabJoysticks.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\TabJoysticks.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -201,6 +210,9 @@
     <ClInclude Include="Source\Base\Utils.h">
       <Filter>Base</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_TabJoysticks.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Source\Application\MainWindow.ui">
@@ -235,6 +247,12 @@
     </CustomBuild>
     <CustomBuild Include="Source\Logging\Logger.h">
       <Filter>Logging</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\TabJoysticks.h">
+      <Filter>Application</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\TabJoysticks.ui">
+      <Filter>Application</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

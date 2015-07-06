@@ -6,6 +6,8 @@
 #include <QtWidgets/QMainWindow>
 
 #include "Application/Widgets/WidgetJoystick.h"
+#include "Application/TabJoysticks.h"
+
 #include "ui_MainWindow.h"
 
 namespace Pitstop {
@@ -27,15 +29,10 @@ namespace Pitstop {
 
 		void bindJoystick(RawInputJoystick& joystick);
 
-	public slots:
-
-		void slotJoystickConnected(RawInputJoystickPtr joystick, bool connected);
-
 	private:
 
 		RawInputManager& m_RawInput;
 		Ui_MainWindow m_Form;
-		QHash<QString, WidgetJoystickPtr> m_JoystickWidgets;
 
 	}; // class MainWindow
 
