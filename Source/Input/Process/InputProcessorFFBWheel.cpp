@@ -86,7 +86,7 @@ namespace Pitstop {
 				float normalized = ((float)value / 2048.0f) - 1.0f;
 				float magnitude = fabs(normalized);
 
-				static const float dead_zone = 100.0f / 4096.0f;
+				static const float dead_zone = 512.0f / 4096.0f;
 				if (magnitude < dead_zone)
 				{
 					m_Bindings["Wheel"].analogValue = 0.0f;

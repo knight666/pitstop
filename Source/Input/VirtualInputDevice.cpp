@@ -112,7 +112,19 @@ namespace Pitstop {
 		// Change camera
 		state.buttonState[(uint8_t)XInputState::Button::Left] = bindings["RightStickDown"].digitalValue;
 
-		float wheel = std::min(std::max(-1.0f, bindings["Wheel"].analogValue * 5.0f), 1.0f);
+		static const float wheel_range_start = 15000.0f / 32768.0f;
+		static const float wheel_range_length = (32768.0f - 15000.0f) / 32768.0f;
+		float wheel_normalized = bindings["Wheel"].analogValue;
+		float wheel_magnitude = fabs(wheel_normalized);
+
+		float wheel = 0.0f;
+
+		if (wheel_magnitude > 0.0f)
+		{
+			wheel = (wheel_normalized > 0.0f) ? wheel_range_start : -wheel_range_start;
+			wheel += (wheel_normalized * wheel_range_length);
+		}
+
 		state.axisState[(uint8_t)XInputState::Axis::LeftStickHorizontal] = wheel;
 
 		float look_around =
