@@ -8,22 +8,17 @@
 
 namespace Pitstop {
 
-	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name)
+	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HWND window)
 		: m_Manager(manager)
-		, m_Connected(true)
+		, m_XinputIndex((uint8_t)-1)
+		, m_Connected(false)
 		, m_VendorIdentifier(0)
 		, m_ProductIdentifier(0)
-		, m_Handle(handle)
-		, m_Info(info)
-		, m_DevicePath(name)
-		, m_Description(name)
+		, m_Handle(NULL)
 		, m_Type(Type::Raw)
 		, m_InputProcessor(nullptr)
 	{
 		memset(&m_Device, 0, sizeof(m_Device));
-		m_Device.usUsagePage = info.hid.usUsagePage;
-		m_Device.usUsage = info.hid.usUsage;
-		m_Device.dwFlags = RIDEV_INPUTSINK | RIDEV_DEVNOTIFY;
 		m_Device.hwndTarget = window;
 	}
 
@@ -31,7 +26,7 @@ namespace Pitstop {
 	{
 		delete m_InputProcessor;
 	}
-	
+
 	void RawInputJoystick::setConnected(HANDLE handle, bool value)
 	{
 		if (m_Connected == value)
@@ -41,10 +36,22 @@ namespace Pitstop {
 
 		m_Handle = handle;
 		m_Connected = value;
+
+		emit signalConnected(*this, m_Connected);
 	}
 
-	bool RawInputJoystick::setup()
+	bool RawInputJoystick::setup(HANDLE handle, const RID_DEVICE_INFO& info, const QString& path)
 	{
+		m_Connected = false;
+		m_Handle = handle;
+
+		m_Info = info;
+		m_Device.usUsagePage = info.hid.usUsagePage;
+		m_Device.usUsage = info.hid.usUsage;
+
+		m_DevicePath = path;
+		m_Description = path;
+
 		// Extract GUID
 
 		QRegExp extract_guid("(\\{.+\\})");
@@ -53,7 +60,8 @@ namespace Pitstop {
 			return false;
 		}
 
-		QString guid_string = extract_guid.cap(1);
+		m_GuidString = extract_guid.cap(1);
+		::CLSIDFromString(m_GuidString.utf16(), &m_Guid);
 
 		// Extract VID and PID
 
@@ -71,25 +79,66 @@ namespace Pitstop {
 
 		// Check if managed by XInput
 
+		m_Device.dwFlags = RIDEV_DEVNOTIFY;
+
 		if (m_DevicePath.indexOf("IG_") >= 0)
 		{
 			m_Type = Type::XInput;
+		}
+		else
+		{
+			m_Type = Type::Raw;
+
+			// Ensure input is received even when the window loses focus
+
+			m_Device.dwFlags |= RIDEV_INPUTSINK;
 		}
 
 		// Get category
 
 		retrieveFromRegistry(
 			m_Category,
-			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + guid_string,
+			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + m_GuidString,
 			"Category");
 
 		// Get translated name
 
-		if (!retrieveFromRegistry(
-			m_Description,
-			QString("SYSTEM\\CurrentControlSet\\Control\\MediaProperties\\PrivateProperties\\Joystick\\OEM\\VID_%1&PID_%2").arg(vid).arg(pid),
-			"OEMName"))
+		bool translated = false;
+
+		HANDLE hid_handle = ::CreateFileW(
+			path.utf16(),
+			GENERIC_READ | GENERIC_WRITE,
+			FILE_SHARE_READ | FILE_SHARE_WRITE,
+			NULL,
+			OPEN_EXISTING,
+			0,
+			NULL);
+
+		if (hid_handle != NULL)
 		{
+			QVector<ushort> device_name_data(128);
+
+			translated = ::HidD_GetProductString(
+				hid_handle,
+				&device_name_data[0],
+				device_name_data.size() * sizeof(ushort)) == TRUE;
+
+			if (translated)
+			{
+				m_Description = QString::fromUtf16(
+					&device_name_data[0],
+					(int)wcslen((const wchar_t*)&device_name_data[0]));
+
+				translated = !m_Description.isEmpty();
+			}
+
+			::CloseHandle(hid_handle);
+		}
+
+		if (!translated)
+		{
+			// Fallback, get device description from driver information
+
 			QString path = m_DevicePath;
 			path.replace(0, 4, "SYSTEM\\CurrentControlSet\\Enum\\");
 			path.replace('#', '\\');
@@ -109,20 +158,36 @@ namespace Pitstop {
 			}
 		}
 
-		::CLSIDFromString(guid_string.utf16(), &m_GUID);
-		QString path = findDevicePath(m_GUID);
+		// Get thumbnail
+
+		m_Thumbnail = m_Manager.getJoystickThumbnail(m_VendorIdentifier, m_ProductIdentifier);
 
 		// Add input processor
 
+		bool result = true;
+
+		if (m_InputProcessor != nullptr)
+		{
+			delete m_InputProcessor;
+		}
+
 		m_InputProcessor = m_Manager.createInputProcessor(*this);
-		return (m_InputProcessor != nullptr) ? m_InputProcessor->setup() : true;
+		if (m_InputProcessor != nullptr)
+		{
+			result = m_InputProcessor->setup();
+		}
+
+		setConnected(m_Handle, true);
+
+		return result;
 	}
 
 	bool RawInputJoystick::process(const RAWINPUT& message)
 	{
 		bool result = false;
 
-		if (m_InputProcessor != nullptr)
+		if (m_Type != Type::XInput &&
+			m_InputProcessor != nullptr)
 		{
 			result = m_InputProcessor->process(message);
 		}

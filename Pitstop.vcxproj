@@ -100,9 +100,21 @@
     <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputManager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetJoystick.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetJoystick.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Source\Application\Widgets\BindingsList.ui">
+      <Message>Uic%27ing %(Filename)%(Extension)...</Message>
+      <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.ui">
       <Message>Uic%27ing %(Filename)%(Extension)...</Message>
       <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
       <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
@@ -119,6 +131,7 @@
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Application\MainWindow.cpp" />
     <ClCompile Include="Source\Application\Widgets\BindingsList.cpp" />
+    <ClCompile Include="Source\Application\Widgets\WidgetJoystick.cpp" />
     <ClCompile Include="Source\Base\Utils.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorBase.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorDualShock4.cpp" />
@@ -137,7 +150,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h" />
+    <ClInclude Include="GeneratedFiles\ui_BindingsList.h" />
+    <ClInclude Include="GeneratedFiles\ui_WidgetJoystick.h" />
     <CustomBuild Include="Source\Application\Widgets\BindingsList.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
