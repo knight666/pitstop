@@ -9,7 +9,6 @@ namespace Logging {
 	Logger* Logger::s_Instance = nullptr;
 
 	Logger::Logger()
-		: m_Synchronized(false)
 	{
 		addSink(SinkPtr(new SinkFile("Pitstop.log")));
 	}
@@ -35,30 +34,6 @@ namespace Logging {
 		s_Instance = nullptr;
 	}
 
-	void Logger::synchronize()
-	{
-		if (m_Synchronized) { return; }
-
-		QMutexLocker locker(&m_Lock);
-
-		for (CachedMessage& cached : m_Cached)
-		{
-			for (Logging::SinkPtr& sink : m_Sinks)
-			{
-				sink->Write(
-					cached.level,
-					cached.module.constData(),
-					cached.timestamp.constData(),
-					cached.filename.constData(),
-					cached.line,
-					cached.message.constData());
-			}
-		}
-		m_Cached.clear();
-
-		m_Synchronized = true;
-	}
-
 	void Logger::addSink(Logging::SinkPtr a_Sink)
 	{
 		m_Sinks.push_back(a_Sink);
@@ -80,24 +55,9 @@ namespace Logging {
 			now->tm_min,
 			now->tm_sec);
 
-		if (m_Synchronized)
+		for (Logging::SinkPtr& sink : m_Sinks)
 		{
-			for (Logging::SinkPtr& sink : m_Sinks)
-			{
-				sink->Write(level, module, timestamp, filename, line, message);
-			}
-		}
-		else
-		{
-			CachedMessage cached;
-			cached.timestamp = timestamp;
-			cached.level = level;
-			cached.module = module;
-			cached.filename = filename;
-			cached.line = line;
-			cached.message = message;
-
-			m_Cached.push_back(cached);
+			sink->Write(level, module, timestamp, filename, line, message);
 		}
 	}
 
