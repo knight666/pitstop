@@ -27,6 +27,8 @@ namespace Pitstop {
 		RawInputJoystickPtr getJoystick() const;
 		RawInputJoystickPtr getJoystickByHandle(HANDLE device) const;
 
+		QVector<RawInputJoystickPtr> getJoysticks() const;
+
 		QSharedPointer<QImage> getJoystickThumbnail(uint16_t vendor, uint16_t product) const;
 
 		InputProcessorBase* createInputProcessor(RawInputJoystick& joystick);
