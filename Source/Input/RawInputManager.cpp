@@ -50,6 +50,8 @@ namespace Pitstop {
 			&device_count,
 			sizeof(RAWINPUTDEVICELIST));
 
+		PS_LOG_INFO(RawInput) << "Check " << device_count << " device(s).";
+
 		// Create devices
 
 		QVector<RAWINPUTDEVICE> device_list;
@@ -60,14 +62,13 @@ namespace Pitstop {
 
 			if (joystick != nullptr)
 			{
-				//if (joystick->getType() != RawInputJoystick::Type::XInput)
-				{
-					device_list.push_back(joystick->getDevice());
-				}
+				device_list.push_back(joystick->getDevice());
 
 				emit signalJoystickConnected(joystick, true);
 			}
 		}
+
+		PS_LOG_INFO(RawInput) << "Found " << device_list.size() << " joystick(s).";
 
 		// Register devices
 
@@ -79,6 +80,7 @@ namespace Pitstop {
 				sizeof(RAWINPUTDEVICE)) == FALSE)
 			{
 				DWORD errorCode = GetLastError();
+				PS_LOG_ERROR(RawInput) << "Failed to register raw input devices. (error: \"" << windowsErrorToString(errorCode) << "\" code: " << errorCode << ")";
 
 				return false;
 			}
@@ -140,17 +142,20 @@ namespace Pitstop {
 		}
 
 		HANDLE device = (HANDLE)lParam;
+		bool connected = wParam == GIDC_ARRIVAL;
 
 		// Find and update joystick
 
 		RawInputJoystickPtr joystick = createJoystick(device);
 		if (joystick != nullptr)
 		{
-			bool connected = wParam == GIDC_ARRIVAL;
-
 			joystick->setConnected(device, connected);
 
 			emit signalJoystickConnected(joystick, connected);
+		}
+		else
+		{
+			PS_LOG_INFO(RawInput) << "Device " << device << " was " << (connected ? "connected" : "disconnected") << ".";
 		}
 	}
 
@@ -226,7 +231,7 @@ namespace Pitstop {
 
 		return QString::fromUtf16(
 			&device_path_data[0],
-			device_path_data.size());
+			wcslen(&device_path_data[0]));
 	}
 
 	RawInputJoystickPtr RawInputManager::createJoystick(HANDLE device)
@@ -295,6 +300,12 @@ namespace Pitstop {
 				info,
 				device_path))
 			{
+				PS_LOG_INFO(RawInput) << "Joystick:";
+				PS_LOG_INFO(RawInput) << "- Description: \"" << joystick->getDescription() << "\"";
+				PS_LOG_INFO(RawInput) << "- Type: \"" << joystick->getType() << "\"";
+				PS_LOG_INFO(RawInput) << "- Path: \"" << joystick->getDevicePath() << "\"";
+				PS_LOG_INFO(RawInput) << "- Handle: " << joystick->getHandle() << "";
+
 				m_JoysticksByPath.insert(joystick_key, joystick);
 			}
 			else

@@ -12,6 +12,7 @@ namespace Pitstop {
 	{
 
 		Q_OBJECT
+		Q_ENUMS(Type)
 
 	public:
 
@@ -92,5 +93,15 @@ namespace Pitstop {
 	}; // class RawInputJoystick
 
 	typedef QSharedPointer<RawInputJoystick> RawInputJoystickPtr;
+
+	inline QTextStream& operator << (QTextStream& stream, const RawInputJoystick::Type& type)
+	{
+		int type_index = RawInputJoystick::staticMetaObject.indexOfEnumerator("Type");
+		QMetaEnum type_enum = RawInputJoystick::staticMetaObject.enumerator(type_index);
+
+		stream << type_enum.valueToKey((int)type);
+
+		return stream;
+	}
 
 }; // namespace Pitstop
