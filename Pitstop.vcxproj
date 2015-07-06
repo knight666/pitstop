@@ -119,6 +119,7 @@
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Application\MainWindow.cpp" />
     <ClCompile Include="Source\Application\Widgets\BindingsList.cpp" />
+    <ClCompile Include="Source\Base\Utils.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorBase.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorDualShock4.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorFFBWheel.cpp" />
@@ -150,6 +151,7 @@
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <ClInclude Include="Source\Base\Main.h" />
+    <ClInclude Include="Source\Base\Utils.h" />
     <ClInclude Include="Source\Input\Process\InputProcessorBase.h" />
     <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h" />
     <ClInclude Include="Source\Input\Process\InputProcessorFFBWheel.h" />

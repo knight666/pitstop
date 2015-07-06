@@ -92,6 +92,9 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_Logger.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Base\Utils.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -167,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="Source\Logging\SinkFile.h">
       <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Base\Utils.h">
+      <Filter>Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
