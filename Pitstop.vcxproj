@@ -88,6 +88,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_RawInputManager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_TabDevices.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_TabDevices.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_TabJoysticks.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
@@ -132,6 +138,12 @@
       <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
       <Outputs>.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
     </CustomBuild>
+    <CustomBuild Include="Source\Application\TabDevices.ui">
+      <Message>Uic%27ing %(Filename)%(Extension)...</Message>
+      <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+    </CustomBuild>
     <CustomBuild Include="Source\Application\TabJoysticks.ui">
       <Message>Uic%27ing %(Filename)%(Extension)...</Message>
       <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
@@ -142,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Application\MainWindow.cpp" />
+    <ClCompile Include="Source\Application\TabDevices.cpp" />
     <ClCompile Include="Source\Application\TabJoysticks.cpp" />
     <ClCompile Include="Source\Application\Widgets\BindingsList.cpp" />
     <ClCompile Include="Source\Application\Widgets\WidgetJoystick.cpp" />
@@ -164,6 +177,7 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_BindingsList.h" />
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h" />
+    <ClInclude Include="GeneratedFiles\ui_TabDevices.h" />
     <ClInclude Include="GeneratedFiles\ui_TabJoysticks.h" />
     <ClInclude Include="GeneratedFiles\ui_WidgetJoystick.h" />
     <CustomBuild Include="Source\Application\Widgets\BindingsList.h">
@@ -180,6 +194,12 @@
     </CustomBuild>
     <ClInclude Include="Source\Application\Application.h" />
     <CustomBuild Include="Source\Application\MainWindow.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\TabDevices.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
