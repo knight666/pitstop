@@ -28,6 +28,8 @@ namespace Pitstop {
 			return;
 		}
 
+		// Thumbnail
+
 		QSharedPointer<QImage> thumbnail = joystick.getThumbnail();
 
 		if (thumbnail != nullptr &&
@@ -37,13 +39,34 @@ namespace Pitstop {
 			m_Form.lblImage->adjustSize();
 		}
 
+		// Name
+
 		m_Form.lblName->setText(
-			QString("%1 [%2] (%3)")
-				.arg(m_Joystick->getDescription())
-				.arg(m_Joystick->getXinputIndex())
-				.arg(connected ? "CONNECTED" : "DISCONNECTED"));
+			QString("%1")
+				.arg(m_Joystick->getDescription()));
+
+		// Link
 
 		m_Form.btnLink->setDisabled(joystick.getType() == RawInputJoystick::Type::XInput);
+
+		// XInput
+
+		QString icon_resource = ":/Icons/Resources/";
+
+		if (connected)
+		{
+			icon_resource += "Connected-50.png";
+		}
+		else
+		{
+			icon_resource += "Disconnected-50.png";
+		}
+
+		m_Form.icoConnected->setPixmap(QPixmap(icon_resource));
+
+		m_Form.lblXinput->setText(
+			QString("%1")
+				.arg(m_Joystick->getXinputIndex()));
 	}
 
 }; // namespace Pitstop
