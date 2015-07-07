@@ -2,15 +2,16 @@
 
 #include "Base/Main.h"
 
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 
 #include "ui_MainWindow.h"
 
 namespace Pitstop {
 
-	class InputProcessorBase;
 	class RawInputJoystick;
+	class RawInputManager;
+	class UsbController;
+	class VirtualInputManager;
 
 	class MainWindow
 		: public QMainWindow
@@ -20,13 +21,19 @@ namespace Pitstop {
 
 	public:
 
-		MainWindow();
+		MainWindow(
+			RawInputManager& rawInput,
+			UsbController& usb,
+			VirtualInputManager& virtualInput);
 		~MainWindow();
 
 		void bindJoystick(RawInputJoystick& joystick);
-		void updateBindings();
 
 	private:
+
+		RawInputManager& m_RawInput;
+		UsbController& m_Usb;
+		VirtualInputManager& m_VirtualInput;
 
 		Ui_MainWindow m_Form;
 

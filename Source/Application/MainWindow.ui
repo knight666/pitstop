@@ -20,20 +20,27 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="tabDevices">
+      <widget class="Pitstop::TabDevices" name="tabDevices">
        <attribute name="title">
         <string>Devices</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
+       <layout class="QGridLayout" name="gridLayout_3"/>
+      </widget>
+      <widget class="QWidget" name="tabInfo">
+       <attribute name="title">
+        <string>Info</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0" colspan="2">
          <widget class="Pitstop::BindingsList" name="bindingsList" native="true"/>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tabJoysticks">
+      <widget class="Pitstop::TabJoysticks" name="tabJoysticks">
        <attribute name="title">
         <string>Joysticks</string>
        </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout"/>
       </widget>
      </widget>
     </item>
@@ -56,6 +63,18 @@
    <class>Pitstop::BindingsList</class>
    <extends>QWidget</extends>
    <header>Widgets/BindingsList.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Pitstop::TabJoysticks</class>
+   <extends>QWidget</extends>
+   <header>TabJoysticks.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Pitstop::TabDevices</class>
+   <extends>QWidget</extends>
+   <header>TabDevices.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

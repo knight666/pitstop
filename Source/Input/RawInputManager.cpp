@@ -1,5 +1,7 @@
 #include "Input/RawInputManager.h"
 
+#include <QtGui/QImage>
+
 #include "Input/Process/InputProcessorBase.h"
 #include "Input/RawInputJoystick.h"
 
@@ -7,24 +9,34 @@ namespace Pitstop {
 
 	RawInputManager::RawInputManager()
 		: m_Initialized(false)
+		, m_Window(NULL)
 	{
+		addThumbnailImage(0x045E, 0x028E, "/media/images/xbox-360-controller.png");
+		addThumbnailImage(0x045E, 0x02D1, "/media/images/xbox-one-controller.png");
 	}
 
 	RawInputManager::~RawInputManager()
 	{
 		PS_LOG_INFO(RawInput) << "Destroying raw input.";
 
-		m_Joysticks.clear();
+		m_JoysticksByHandle.clear();
+		m_JoysticksByPath.clear();
+		m_JoystickThumbnails.clear();
 	}
 
 	bool RawInputManager::initialize(HWND window)
 	{
 		PS_LOG_INFO(RawInput) << "Initializing raw input.";
 
+		m_Window = window;
+
 		QVector<RAWINPUTDEVICELIST> device_info_list;
 
 		UINT device_count = 0;
-		if (::GetRawInputDeviceList(nullptr, &device_count, sizeof(RAWINPUTDEVICELIST)) == (UINT)-1)
+		if (::GetRawInputDeviceList(
+			nullptr,
+			&device_count,
+			sizeof(RAWINPUTDEVICELIST)) == (UINT)-1)
 		{
 			DWORD errorCode = GetLastError();
 			PS_LOG_ERROR(RawInput) << "Failed to retrieve raw input device list. (error: \"" << windowsErrorToString(errorCode) << "\" code: " << errorCode << ")";
@@ -33,97 +45,44 @@ namespace Pitstop {
 		}
 
 		device_info_list.resize((int)device_count);
-		::GetRawInputDeviceList(&device_info_list[0], &device_count, sizeof(RAWINPUTDEVICELIST));
+		::GetRawInputDeviceList(
+			&device_info_list[0],
+			&device_count,
+			sizeof(RAWINPUTDEVICELIST));
+
+		PS_LOG_INFO(RawInput) << "Check " << device_count << " device(s).";
+
+		// Create devices
+
+		QVector<RAWINPUTDEVICE> device_list;
 
 		for (RAWINPUTDEVICELIST& device_info : device_info_list)
 		{
-			// Get device info
+			RawInputJoystickPtr joystick = createJoystick(device_info.hDevice);
 
-			RID_DEVICE_INFO info = { 0 };
-			info.cbSize = sizeof(RID_DEVICE_INFO);
-			if (::GetRawInputDeviceInfoW(
-				device_info.hDevice,
-				RIDI_DEVICEINFO,
-				&info,
-				(PUINT)&info.cbSize) == (UINT)-1)
+			if (joystick != nullptr)
 			{
-				continue;
-			}
+				device_list.push_back(joystick->getDevice());
 
-			// Get device name
-
-			UINT device_name_size = 0;
-			if (::GetRawInputDeviceInfoW(
-				device_info.hDevice,
-				RIDI_DEVICENAME,
-				nullptr,
-				&device_name_size) != 0)
-			{
-				continue;
-			}
-
-			QVector<ushort> device_name_data;
-			device_name_data.resize((int)device_name_size);
-			::GetRawInputDeviceInfoW(
-				device_info.hDevice,
-				RIDI_DEVICENAME,
-				&device_name_data[0],
-				&device_name_size);
-
-			QString device_name = QString::fromUtf16(&device_name_data[0], device_name_data.size() * sizeof(ushort));
-
-			// Only interested in joysticks
-
-			if (device_info.dwType != RIM_TYPEHID ||
-				device_name.indexOf("VID_") == -1 ||
-				device_name.indexOf("PID_") == -1)
-			{
-				continue;
-			}
-
-			RawInputJoystickPtr joystick(
-				new RawInputJoystick(
-					*this,
-					device_info.hDevice,
-					info,
-					window,
-					device_name));
-
-			if (joystick->setup())
-			{
-				m_Joysticks.insert(joystick->getHandle(), joystick);
-			}
-			else
-			{
-				joystick.clear();
+				emit signalJoystickConnected(joystick, true);
 			}
 		}
 
-		PS_LOG_INFO(RawInput) << "Found " << m_Joysticks.size() << " joysticks.";
+		PS_LOG_INFO(RawInput) << "Found " << device_list.size() << " joystick(s).";
 
-		if (m_Joysticks.size() > 0)
+		// Register devices
+
+		if (device_list.size() > 0)
 		{
-			size_t controller = 0;
-
-			// Register raw input devices
-
-			QVector<RAWINPUTDEVICE> device_list;
-			for (RawInputJoystickPtr joystick : m_Joysticks)
+			if (::RegisterRawInputDevices(
+				&device_list[0],
+				(UINT)device_list.size(),
+				sizeof(RAWINPUTDEVICE)) == FALSE)
 			{
-				if (joystick->getType() != RawInputJoystick::Type::XInput)
-				{
-					device_list.push_back(joystick->getDevice());
-				}
-			}
+				DWORD errorCode = GetLastError();
+				PS_LOG_ERROR(RawInput) << "Failed to register raw input devices. (error: \"" << windowsErrorToString(errorCode) << "\" code: " << errorCode << ")";
 
-			if (device_list.size() > 0)
-			{
-				if (::RegisterRawInputDevices(&device_list[0], (UINT)device_list.size(), sizeof(RAWINPUTDEVICE)) == FALSE)
-				{
-					DWORD errorCode = GetLastError();
-
-					return false;
-				}
+				return false;
 			}
 		}
 
@@ -183,116 +142,26 @@ namespace Pitstop {
 		}
 
 		HANDLE device = (HANDLE)lParam;
+		bool connected = wParam == GIDC_ARRIVAL;
 
-		// Match joystick by GUID
+		// Find and update joystick
 
-		if (wParam == GIDC_ARRIVAL)
+		RawInputJoystickPtr joystick = createJoystick(device);
+		if (joystick != nullptr)
 		{
-			// Check if the device is a Human Interface Device
+			joystick->setConnected(device, connected);
 
-			RID_DEVICE_INFO info = { 0 };
-			info.cbSize = sizeof(RID_DEVICE_INFO);
-			if (::GetRawInputDeviceInfoW(
-				device,
-				RIDI_DEVICEINFO,
-				&info,
-				(PUINT)&info.cbSize) == (UINT)-1 ||
-				info.dwType != RIM_TYPEHID)
-			{
-				return;
-			}
-
-			// Get device path
-
-			UINT device_path_size = 0;
-			if (::GetRawInputDeviceInfoW(
-				device,
-				RIDI_DEVICENAME,
-				nullptr,
-				&device_path_size) != 0)
-			{
-				return;
-			}
-
-			QVector<ushort> device_path_data;
-			device_path_data.resize((int)device_path_size);
-			::GetRawInputDeviceInfoW(
-				device,
-				RIDI_DEVICENAME,
-				&device_path_data[0],
-				&device_path_size);
-
-			QString device_path = QString::fromUtf16(
-				&device_path_data[0],
-				device_path_data.size() * sizeof(ushort));
-
-			// Only interested in joysticks
-
-			if (device_path.indexOf("VID_") == -1 ||
-				device_path.indexOf("PID_") == -1 )
-			{
-				return;
-			}
-
-			// Extract GUID
-
-			QRegExp extract_guid("(\\{.+\\})");
-			if (extract_guid.indexIn(device_path) < 0)
-			{
-				return;
-			}
-
-			GUID guid;
-			::CLSIDFromString(extract_guid.cap(1).utf16(), &guid);
-
-			// Update joystick
-
-			RawInputJoystickPtr joystick;
-
-			for (QHash<HANDLE, RawInputJoystickPtr>::iterator it = m_Joysticks.begin(); it != m_Joysticks.end(); ++it)
-			{
-				if (it.value()->getGuid() == guid &&
-					it.value()->getType() != RawInputJoystick::Type::XInput)
-				{
-					joystick = it.value();
-
-					m_Joysticks.insert(device, joystick);
-
-					break;
-				}
-			}
-
-			if (joystick != nullptr)
-			{
-				joystick->setConnected(device, true);
-			}
+			emit signalJoystickConnected(joystick, connected);
 		}
-		else if (wParam == GIDC_REMOVAL)
+		else
 		{
-			// Update joystick
-
-			RawInputJoystickPtr joystick;
-
-			for (QHash<HANDLE, RawInputJoystickPtr>::iterator it = m_Joysticks.begin(); it != m_Joysticks.end(); ++it)
-			{
-				if (it.value()->getHandle() == device)
-				{
-					joystick = it.value();
-
-					break;
-				}
-			}
-
-			if (joystick != nullptr)
-			{
-				joystick->setConnected(device, false);
-			}
+			PS_LOG_INFO(RawInput) << "Device " << device << " was " << (connected ? "connected" : "disconnected") << ".";
 		}
 	}
 
 	RawInputJoystickPtr RawInputManager::getJoystick() const
 	{
-		for (const RawInputJoystickPtr& joystick : m_Joysticks)
+		for (const RawInputJoystickPtr& joystick : m_JoysticksByHandle)
 		{
 			if (joystick->getType() != RawInputJoystick::Type::XInput)
 			{
@@ -305,8 +174,8 @@ namespace Pitstop {
 
 	RawInputJoystickPtr RawInputManager::getJoystickByHandle(HANDLE device) const
 	{
-		QHash<HANDLE, RawInputJoystickPtr>::const_iterator found = m_Joysticks.find(device);
-		if (found != m_Joysticks.end())
+		QHash<HANDLE, RawInputJoystickPtr>::const_iterator found = m_JoysticksByHandle.find(device);
+		if (found != m_JoysticksByHandle.end())
 		{
 			return found.value();
 		}
@@ -314,9 +183,35 @@ namespace Pitstop {
 		return RawInputJoystickPtr();
 	}
 
+	QVector<RawInputJoystickPtr> RawInputManager::getJoysticks() const
+	{
+		QVector<RawInputJoystickPtr> joysticks;
+
+		for (const RawInputJoystickPtr& joystick : m_JoysticksByPath)
+		{
+			joysticks.push_back(joystick);
+		}
+
+		return joysticks;
+	}
+
+	QSharedPointer<QImage> RawInputManager::getJoystickThumbnail(uint16_t vendor, uint16_t product) const
+	{
+		uint32_t key = (vendor << 16) | product;
+
+		QHash<uint32_t, QSharedPointer<QImage>>::const_iterator found = m_JoystickThumbnails.find(key);
+		if (found != m_JoystickThumbnails.end())
+		{
+			return found.value();
+		}
+
+		return QSharedPointer<QImage>();
+	}
+
 	InputProcessorBase* RawInputManager::createInputProcessor(RawInputJoystick& joystick)
 	{
 		uint32_t key = (joystick.getVendorIdentifier() << 16) | joystick.getProductIdentifier();
+
 		QHash<uint32_t, std::function<InputProcessorBase::FactoryMethod>>::iterator found = m_InputProcessorFactories.find(key);
 		if (found != m_InputProcessorFactories.end())
 		{
@@ -326,6 +221,147 @@ namespace Pitstop {
 		return nullptr;
 	}
 
+	QString RawInputManager::getDevicePath(HANDLE device)
+	{
+		UINT device_path_size = 0;
+		if (::GetRawInputDeviceInfoW(
+			device,
+			RIDI_DEVICENAME,
+			nullptr,
+			&device_path_size) != 0)
+		{
+			return QString();
+		}
+
+		QVector<ushort> device_path_data;
+		device_path_data.resize((int)device_path_size);
+		::GetRawInputDeviceInfoW(
+			device,
+			RIDI_DEVICENAME,
+			&device_path_data[0],
+			&device_path_size);
+
+		return QString::fromUtf16(
+			&device_path_data[0],
+			wcslen(&device_path_data[0]));
+	}
+
+	RawInputJoystickPtr RawInputManager::createJoystick(HANDLE device)
+	{
+		// Check if handle is already known
+
+		QHash<HANDLE, RawInputJoystickPtr>::iterator found_handle = m_JoysticksByHandle.find(device);
+		if (found_handle != m_JoysticksByHandle.end())
+		{
+			return found_handle.value();
+		}
+
+		// Check if the device is a Human Interface Device
+
+		RID_DEVICE_INFO info = { 0 };
+		info.cbSize = sizeof(RID_DEVICE_INFO);
+		if (::GetRawInputDeviceInfoW(
+			device,
+			RIDI_DEVICEINFO,
+			&info,
+			(PUINT)&info.cbSize) == (UINT)-1 ||
+			info.dwType != RIM_TYPEHID)
+		{
+			PS_LOG_ERROR(RawInput) << "Failed to retrieve properties from device " << device << ".";
+
+			return RawInputJoystickPtr();
+		}
+
+		// Get device path
+
+		QString device_path = getDevicePath(device);
+		if (device_path.isEmpty())
+		{
+			PS_LOG_ERROR(RawInput) << "Failed to retrieve path from device " << device << ".";
+
+			return RawInputJoystickPtr();
+		}
+
+		// Extract properties from device path
+
+		QRegExp match_path(
+			"\\\\\\\\?\\HID#"
+			"VID_([0-9A-Fa-f]+)"
+			"&PID_([0-9A-Fa-f]+)"
+			"(&([A-Za-z]+_?)([0-9A-Fa-f]+))?"
+			"(\\#[0-9A-Fa-f\\&]+\\#)"
+			"(\\{[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}\\})");
+
+		if (match_path.indexIn(device_path) < 0)
+		{
+			PS_LOG_ERROR(RawInput) << "Failed to extract properties from device path. (" << device_path << ")";
+
+			return RawInputJoystickPtr();
+		}
+
+		// Create unique joystick key from device path
+
+		QString joystick_key = device_path;
+
+		uint8_t device_xinput = (uint8_t)-1;
+
+		if (match_path.cap(3).size() > 0)
+		{
+			joystick_key.replace(match_path.cap(3), "");
+
+			if (match_path.cap(4) == "IG_")
+			{
+				// Extract XInput identifier
+
+				device_xinput = (uint8_t)match_path.cap(5).toUInt(nullptr, 16);
+			}
+		}
+
+		// Create joystick
+
+		RawInputJoystickPtr joystick;
+
+		QHash<QString, RawInputJoystickPtr>::iterator found_path = m_JoysticksByPath.find(joystick_key);
+		if (found_path != m_JoysticksByPath.end())
+		{
+			joystick = found_path.value();
+		}
+		else
+		{
+			joystick = RawInputJoystickPtr(
+				new RawInputJoystick(
+					*this,
+					m_Window));
+
+			if (joystick->setup(
+				device,
+				info,
+				device_path))
+			{
+				PS_LOG_INFO(RawInput) << "Joystick:";
+				PS_LOG_INFO(RawInput) << "- Description: \"" << joystick->getDescription() << "\"";
+				PS_LOG_INFO(RawInput) << "- Type: \"" << joystick->getType() << "\"";
+				PS_LOG_INFO(RawInput) << "- Path: \"" << joystick->getDevicePath() << "\"";
+				PS_LOG_INFO(RawInput) << "- Handle: " << joystick->getHandle() << "";
+
+				m_JoysticksByPath.insert(joystick_key, joystick);
+			}
+			else
+			{
+				joystick.clear();
+			}
+		}
+
+		if (joystick != nullptr)
+		{
+			joystick->setXinputIndex(device_xinput);
+
+			m_JoysticksByHandle.insert(device, joystick);
+		}
+
+		return joystick;
+	}
+
 	void RawInputManager::registerInputProcessor(uint16_t vendor, uint16_t product, InputProcessorBase::FactoryMethod method)
 	{
 		uint32_t key = (vendor << 16) | product;
@@ -333,14 +369,18 @@ namespace Pitstop {
 		m_InputProcessorFactories.insert(key, std::bind(method, std::placeholders::_1));
 	}
 
-	void RawInputManager::processInputMessage(const RAWINPUT& message, HANDLE device)
+	void RawInputManager::addThumbnailImage(uint16_t vendor, uint16_t product, const QString& thumbnailPath)
 	{
-		QHash<HANDLE, RawInputJoystickPtr>::iterator found = m_Joysticks.find(device);
-		if (found != m_Joysticks.end())
-		{
-			RawInputJoystickPtr& joystick = found.value();
+		uint32_t key = (vendor << 16) | product;
 
-			joystick->process(message);
+		QSharedPointer<QImage> thumbnail(new QImage);
+		if (thumbnail->load(QDir::currentPath() + thumbnailPath))
+		{
+			m_JoystickThumbnails.insert(key, thumbnail);
+		}
+		else
+		{
+			thumbnail.reset();
 		}
 	}
 

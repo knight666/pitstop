@@ -1,7 +1,5 @@
 #include "Input/VirtualInputDevice.h"
 
-#include "Input/RawInputJoystick.h"
-#include "INput/Usb/UsbDevice.h"
 #include "Input/VirtualInputManager.h"
 #include "Input/XInputState.h"
 
@@ -10,7 +8,6 @@ namespace Pitstop {
 	VirtualInputDevice::VirtualInputDevice(VirtualInputManager& manager, uint8_t index)
 		: m_Manager(manager)
 		, m_Index(index)
-		, m_Joystick(nullptr)
 		, m_Usb(nullptr)
 	{
 	}
@@ -26,18 +23,21 @@ namespace Pitstop {
 		return (m_Joystick != nullptr) ? m_Joystick->getHandle() : NULL;
 	}
 
-	void VirtualInputDevice::setJoystick(RawInputJoystick& joystick)
+	void VirtualInputDevice::setJoystick(RawInputJoystickPtr joystick)
 	{
-		connect(
-			&joystick, SIGNAL(signalJoystickInput(RawInputJoystick*, bool)),
-			this, SLOT(slotJoystickInput(RawInputJoystick*, bool)));
+		if (joystick != nullptr)
+		{
+			connect(
+				joystick.data(), SIGNAL(signalJoystickInput(RawInputJoystick*, bool)),
+				this, SLOT(slotJoystickInput(RawInputJoystick*, bool)));
+		}
 
-		m_Joystick = &joystick;
+		m_Joystick = joystick;
 	}
 
-	void VirtualInputDevice::setUsbDevice(UsbDevice& usb)
+	void VirtualInputDevice::setUsbDevice(UsbDevicePtr usb)
 	{
-		m_Usb = &usb;
+		m_Usb = usb;
 	}
 
 	void VirtualInputDevice::slotJoystickInput(RawInputJoystick* joystick, bool processed)

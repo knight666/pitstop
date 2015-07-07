@@ -21,7 +21,7 @@ namespace Pitstop {
 		, m_RawInput(new RawInputManager())
 		, m_UsbController(new UsbController())
 		, m_VirtualInput(new VirtualInputManager(*m_RawInput))
-		, m_MainWindow(new MainWindow())
+		, m_MainWindow(new MainWindow(*m_RawInput, *m_UsbController, *m_VirtualInput))
 	{
 		setApplicationName("Pitstop");
 
@@ -63,20 +63,6 @@ namespace Pitstop {
 			return false;
 		}
 
-		VirtualInputDevice* device = m_VirtualInput->getDeviceByIndex(0);
-
-		RawInputJoystickPtr joystick = m_RawInput->getJoystick();
-		if (joystick != nullptr)
-		{
-			device->setJoystick(*joystick);
-
-			UsbDevice* usb = m_UsbController->getDeviceByIndex(0);
-			usb->setPluggedIn(true);
-
-			device->setUsbDevice(*usb);
-
-			m_MainWindow->bindJoystick(*joystick);
-		}
 		m_MainWindow->show();
 
 		return exec();

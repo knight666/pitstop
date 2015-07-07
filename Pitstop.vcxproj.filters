@@ -65,6 +65,27 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputManager.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_RawInputJoystick.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_RawInputJoystick.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetJoystick.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetJoystick.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetJoystick.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Logging\Context.cpp">
       <Filter>Logging</Filter>
     </ClCompile>
@@ -94,6 +115,39 @@
     </ClCompile>
     <ClCompile Include="Source\Base\Utils.cpp">
       <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_TabJoysticks.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_TabJoysticks.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\TabJoysticks.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_TabDevices.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_TabDevices.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\TabDevices.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetDevice.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\qrc_Pitstop.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\qrc_Pitstop.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +213,12 @@
     <ClInclude Include="Source\Input\Process\InputProcessorFFBWheel.h">
       <Filter>Input\Process</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_WidgetJoystick.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_BindingsList.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Logging\Context.h">
       <Filter>Logging</Filter>
     </ClInclude>
@@ -173,6 +233,15 @@
     </ClInclude>
     <ClInclude Include="Source\Base\Utils.h">
       <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_TabJoysticks.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_TabDevices.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_WidgetDevice.h">
+      <Filter>GeneratedFiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -200,8 +269,33 @@
     <CustomBuild Include="Source\Input\VirtualInputDevice.h">
       <Filter>Input</Filter>
     </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.ui">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.h">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
     <CustomBuild Include="Source\Logging\Logger.h">
       <Filter>Logging</Filter>
     </CustomBuild>
+    <CustomBuild Include="Source\Application\TabJoysticks.h">
+      <Filter>Application</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\TabJoysticks.ui">
+      <Filter>Application</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\TabDevices.h">
+      <Filter>Application</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\TabDevices.ui">
+      <Filter>Application</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetDevice.h">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetDevice.ui">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Pitstop.qrc" />
   </ItemGroup>
 </Project>
