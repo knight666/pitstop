@@ -24,6 +24,8 @@ namespace Pitstop {
 			return;
 		}
 
+		PS_LOG_ERROR(UsbDevice) << "setPluggedIn identifier " << m_Identifier << " connected " << value;
+
 		QVector<uint8_t> input(16);
 		input[0] = 0x10;
 		input[4] = m_Identifier;
@@ -58,7 +60,8 @@ namespace Pitstop {
 			&written,
 			nullptr) == FALSE)
 		{
-			DWORD last_error = ::GetLastError();
+			DWORD last_error = GetLastError();
+			PS_LOG_ERROR(UsbDevice) << "Failed to execute command " << command << " on device " << m_Identifier << ". (error: \"" << windowsErrorToString(last_error) << "\" code: " << last_error << ")";
 
 			return false;
 		}

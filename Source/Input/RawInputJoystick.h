@@ -12,6 +12,7 @@ namespace Pitstop {
 	{
 
 		Q_OBJECT
+		Q_ENUMS(Type)
 
 	public:
 
@@ -21,11 +22,14 @@ namespace Pitstop {
 			XInput,
 		};
 
-		RawInputJoystick(RawInputManager& manager, HANDLE handle, const RID_DEVICE_INFO& info, HWND window, const QString& name);
+		RawInputJoystick(RawInputManager& manager, HWND window);
 		~RawInputJoystick();
 
 		bool isConnected() { return m_Connected; }
 		void setConnected(HANDLE handle, bool value);
+
+		uint8_t getXinputIndex() const { return m_XinputIndex; }
+		void setXinputIndex(uint8_t value) { m_XinputIndex = value; }
 
 		const QString& getDescription() const { return m_Description; }
 
@@ -45,16 +49,20 @@ namespace Pitstop {
 
 		const QString& getDevicePath() const { return m_DevicePath; }
 
-		const GUID& getGuid() const { return m_GUID; }
+		const GUID& getGuid() const { return m_Guid; }
+		const QString& getGuidString() const { return m_GuidString; }
 
-		InputProcessorBase* getInputProcessor() { return m_InputProcessor; }
+		InputProcessorBase* getInputProcessor() const { return m_InputProcessor; }
 
-		bool setup();
+		QSharedPointer<QImage> getThumbnail() const { return m_Thumbnail; }
+
+		bool setup(HANDLE handle, const RID_DEVICE_INFO& info, const QString& path);
 
 		bool process(const RAWINPUT& message);
 
 	signals:
 
+		void signalConnected(RawInputJoystick& joystick, bool connected);
 		void signalJoystickInput(RawInputJoystick* joystick, bool processed);
 
 	private:
@@ -67,6 +75,7 @@ namespace Pitstop {
 
 		RawInputManager& m_Manager;
 		bool m_Connected;
+		uint8_t m_XinputIndex;
 		QString m_Description;
 		QString m_Category;
 		Type m_Type;
@@ -76,11 +85,23 @@ namespace Pitstop {
 		RAWINPUTDEVICE m_Device;
 		RID_DEVICE_INFO m_Info;
 		QString m_DevicePath;
-		GUID m_GUID;
+		GUID m_Guid;
+		QString m_GuidString;
 		InputProcessorBase* m_InputProcessor;
+		QSharedPointer<QImage> m_Thumbnail;
 
 	}; // class RawInputJoystick
 
 	typedef QSharedPointer<RawInputJoystick> RawInputJoystickPtr;
+
+	inline QTextStream& operator << (QTextStream& stream, const RawInputJoystick::Type& type)
+	{
+		int type_index = RawInputJoystick::staticMetaObject.indexOfEnumerator("Type");
+		QMetaEnum type_enum = RawInputJoystick::staticMetaObject.enumerator(type_index);
+
+		stream << type_enum.valueToKey((int)type);
+
+		return stream;
+	}
 
 }; // namespace Pitstop

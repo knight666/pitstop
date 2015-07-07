@@ -1,13 +1,19 @@
 #include "Application/MainWindow.h"
 
-#include "Input/RawInputJoystick.h"
+#include "Input/RawInputManager.h"
 
 namespace Pitstop {
 
-	MainWindow::MainWindow()
+	MainWindow::MainWindow(RawInputManager& rawInput, UsbController& usb, VirtualInputManager& virtualInput)
 		: QMainWindow(nullptr, 0)
+		, m_RawInput(rawInput)
+		, m_Usb(usb)
+		, m_VirtualInput(virtualInput)
 	{
 		m_Form.setupUi(this);
+
+		m_Form.tabJoysticks->setup(rawInput);
+		m_Form.tabDevices->setup(rawInput, usb, virtualInput);
 	}
 
 	MainWindow::~MainWindow()

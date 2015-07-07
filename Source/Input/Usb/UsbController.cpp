@@ -1,5 +1,7 @@
 #include "Input/Usb/UsbController.h"
 
+#define MAX_USB_DEVICES 4
+
 namespace Pitstop {
 
 	UsbController::UsbController()
@@ -11,7 +13,7 @@ namespace Pitstop {
 	{
 		PS_LOG_INFO(UsbController) << "Destroying USB controller.";
 
-		qDeleteAll(m_Devices);
+		m_Devices.clear();
 
 		if (m_HubInfo != NULL)
 		{
@@ -20,9 +22,27 @@ namespace Pitstop {
 		}
 	}
 
-	UsbDevice* UsbController::getDeviceByIndex(uint8_t index)
+	UsbDevicePtr UsbController::createDevice()
 	{
-		return (index < m_Devices.size()) ? m_Devices[index] : nullptr;
+		UsbDevicePtr device;
+
+		if (m_Devices.size() < MAX_USB_DEVICES)
+		{
+			PS_LOG_INFO(Usb) << "Creating device " << m_Devices.size() << ".";
+
+			device = UsbDevicePtr(new UsbDevice(*this, (uint8_t)m_Devices.size() + 1));
+			m_Devices.push_back(device);
+		}
+
+		return device;
+	}
+
+	UsbDevicePtr UsbController::getDeviceByIndex(uint8_t index)
+	{
+		return
+			(index < m_Devices.size())
+				? m_Devices[index]
+				: UsbDevicePtr();
 	}
 
 	bool UsbController::initialize()
@@ -34,11 +54,13 @@ namespace Pitstop {
 
 		m_HubInfo = ::SetupDiGetClassDevsW(
 			&guid,
-			nullptr,
-			nullptr,
+			NULL,
+			NULL,
 			DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
 		if (m_HubInfo == NULL)
 		{
+			PS_LOG_ERROR(Usb) << "Failed to retrieve handle to virtual USB hub.";
+
 			return false;
 		}
 
@@ -52,6 +74,8 @@ namespace Pitstop {
 			0,
 			&device_interface_data) == FALSE)
 		{
+			PS_LOG_ERROR(Usb) << "Failed to initialize device interface.";
+
 			return false;
 		}
 
@@ -63,11 +87,13 @@ namespace Pitstop {
 		if (::SetupDiGetDeviceInterfaceDetailW(
 			m_HubInfo,
 			&device_interface_data,
-			nullptr,
+			NULL,
 			0,
 			&buffer_size,
 			&device_detail_data) == TRUE)
 		{
+			PS_LOG_ERROR(Usb) << "Failed to retrieve size of device interface.";
+
 			return false;
 		}
 
@@ -80,35 +106,58 @@ namespace Pitstop {
 		if (::SetupDiGetDeviceInterfaceDetailW(
 			m_HubInfo,
 			&device_interface_data,
-			(SP_DEVICE_INTERFACE_DETAIL_DATA_W*)&detail_data[0],
+			detail_data_ptr,
 			buffer_size,
 			&buffer_size,
 			&device_detail_data) == FALSE)
 		{
+			PS_LOG_ERROR(Usb) << "Failed to retrieve device interface data.";
+
 			return false;
 		}
 
-		m_HubPath = QString::fromUtf16((const ushort*)&detail_data_ptr->DevicePath[0]);
+		m_HubPath = QString::fromUtf16(
+			(const ushort*)&detail_data_ptr->DevicePath[0]);
 
 		m_HubHandle = ::CreateFileW(
 			m_HubPath.utf16(),
 			GENERIC_WRITE | GENERIC_READ,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,
-			nullptr,
+			NULL,
 			OPEN_EXISTING,
 			FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED,
-			0);
+			NULL);
 		if (m_HubHandle == NULL)
 		{
+			PS_LOG_ERROR(Usb) << "Failed to open handle to USB hub.";
+
 			return false;
 		}
 
-		for (size_t i = 0; i < 4; ++i)
-		{
-			UsbDevice* device = new UsbDevice(*this, (uint8_t)i + 1);
+		// Disconnect devices previously left dangling
 
-			m_Devices.push_back(device);
+		uint8_t input[16] = { 0 };
+		input[0] = 0x10;
+
+		for (uint8_t i = 0; i < MAX_USB_DEVICES; ++i)
+		{
+			input[4] = i;
+
+			DWORD written = 0;
+
+			if (::DeviceIoControl(
+				m_HubHandle,
+				0x002A4004,
+				input, 16,
+				nullptr, 0,
+				&written,
+				nullptr) != FALSE)
+			{
+				PS_LOG_INFO(Usb) << "Disconnecting dangling USB device " << i << ".";
+			}
 		}
+
+		PS_LOG_INFO(Usb) << "Initialized.";
 
 		return true;
 	}

@@ -17,7 +17,9 @@ namespace Pitstop {
 
 		HANDLE getHubHandle() const { return m_HubHandle; }
 
-		UsbDevice* getDeviceByIndex(uint8_t index);
+		UsbDevicePtr createDevice();
+
+		UsbDevicePtr getDeviceByIndex(uint8_t index);
 
 		bool initialize();
 
@@ -26,7 +28,7 @@ namespace Pitstop {
 		HDEVINFO m_HubInfo;
 		QString m_HubPath;
 		HANDLE m_HubHandle;
-		QVector<UsbDevice*> m_Devices;
+		QVector<UsbDevicePtr> m_Devices;
 
 	}; // class UsbController
 

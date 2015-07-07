@@ -9,33 +9,27 @@ namespace Pitstop {
 	VirtualInputManager::VirtualInputManager(RawInputManager& rawInput)
 		: m_RawInput(rawInput)
 	{
-		for (uint8_t i = 0; i < MAX_DEVICES; ++i)
-		{
-			m_Devices.push_back(new VirtualInputDevice(*this, i));
-		}
 	}
 
 	VirtualInputManager::~VirtualInputManager()
 	{
-		qDeleteAll(m_Devices);
+		m_Devices.clear();
 	}
 
-	VirtualInputDevice* VirtualInputManager::getDeviceByIndex(uint8_t index) const
+	VirtualInputDevicePtr VirtualInputManager::createDevice()
 	{
-		return (index < m_Devices.size()) ? m_Devices[index] : nullptr;
+		PS_LOG_INFO(VirtualInput) << "Creating device " << m_Devices.size() << ".";
+
+		VirtualInputDevicePtr device(new VirtualInputDevice(*this, m_Devices.size()));
+
+		m_Devices.push_back(device);
+
+		return device;
 	}
 
-	VirtualInputDevice* VirtualInputManager::getDeviceByHandle(HANDLE handle) const
+	VirtualInputDevicePtr VirtualInputManager::getDeviceByIndex(uint8_t index) const
 	{
-		for (VirtualInputDevice* device : m_Devices)
-		{
-			if (device->getJoystickHandle() == device)
-			{
-				return device;
-			}
-		}
-
-		return nullptr;
+		return (index < m_Devices.size()) ? m_Devices[index] : VirtualInputDevicePtr();
 	}
 
 }; // namespace Pitstop
