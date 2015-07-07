@@ -27,6 +27,10 @@ namespace Pitstop {
 			UsbController& usb,
 			VirtualInputManager& virtualInput);
 
+	public slots:
+
+		void on_btnAdd_pressed();
+
 	private:
 
 		Ui_TabDevices m_Form;

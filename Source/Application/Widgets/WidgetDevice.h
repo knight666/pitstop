@@ -23,12 +23,14 @@ namespace Pitstop {
 		void slotJoystickConnected(RawInputJoystickPtr joystick, bool connected);
 
 		void on_cmbJoystick_currentIndexChanged(int index);
+		void on_btnConnect_pressed();
 
 	private:
 
 		void setupDevice(VirtualInputDevicePtr device);
 		void updateJoysticks();
 		void updateThumbnail();
+		void updateConnection();
 
 	private:
 

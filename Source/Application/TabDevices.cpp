@@ -1,5 +1,6 @@
 #include "Application/TabDevices.h"
 
+#include "Input/Usb/UsbController.h"
 #include "Input/RawInputManager.h"
 #include "Input/VirtualInputManager.h"
 
@@ -28,8 +29,20 @@ namespace Pitstop {
 		m_UsbController = &usb;
 		m_RawInput = &rawInput;
 		m_VirtualInput = &virtualInput;
+	}
 
-		WidgetDevicePtr device_widget(new WidgetDevice(*m_RawInput, virtualInput.getDeviceByIndex(0), m_Form.scrlDevicesContents));
+	void TabDevices::on_btnAdd_pressed()
+	{
+		VirtualInputDevicePtr device = m_VirtualInput->createDevice();
+
+		UsbDevicePtr usb = m_UsbController->createDevice();
+		device->setUsbDevice(usb);
+
+		WidgetDevicePtr device_widget(
+			new WidgetDevice(
+				*m_RawInput,
+				device,
+				m_Form.scrlDevicesContents));
 
 		QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(m_Form.scrlDevicesContents->layout());
 		if (layout != nullptr)
