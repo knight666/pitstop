@@ -63,20 +63,6 @@ namespace Pitstop {
 			return false;
 		}
 
-		VirtualInputDevicePtr device = m_VirtualInput->createDevice();
-
-		RawInputJoystickPtr joystick = m_RawInput->getJoystick();
-		if (joystick != nullptr)
-		{
-			device->setJoystick(joystick);
-
-			UsbDevicePtr usb = m_UsbController->createDevice();
-			usb->setPluggedIn(true);
-
-			device->setUsbDevice(usb);
-
-			m_MainWindow->bindJoystick(*joystick);
-		}
 		m_MainWindow->show();
 
 		return exec();
