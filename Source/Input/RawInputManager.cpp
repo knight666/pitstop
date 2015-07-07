@@ -288,7 +288,7 @@ namespace Pitstop {
 			"\\\\\\\\?\\HID#"
 			"VID_([0-9A-Fa-f]+)"
 			"&PID_([0-9A-Fa-f]+)"
-			"(&(\\w+)_?([0-9A-Fa-f]+))?"
+			"(&([A-Za-z]+_?)([0-9A-Fa-f]+))?"
 			"(\\#[0-9A-Fa-f\\&]+\\#)"
 			"(\\{[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}\\})");
 
@@ -309,7 +309,7 @@ namespace Pitstop {
 		{
 			joystick_key.replace(match_path.cap(3), "");
 
-			if (match_path.cap(4) == "IG")
+			if (match_path.cap(4) == "IG_")
 			{
 				// Extract XInput identifier
 
