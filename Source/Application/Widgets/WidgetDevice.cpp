@@ -15,6 +15,7 @@ namespace Pitstop {
 
 		m_Form.setupUi(this);
 
+		updateConnection();
 		updateJoysticks();
 		updateThumbnail();
 	}
@@ -49,6 +50,22 @@ namespace Pitstop {
 		}
 
 		updateThumbnail();
+	}
+
+	void WidgetDevice::on_btnConnect_pressed()
+	{
+		if (m_Device == nullptr)
+		{
+			return;
+		}
+
+		UsbDevicePtr usb = m_Device->getUsbDevice();
+		if (usb != nullptr)
+		{
+			usb->setPluggedIn(!usb->isPluggedIn());
+		}
+
+		updateConnection();
 	}
 
 	void WidgetDevice::updateJoysticks()
@@ -93,6 +110,22 @@ namespace Pitstop {
 
 		m_Form.lblImage->setPixmap(thumbnail_image);
 		m_Form.lblImage->adjustSize();
+	}
+
+	void WidgetDevice::updateConnection()
+	{
+		UsbDevicePtr usb;
+
+		if (m_Device != nullptr)
+		{
+			usb = m_Device->getUsbDevice();
+		}
+
+		if (usb != nullptr)
+		{
+			m_Form.btnConnect->setText(usb->isPluggedIn() ? "Disconnect" : "Connect");
+		}
+		m_Form.btnConnect->setEnabled(usb != nullptr);
 	}
 
 }; // namespace Pitstop
