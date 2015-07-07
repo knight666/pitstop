@@ -143,6 +143,12 @@
     <ClCompile Include="Source\Application\Widgets\WidgetDevice.cpp">
       <Filter>Application\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\qrc_Pitstop.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\qrc_Pitstop.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -290,5 +296,6 @@
     <CustomBuild Include="Source\Application\Widgets\WidgetDevice.ui">
       <Filter>Application\Widgets</Filter>
     </CustomBuild>
+    <CustomBuild Include="Pitstop.qrc" />
   </ItemGroup>
 </Project>
