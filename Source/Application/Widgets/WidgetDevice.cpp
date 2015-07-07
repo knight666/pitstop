@@ -32,17 +32,20 @@ namespace Pitstop {
 
 	void WidgetDevice::on_cmbJoystick_currentIndexChanged(int index)
 	{
-		index--;
+		if (m_Device != nullptr)
+		{
+			index--;
 
-		QVector<RawInputJoystickPtr> joysticks = m_RawInput.getJoysticks();
-		if (index >= 0 &&
-			index < joysticks.size())
-		{
-			m_Device->setJoystick(joysticks[index]);
-		}
-		else
-		{
-			m_Device->setJoystick(RawInputJoystickPtr());
+			QVector<RawInputJoystickPtr> joysticks = m_RawInput.getJoysticks();
+			if (index >= 0 &&
+				index < joysticks.size())
+			{
+				m_Device->setJoystick(joysticks[index]);
+			}
+			else
+			{
+				m_Device->setJoystick(RawInputJoystickPtr());
+			}
 		}
 
 		updateThumbnail();
@@ -58,7 +61,8 @@ namespace Pitstop {
 		QVector<RawInputJoystickPtr> joysticks = m_RawInput.getJoysticks();
 		for (RawInputJoystickPtr& joystick : joysticks)
 		{
-			if (joystick == m_Device->getJoystick())
+			if (m_Device != nullptr &&
+				joystick == m_Device->getJoystick())
 			{
 				selected = items.size();
 			}
@@ -75,7 +79,8 @@ namespace Pitstop {
 	{
 		QPixmap thumbnail_image;
 
-		if (m_Device->getJoystick() != nullptr)
+		if (m_Device != nullptr &&
+			m_Device->getJoystick() != nullptr)
 		{
 			QSharedPointer<QImage> thumbnail = m_Device->getJoystick()->getThumbnail();
 

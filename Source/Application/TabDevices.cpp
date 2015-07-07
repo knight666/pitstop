@@ -29,8 +29,7 @@ namespace Pitstop {
 		m_RawInput = &rawInput;
 		m_VirtualInput = &virtualInput;
 
-		VirtualInputDevice* device = virtualInput.getDeviceByIndex(0);
-		WidgetDevicePtr device_widget(new WidgetDevice(*m_RawInput, VirtualInputDevicePtr(device), m_Form.scrlDevicesContents));
+		WidgetDevicePtr device_widget(new WidgetDevice(*m_RawInput, virtualInput.getDeviceByIndex(0), m_Form.scrlDevicesContents));
 
 		QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(m_Form.scrlDevicesContents->layout());
 		if (layout != nullptr)
