@@ -35,18 +35,15 @@ namespace Pitstop {
 	{
 		if (m_Device != nullptr)
 		{
-			index--;
+			RawInputJoystickPtr joystick;
 
-			QVector<RawInputJoystickPtr> joysticks = m_RawInput.getJoysticks();
-			if (index >= 0 &&
-				index < joysticks.size())
+			if (index >= 1 &&
+				index < m_Form.cmbJoystick->count())
 			{
-				m_Device->setJoystick(joysticks[index]);
+				QVariant joystick_handle = m_Form.cmbJoystick->currentData(index);
+				joystick = m_RawInput.getJoystickByHandle((HANDLE)joystick_handle.toUInt());
 			}
-			else
-			{
-				m_Device->setJoystick(RawInputJoystickPtr());
-			}
+			m_Device->setJoystick(joystick);
 		}
 
 		updateThumbnail();
@@ -70,25 +67,34 @@ namespace Pitstop {
 
 	void WidgetDevice::updateJoysticks()
 	{
+		int current = 0;
 		int selected = 0;
 
-		QStringList items;
-		items << "<None>";
+		m_Form.cmbJoystick->clear();
+		m_Form.cmbJoystick->addItem("<None>");
 
 		QVector<RawInputJoystickPtr> joysticks = m_RawInput.getJoysticks();
 		for (RawInputJoystickPtr& joystick : joysticks)
 		{
+			if (!joystick->isConnected() ||
+				joystick->getType() != RawInputJoystick::Type::Raw)
+			{
+				continue;
+			}
+
 			if (m_Device != nullptr &&
 				joystick == m_Device->getJoystick())
 			{
-				selected = items.size();
+				selected = current;
 			}
 
-			items << joystick->getDescription();
+			m_Form.cmbJoystick->addItem(
+				joystick->getDescription(),
+				QVariant((uint)joystick->getHandle()));
+
+			current++;
 		}
 
-		m_Form.cmbJoystick->clear();
-		m_Form.cmbJoystick->addItems(items);
 		m_Form.cmbJoystick->setCurrentIndex(selected);
 	}
 
