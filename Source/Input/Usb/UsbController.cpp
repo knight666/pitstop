@@ -26,7 +26,7 @@ namespace Pitstop {
 
 		if (m_Devices.size() < 4)
 		{
-			PS_LOG_INFO(Usb) << "Creating device " << m_Devices.size();
+			PS_LOG_INFO(Usb) << "Creating device " << m_Devices.size() << ".";
 
 			device = UsbDevicePtr(new UsbDevice(*this, (uint8_t)m_Devices.size() + 1));
 			m_Devices.push_back(device);

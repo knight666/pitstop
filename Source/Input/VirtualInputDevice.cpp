@@ -8,7 +8,6 @@ namespace Pitstop {
 	VirtualInputDevice::VirtualInputDevice(VirtualInputManager& manager, uint8_t index)
 		: m_Manager(manager)
 		, m_Index(index)
-		, m_Joystick(nullptr)
 		, m_Usb(nullptr)
 	{
 	}
