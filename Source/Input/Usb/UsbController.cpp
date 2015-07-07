@@ -1,5 +1,7 @@
 #include "Input/Usb/UsbController.h"
 
+#define MAX_USB_DEVICES 4
+
 namespace Pitstop {
 
 	UsbController::UsbController()
@@ -24,7 +26,7 @@ namespace Pitstop {
 	{
 		UsbDevicePtr device;
 
-		if (m_Devices.size() < 4)
+		if (m_Devices.size() < MAX_USB_DEVICES)
 		{
 			PS_LOG_INFO(Usb) << "Creating device " << m_Devices.size() << ".";
 
@@ -130,6 +132,29 @@ namespace Pitstop {
 			PS_LOG_ERROR(Usb) << "Failed to open handle to USB hub.";
 
 			return false;
+		}
+
+		// Disconnect devices previously left dangling
+
+		uint8_t input[16] = { 0 };
+		input[0] = 0x10;
+
+		for (uint8_t i = 0; i < MAX_USB_DEVICES; ++i)
+		{
+			input[4] = i;
+
+			DWORD written = 0;
+
+			if (::DeviceIoControl(
+				m_HubHandle,
+				0x002A4004,
+				input, 16,
+				nullptr, 0,
+				&written,
+				nullptr) != FALSE)
+			{
+				PS_LOG_INFO(Usb) << "Disconnecting dangling USB device " << i << ".";
+			}
 		}
 
 		PS_LOG_INFO(Usb) << "Initialized.";
