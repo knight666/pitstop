@@ -32,4 +32,26 @@ namespace Pitstop {
 		return (index < m_Devices.size()) ? m_Devices[index] : VirtualInputDevicePtr();
 	}
 
+	bool VirtualInputManager::serialize(QJsonObject& target, size_t version /*= SERIALIZATION_VERSION*/)
+	{
+		QJsonArray devices_array;
+		for (VirtualInputDevicePtr& device : m_Devices)
+		{
+			QJsonObject device_object;
+			if (device->serialize(device_object, version))
+			{
+				devices_array.push_back(device_object);
+			}
+		}
+
+		target["devices"] = devices_array;
+
+		return true;
+	}
+
+	bool VirtualInputManager::deserialize(const QJsonObject& source, size_t version /*= SERIALIZATION_VERSION*/)
+	{
+		return true;
+	}
+
 }; // namespace Pitstop

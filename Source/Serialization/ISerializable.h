@@ -14,8 +14,8 @@ namespace Pitstop
 
 		virtual ~ISerializable() {}
 
-		virtual bool Serialize(QJsonObject& target, size_t version = SERIALIZATION_VERSION) = 0;
-		virtual bool Deserialize(const QJsonObject& source, size_t version = SERIALIZATION_VERSION) = 0;
+		virtual bool serialize(QJsonObject& target, size_t version = SERIALIZATION_VERSION) = 0;
+		virtual bool deserialize(const QJsonObject& source, size_t version = SERIALIZATION_VERSION) = 0;
 
 	}; // class ISerializable
 

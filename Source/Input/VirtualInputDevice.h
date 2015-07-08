@@ -33,8 +33,8 @@ namespace Pitstop {
 		const UsbDevicePtr& getUsbDevice() const { return m_Usb; }
 		void setUsbDevice(UsbDevicePtr usb);
 
-		virtual bool Serialize(QJsonObject& target, size_t version = SERIALIZATION_VERSION) override;
-		virtual bool Deserialize(const QJsonObject& source, size_t version = SERIALIZATION_VERSION) override;
+		virtual bool serialize(QJsonObject& target, size_t version = SERIALIZATION_VERSION) override;
+		virtual bool deserialize(const QJsonObject& source, size_t version = SERIALIZATION_VERSION) override;
 
 	public slots:
 
