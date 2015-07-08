@@ -22,6 +22,11 @@ namespace Pitstop {
 		Application(int& argc, char** argv, int flags = ApplicationFlags);
 		~Application();
 
+		static Application& get();
+
+		bool saveConfiguration();
+		bool loadConfiguration();
+
 		int run();
 
 	private:
@@ -30,6 +35,7 @@ namespace Pitstop {
 
 	private:
 
+		static Application* s_Instance;
 		RawInputManager* m_RawInput;
 		UsbController* m_UsbController;
 		VirtualInputManager* m_VirtualInput;

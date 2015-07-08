@@ -16,6 +16,8 @@ namespace Pitstop {
 		UsbDevice(UsbController& controller, uint8_t identifier);
 		~UsbDevice();
 
+		uint8_t getIdentifier() const { return m_Identifier; }
+
 		bool isPluggedIn() const { return m_PluggedIn; }
 		void setPluggedIn(bool value);
 
