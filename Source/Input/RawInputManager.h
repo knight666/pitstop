@@ -23,8 +23,12 @@ namespace Pitstop {
 		void processInput(LPARAM lParam, WPARAM wParam);
 		void processConnectionChanged(LPARAM lParam, WPARAM wParam);
 
+		RawInputJoystickPtr createJoystick(const QString& devicePath);
+		RawInputJoystickPtr createJoystick(HANDLE device);
+
 		// TEMP
 		RawInputJoystickPtr getJoystick() const;
+
 		RawInputJoystickPtr getJoystickByHandle(HANDLE device) const;
 
 		QVector<RawInputJoystickPtr> getJoysticks() const;
@@ -50,7 +54,6 @@ namespace Pitstop {
 	private:
 
 		QString getDevicePath(HANDLE device);
-		RawInputJoystickPtr createJoystick(HANDLE device);
 		void registerInputProcessor(uint16_t vendor, uint16_t product, InputProcessorBase::FactoryMethod method);
 		void addThumbnailImage(uint16_t vendor, uint16_t product, const QString& thumbnailPath);
 

@@ -22,6 +22,24 @@ namespace Pitstop {
 		m_Device.hwndTarget = window;
 	}
 
+	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HWND window, const QString& devicePath, const QString& uniquePath, Type type, uint16_t vendor, uint16_t product, const GUID& guid)
+		: m_Manager(manager)
+		, m_DevicePath(devicePath)
+		, m_UniquePath(uniquePath)
+		, m_Description(devicePath)
+		, m_Type(type)
+		, m_VendorIdentifier(vendor)
+		, m_ProductIdentifier(product)
+		, m_Guid(guid)
+		, m_XinputIndex((uint8_t)-1)
+		, m_Connected(false)
+		, m_Handle(NULL)
+		, m_InputProcessor(nullptr)
+	{
+		memset(&m_Device, 0, sizeof(m_Device));
+		m_Device.hwndTarget = window;
+	}
+
 	RawInputJoystick::~RawInputJoystick()
 	{
 		delete m_InputProcessor;
@@ -49,55 +67,32 @@ namespace Pitstop {
 		emit signalConnected(*this, m_Connected);
 	}
 
-	bool RawInputJoystick::setup(HANDLE handle, const RID_DEVICE_INFO& info, const QString& path)
+	QString RawInputJoystick::getGuidString() const
 	{
-		m_Connected = false;
+		OLECHAR* guid_string_data;
+		::StringFromCLSID(m_Guid, &guid_string_data);
+		QString result = QString::fromUtf16(guid_string_data);
+		::CoTaskMemFree(guid_string_data);
+
+		return result;
+	}
+
+	bool RawInputJoystick::setup(HANDLE handle, const RID_DEVICE_INFO& info)
+	{
 		m_Handle = handle;
+		m_Connected = false;
 
 		m_Info = info;
 		m_Device.usUsagePage = info.hid.usUsagePage;
 		m_Device.usUsage = info.hid.usUsage;
 
-		m_DevicePath = path;
-		m_Description = path;
-
-		// Extract GUID
-
-		QRegExp extract_guid("(\\{.+\\})");
-		if (extract_guid.indexIn(m_DevicePath) < 0)
-		{
-			return false;
-		}
-
-		m_GuidString = extract_guid.cap(1);
-		::CLSIDFromString(m_GuidString.utf16(), &m_Guid);
-
-		// Extract VID and PID
-
-		QRegExp extract_info("VID_([A-Fa-f0-9]+)&PID_([A-Fa-f0-9]+)");
-		if (extract_info.indexIn(m_DevicePath) < 0)
-		{
-			return false;
-		}
-
-		QString vid = extract_info.cap(1);
-		m_VendorIdentifier = vid.toInt(nullptr, 16);
-
-		QString pid = extract_info.cap(2);
-		m_ProductIdentifier = pid.toInt(nullptr, 16);
+		m_Description = m_DevicePath;
 
 		// Check if managed by XInput
 
 		m_Device.dwFlags = RIDEV_DEVNOTIFY;
-
-		if (m_DevicePath.indexOf("IG_") >= 0)
+		if (m_Type == Type::Raw)
 		{
-			m_Type = Type::XInput;
-		}
-		else
-		{
-			m_Type = Type::Raw;
-
 			// Ensure input is received even when the window loses focus
 
 			m_Device.dwFlags |= RIDEV_INPUTSINK;
@@ -107,7 +102,7 @@ namespace Pitstop {
 
 		retrieveFromRegistry(
 			m_Category,
-			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + m_GuidString,
+			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + getGuidString(),
 			"Category");
 
 		// Get translated name
@@ -115,7 +110,7 @@ namespace Pitstop {
 		bool translated = false;
 
 		HANDLE hid_handle = ::CreateFileW(
-			path.utf16(),
+			m_DevicePath.utf16(),
 			GENERIC_READ | GENERIC_WRITE,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,
 			NULL,
@@ -134,9 +129,7 @@ namespace Pitstop {
 
 			if (translated)
 			{
-				m_Description = QString::fromUtf16(
-					&device_name_data[0],
-					(int)wcslen((const wchar_t*)&device_name_data[0]));
+				m_Description = QString::fromUtf16(&device_name_data[0]);
 
 				translated = !m_Description.isEmpty();
 			}
@@ -209,22 +202,38 @@ namespace Pitstop {
 	bool RawInputJoystick::retrieveFromRegistry(QString& target, const QString& path, const QString& keyName)
 	{
 		HKEY key = NULL;
-		if (::RegOpenKeyExW(HKEY_LOCAL_MACHINE, (const wchar_t*)path.utf16(), 0, KEY_READ | KEY_WOW64_64KEY, &key) != ERROR_SUCCESS)
+		if (::RegOpenKeyExW(
+			HKEY_LOCAL_MACHINE,
+			(const wchar_t*)path.utf16(),
+			0,
+			KEY_READ | KEY_WOW64_64KEY,
+			&key) != ERROR_SUCCESS)
 		{
 			return false;
 		}
 
 		DWORD length = 0;
-		if (::RegQueryValueExW(key, (const wchar_t*)keyName.utf16(), nullptr, nullptr, nullptr, &length) != ERROR_SUCCESS)
+		if (::RegQueryValueExW(
+			key,
+			(const wchar_t*)keyName.utf16(),
+			nullptr,
+			nullptr,
+			nullptr,
+			&length) != ERROR_SUCCESS)
 		{
 			return false;
 		}
 
-		QVector<ushort> data;
-		data.resize((int)length);
-		::RegQueryValueExW(key, (const wchar_t*)keyName.utf16(), nullptr, nullptr, (BYTE*)&data[0], &length);
+		QVector<ushort> data((int)length);
+		::RegQueryValueExW(
+			key,
+			(const wchar_t*)keyName.utf16(),
+			nullptr,
+			nullptr,
+			(BYTE*)&data[0],
+			&length);
 
-		target = QString::fromUtf16(&data[0], (int)length);
+		target = QString::fromUtf16(&data[0]);
 
 		return true;
 	}
