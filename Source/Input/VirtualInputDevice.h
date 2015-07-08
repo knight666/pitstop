@@ -4,6 +4,7 @@
 #include "Input/Process/InputProcessorBase.h"
 #include "Input/Usb/UsbDevice.h"
 #include "Input/RawInputJoystick.h"
+#include "Serialization/ISerializable.h"
 
 namespace Pitstop {
 
@@ -12,6 +13,7 @@ namespace Pitstop {
 
 	class VirtualInputDevice
 		: public QObject
+		, public ISerializable
 	{
 
 		Q_OBJECT
@@ -30,6 +32,9 @@ namespace Pitstop {
 
 		const UsbDevicePtr& getUsbDevice() const { return m_Usb; }
 		void setUsbDevice(UsbDevicePtr usb);
+
+		virtual bool Serialize(QJsonObject& target, size_t version = SERIALIZATION_VERSION) override;
+		virtual bool Deserialize(const QJsonObject& source, size_t version = SERIALIZATION_VERSION) override;
 
 	public slots:
 

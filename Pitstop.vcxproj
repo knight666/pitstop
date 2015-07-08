@@ -286,6 +286,7 @@
     </CustomBuild>
     <ClInclude Include="Source\Logging\Sink.h" />
     <ClInclude Include="Source\Logging\SinkFile.h" />
+    <ClInclude Include="Source\Serialization\ISerializable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

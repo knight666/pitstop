@@ -181,6 +181,9 @@
     <Filter Include="Logging">
       <UniqueIdentifier>{9f28b14d-0745-49a0-bf84-936424ac99d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Serialization">
+      <UniqueIdentifier>{b6e2eb6f-8f7a-4236-8937-5aa55ad614cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Base\Main.h">
@@ -242,6 +245,9 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_WidgetDevice.h">
       <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Serialization\ISerializable.h">
+      <Filter>Serialization</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
