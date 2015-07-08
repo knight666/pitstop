@@ -40,6 +40,16 @@ namespace Pitstop {
 		m_Usb = usb;
 	}
 
+	bool VirtualInputDevice::Serialize(QJsonObject& target, size_t version /*= SERIALIZATION_VERSION*/)
+	{
+		return true;
+	}
+
+	bool VirtualInputDevice::Deserialize(const QJsonObject& source, size_t version /*= SERIALIZATION_VERSION*/)
+	{
+		return true;
+	}
+
 	void VirtualInputDevice::slotJoystickInput(RawInputJoystick* joystick, bool processed)
 	{
 		if (joystick != m_Joystick ||
