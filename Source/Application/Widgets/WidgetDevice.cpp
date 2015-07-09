@@ -14,6 +14,14 @@ namespace Pitstop {
 			&m_RawInput, SIGNAL(signalJoystickConnected(RawInputJoystickPtr, bool)),
 			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
 
+		connect(
+			device.data(), SIGNAL(signalJoystickChanged(RawInputJoystickPtr)),
+			this, SLOT(slotJoystickChanged(RawInputJoystickPtr)));
+
+		connect(
+			device.data(), SIGNAL(signalUsbDeviceChanged(UsbDevicePtr)),
+			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+
 		m_Form.setupUi(this);
 
 		updateConnection();
@@ -24,12 +32,45 @@ namespace Pitstop {
 	WidgetDevice::~WidgetDevice()
 	{
 		disconnect(
+			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+
+		disconnect(
+			this, SLOT(signalJoystickChanged(RawInputJoystickPtr)));
+
+		disconnect(
 			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
 	}
 
 	void WidgetDevice::slotJoystickConnected(RawInputJoystickPtr joystick, bool connected)
 	{
 		updateJoysticks();
+	}
+
+	void WidgetDevice::slotJoystickChanged(RawInputJoystickPtr joystick)
+	{
+		int selected = 0;
+
+		for (int i = 0; i < m_Form.cmbJoystick->count(); ++i)
+		{
+			QVariant item_data = m_Form.cmbJoystick->itemData(i);
+			if (item_data.isValid())
+			{
+				HANDLE item_joystick = (HANDLE)item_data.toUInt();
+				if (item_joystick == m_Device->getJoystickHandle())
+				{
+					selected = i;
+
+					break;
+				}
+			}
+		}
+
+		m_Form.cmbJoystick->setCurrentIndex(selected);
+	}
+
+	void WidgetDevice::slotUsbDeviceChanged(UsbDevicePtr usb)
+	{
+		updateConnection();
 	}
 
 	void WidgetDevice::on_cmbJoystick_currentIndexChanged(int index)
@@ -69,8 +110,10 @@ namespace Pitstop {
 
 	void WidgetDevice::updateJoysticks()
 	{
-		int current = 0;
 		int selected = 0;
+		int current = 1;
+
+		bool previous = m_Form.cmbJoystick->blockSignals(true);
 
 		m_Form.cmbJoystick->clear();
 		m_Form.cmbJoystick->addItem("<None>");
@@ -96,6 +139,8 @@ namespace Pitstop {
 
 			current++;
 		}
+
+		m_Form.cmbJoystick->blockSignals(previous);
 
 		m_Form.cmbJoystick->setCurrentIndex(selected);
 	}

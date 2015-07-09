@@ -20,6 +20,8 @@ namespace Pitstop {
 
 	TabDevices::~TabDevices()
 	{
+		disconnect(
+			this, SLOT(slotVirtualDeviceCreated(VirtualInputDevicePtr)));
 	}
 
 	void TabDevices::setup(
@@ -27,23 +29,30 @@ namespace Pitstop {
 		UsbController& usb,
 		VirtualInputManager& virtualInput)
 	{
-		m_UsbController = &usb;
 		m_RawInput = &rawInput;
+
+		m_UsbController = &usb;
+
 		m_VirtualInput = &virtualInput;
+
+		connect(
+			m_VirtualInput, SIGNAL(signalVirtualDeviceCreated(VirtualInputDevicePtr)),
+			this, SLOT(slotVirtualDeviceCreated(VirtualInputDevicePtr)));
 	}
 
 	void TabDevices::on_btnAdd_pressed()
 	{
 		VirtualInputDevicePtr device = m_VirtualInput->createDevice();
+		device->setUsbDevice(m_UsbController->createDevice());
+	}
 
-		UsbDevicePtr usb = m_UsbController->createDevice();
-		device->setUsbDevice(usb);
-
+	void TabDevices::slotVirtualDeviceCreated(VirtualInputDevicePtr device)
+	{
 		WidgetDevicePtr device_widget(
 			new WidgetDevice(
-				*m_RawInput,
-				device,
-				m_Form.scrlDevicesContents));
+			*m_RawInput,
+			device,
+			m_Form.scrlDevicesContents));
 
 		QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(m_Form.scrlDevicesContents->layout());
 		if (layout != nullptr)

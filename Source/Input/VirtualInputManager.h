@@ -30,6 +30,10 @@ namespace Pitstop {
 		virtual bool serialize(QJsonObject& target, size_t version) override;
 		virtual bool deserialize(const QJsonObject& source, size_t version) override;
 
+	signals:
+
+		void signalVirtualDeviceCreated(VirtualInputDevicePtr device);
+
 	private:
 
 		RawInputManager& m_RawInput;

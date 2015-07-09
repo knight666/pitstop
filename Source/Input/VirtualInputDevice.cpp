@@ -52,6 +52,7 @@ namespace Pitstop {
 
 		m_Joystick = joystick;
 
+		emit signalJoystickChanged(m_Joystick);
 		emit signalSaveConfiguration();
 	}
 
@@ -64,6 +65,7 @@ namespace Pitstop {
 
 		m_Usb = usb;
 
+		emit signalUsbDeviceChanged(m_Usb);
 		emit signalSaveConfiguration();
 	}
 

@@ -22,6 +22,9 @@ namespace Pitstop {
 
 		void slotJoystickConnected(RawInputJoystickPtr joystick, bool connected);
 
+		void slotJoystickChanged(RawInputJoystickPtr joystick);
+		void slotUsbDeviceChanged(UsbDevicePtr usb);
+
 		void on_cmbJoystick_currentIndexChanged(int index);
 		void on_btnConnect_pressed();
 
