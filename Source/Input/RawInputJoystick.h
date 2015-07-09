@@ -22,7 +22,7 @@ namespace Pitstop {
 			XInput,
 		};
 
-		RawInputJoystick(RawInputManager& manager, HWND window, const QString& devicePath, const QString& uniquePath, Type type, uint16_t vendor, uint16_t product, const GUID& guid);
+		RawInputJoystick(RawInputManager& manager, HWND window);
 		~RawInputJoystick();
 
 		bool isConnected() { return m_Connected; }
@@ -57,7 +57,8 @@ namespace Pitstop {
 
 		QSharedPointer<QImage> getThumbnail() const { return m_Thumbnail; }
 
-		bool setup(HANDLE handle, const RID_DEVICE_INFO& info);
+		bool setup(const QString& devicePath);
+		bool initialize(HANDLE handle, const RID_DEVICE_INFO& info);
 
 		bool process(const RAWINPUT& message);
 
