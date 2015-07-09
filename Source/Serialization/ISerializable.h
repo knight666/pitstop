@@ -2,7 +2,7 @@
 
 #include "Base/Main.h"
 
-#define SERIALIZATION_VERSION 1
+#define SERIALIZATION_VERSION 2
 
 namespace Pitstop
 {

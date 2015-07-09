@@ -22,7 +22,6 @@ namespace Pitstop {
 			XInput,
 		};
 
-		RawInputJoystick(RawInputManager& manager, HWND window);
 		RawInputJoystick(RawInputManager& manager, HWND window, const QString& devicePath, const QString& uniquePath, Type type, uint16_t vendor, uint16_t product, const GUID& guid);
 		~RawInputJoystick();
 
@@ -49,6 +48,8 @@ namespace Pitstop {
 		const RID_DEVICE_INFO_HID& getInfo() const { return m_Info.hid; }
 
 		const QString& getDevicePath() const { return m_DevicePath; }
+
+		const QString& getUniquePath() const { return m_UniquePath; }
 
 		const GUID& getGuid() const { return m_Guid; }
 

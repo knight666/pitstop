@@ -8,20 +8,6 @@
 
 namespace Pitstop {
 
-	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HWND window)
-		: m_Manager(manager)
-		, m_XinputIndex((uint8_t)-1)
-		, m_Connected(false)
-		, m_VendorIdentifier(0)
-		, m_ProductIdentifier(0)
-		, m_Handle(NULL)
-		, m_Type(Type::Raw)
-		, m_InputProcessor(nullptr)
-	{
-		memset(&m_Device, 0, sizeof(m_Device));
-		m_Device.hwndTarget = window;
-	}
-
 	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HWND window, const QString& devicePath, const QString& uniquePath, Type type, uint16_t vendor, uint16_t product, const GUID& guid)
 		: m_Manager(manager)
 		, m_DevicePath(devicePath)
