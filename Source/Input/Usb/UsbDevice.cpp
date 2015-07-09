@@ -32,9 +32,12 @@ namespace Pitstop {
 
 		QVector<uint8_t> output;
 
-		write(value ? 0x002A4000 : 0x002A4004, input, output);
+		if (write(value ? 0x002A4000 : 0x002A4004, input, output))
+		{
+			emit signalConnectionChanged(value);
 
-		m_Connected = value;
+			m_Connected = value;
+		}
 	}
 
 	bool UsbDevice::write(DWORD command, QVector<uint8_t>& input, QVector<uint8_t>& output)
