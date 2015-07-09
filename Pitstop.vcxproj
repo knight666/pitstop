@@ -118,6 +118,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_TabJoysticks.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UsbDevice.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UsbDevice.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputDevice.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
@@ -270,7 +276,12 @@
     <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h" />
     <ClInclude Include="Source\Input\Process\InputProcessorFFBWheel.h" />
     <ClInclude Include="Source\Input\Usb\UsbController.h" />
-    <ClInclude Include="Source\Input\Usb\UsbDevice.h" />
+    <CustomBuild Include="Source\Input\Usb\UsbDevice.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
     <CustomBuild Include="Source\Input\RawInputJoystick.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

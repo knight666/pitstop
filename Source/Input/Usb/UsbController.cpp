@@ -4,8 +4,9 @@
 
 namespace Pitstop {
 
-	UsbController::UsbController()
-		: m_HubInfo(NULL)
+	UsbController::UsbController(QSharedPointer<ConfigurationManager> configuration)
+		: m_Configuration(configuration)
+		, m_HubInfo(NULL)
 	{
 	}
 
@@ -36,7 +37,11 @@ namespace Pitstop {
 
 			PS_LOG_INFO(UsbController) << "Creating device " << identifier << ".";
 
-			device = UsbDevicePtr(new UsbDevice(*this, identifier));
+			device = UsbDevicePtr(new UsbDevice(
+				m_Configuration,
+				*this,
+				identifier));
+
 			m_Devices.push_back(device);
 		}
 

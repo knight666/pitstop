@@ -33,6 +33,13 @@ namespace Pitstop {
 			device.data(), SIGNAL(signalUsbDeviceChanged(UsbDevicePtr)),
 			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
 
+		if (device->getUsbDevice() != nullptr)
+		{
+			connect(
+				device->getUsbDevice().data(), SIGNAL(signalConnectionChanged(bool)),
+				this, SLOT(slotUsbDeviceConnectionChanged(bool)));
+		}
+
 		m_Form.setupUi(this);
 
 		updateConnection();
@@ -42,6 +49,9 @@ namespace Pitstop {
 
 	WidgetDevice::~WidgetDevice()
 	{
+		disconnect(
+			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+
 		disconnect(
 			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
 
@@ -93,6 +103,27 @@ namespace Pitstop {
 	}
 
 	void WidgetDevice::slotUsbDeviceChanged(UsbDevicePtr usb)
+	{
+		UsbDevice* device = qobject_cast<UsbDevice*>(sender());
+
+		disconnect(
+			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+
+		connect(
+			device, SIGNAL(signalUsbDeviceChanged(UsbDevicePtr)),
+			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+
+		disconnect(
+			this, SLOT(slotUsbDeviceConnectionChanged(bool)));
+
+		connect(
+			usb.data(), SIGNAL(signalConnectionChanged(bool)),
+			this, SLOT(slotUsbDeviceConnectionChanged(bool)));
+
+		updateConnection();
+	}
+
+	void WidgetDevice::slotUsbDeviceConnectionChanged(bool connected)
 	{
 		updateConnection();
 	}

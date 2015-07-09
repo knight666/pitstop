@@ -176,6 +176,12 @@
     <ClCompile Include="Source\Serialization\ConfigurationEventDispatcher.cpp">
       <Filter>Serialization</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UsbDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UsbDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -229,9 +235,6 @@
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\Usb\UsbController.h">
-      <Filter>Input\Usb</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\Usb\UsbDevice.h">
       <Filter>Input\Usb</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\Process\InputProcessorBase.h">
@@ -338,6 +341,9 @@
     </CustomBuild>
     <CustomBuild Include="Source\Serialization\ConfigurationEventDispatcher.h">
       <Filter>Serialization</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\Usb\UsbDevice.h">
+      <Filter>Input\Usb</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
