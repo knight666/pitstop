@@ -19,6 +19,52 @@ namespace Pitstop {
 		m_Installed.clear();
 	}
 
+	void ConfigurationManager::addEventDispatcher(ConfigurationEventDispatcher& eventDispatcher)
+	{
+		for (QVector<ConfigurationEventDispatcher*>::iterator it = m_EventDispatchers.begin(); it != m_EventDispatchers.end(); ++it)
+		{
+			if (*it == &eventDispatcher)
+			{
+				PS_LOG_WARN(ConfigurationManager) << "Event dispatcher was already installed.";
+
+				return;
+			}
+		}
+
+		connect(
+			&eventDispatcher, SIGNAL(signalSaveConfiguration()),
+			this, SLOT(slotSaveConfiguration()));
+
+		connect(
+			&eventDispatcher, SIGNAL(signalLoadConfiguration()),
+			this, SLOT(slotLoadConfiguration()));
+
+		m_EventDispatchers.push_back(&eventDispatcher);
+	}
+
+	void ConfigurationManager::removeEventDispatcher(ConfigurationEventDispatcher& eventDispatcher)
+	{
+		for (QVector<ConfigurationEventDispatcher*>::iterator it = m_EventDispatchers.begin(); it != m_EventDispatchers.end(); ++it)
+		{
+			if (*it == &eventDispatcher)
+			{
+				disconnect(
+					&eventDispatcher, SIGNAL(signalSaveConfiguration()),
+					this, SLOT(slotSaveConfiguration()));
+
+				disconnect(
+					&eventDispatcher, SIGNAL(signalLoadConfiguration()),
+					this, SLOT(slotLoadConfiguration()));
+
+				m_EventDispatchers.erase(it);
+
+				return;
+			}
+		}
+
+		PS_LOG_WARN(ConfigurationManager) << "Configuration was already removed.";
+	}
+
 	void ConfigurationManager::install(ConfigurationBase& configuration)
 	{
 		for (QVector<ConfigurationBase*>::iterator it = m_Installed.begin(); it != m_Installed.end(); ++it)
@@ -31,13 +77,7 @@ namespace Pitstop {
 			}
 		}
 
-		connect(
-			&configuration, SIGNAL(signalSaveConfiguration()),
-			this, SLOT(slotSaveConfiguration()));
-
-		connect(
-			&configuration, SIGNAL(signalLoadConfiguration()),
-			this, SLOT(slotLoadConfiguration()));
+		addEventDispatcher(configuration);
 
 		m_Installed.push_back(&configuration);
 	}
@@ -48,13 +88,7 @@ namespace Pitstop {
 		{
 			if (*it == &configuration)
 			{
-				disconnect(
-					&configuration, SIGNAL(signalSaveConfiguration()),
-					this, SLOT(slotSaveConfiguration()));
-
-				disconnect(
-					&configuration, SIGNAL(signalLoadConfiguration()),
-					this, SLOT(slotLoadConfiguration()));
+				removeEventDispatcher(configuration);
 
 				m_Installed.erase(it);
 
