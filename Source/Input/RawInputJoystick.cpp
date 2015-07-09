@@ -8,15 +8,11 @@
 
 namespace Pitstop {
 
-	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HWND window, const QString& devicePath, const QString& uniquePath, Type type, uint16_t vendor, uint16_t product, const GUID& guid)
+	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HWND window)
 		: m_Manager(manager)
-		, m_DevicePath(devicePath)
-		, m_UniquePath(uniquePath)
-		, m_Description(devicePath)
-		, m_Type(type)
-		, m_VendorIdentifier(vendor)
-		, m_ProductIdentifier(product)
-		, m_Guid(guid)
+		, m_Type(Type::Raw)
+		, m_VendorIdentifier(0)
+		, m_ProductIdentifier(0)
 		, m_XinputIndex((uint8_t)-1)
 		, m_Connected(false)
 		, m_Handle(NULL)
@@ -53,26 +49,49 @@ namespace Pitstop {
 		emit signalConnected(*this, m_Connected);
 	}
 
-	bool RawInputJoystick::setup(HANDLE handle, const RID_DEVICE_INFO& info)
+	bool RawInputJoystick::setup(const QString& devicePath)
 	{
-		m_Handle = handle;
-		m_Connected = false;
+		// Extract properties from device path
 
-		m_Info = info;
-		m_Device.usUsagePage = info.hid.usUsagePage;
-		m_Device.usUsage = info.hid.usUsage;
+		QRegExp match_path(
+			"\\\\\\\\?\\HID#"
+			"VID_([0-9A-Fa-f]+)"
+			"&PID_([0-9A-Fa-f]+)"
+			"(&([A-Za-z]+_?)([0-9A-Fa-f]+))?"
+			"(\\#[0-9A-Fa-f\\&]+\\#)"
+			"(\\{[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}\\})");
 
-		m_Description = m_DevicePath;
-
-		// Check if managed by XInput
-
-		m_Device.dwFlags = RIDEV_DEVNOTIFY;
-		if (m_Type == Type::Raw)
+		if (match_path.indexIn(devicePath) < 0)
 		{
-			// Ensure input is received even when the window loses focus
+			PS_LOG_ERROR(RawInputJoystick) << "Failed to extract properties from device path. (" << devicePath << ")";
 
-			m_Device.dwFlags |= RIDEV_INPUTSINK;
+			return false;
 		}
+
+		// Extract properties
+
+		m_DevicePath = devicePath;
+		m_UniquePath = devicePath;
+		m_Type = Type::Raw;
+		m_XinputIndex = (uint8_t)-1;
+
+		if (match_path.cap(3).size() > 0)
+		{
+			if (match_path.cap(4) == "IG_")
+			{
+				// Extract XInput identifier
+
+				m_Type = RawInputJoystick::Type::XInput;
+				m_XinputIndex = (uint8_t)match_path.cap(5).toUInt(nullptr, 16);
+			}
+
+			m_UniquePath.replace(match_path.cap(3), "");
+		}
+
+		m_VendorIdentifier = (uint16_t)match_path.cap(1).toUInt(nullptr, 16);
+		m_ProductIdentifier = (uint16_t)match_path.cap(2).toUInt(nullptr, 16);
+
+		m_Guid = stringToGuid(match_path.cap(7));
 
 		// Get category
 
@@ -81,7 +100,9 @@ namespace Pitstop {
 			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + guidToString(m_Guid),
 			"Category");
 
-		// Get translated name
+		// Get description
+
+		m_Description = devicePath;
 
 		bool translated = false;
 
@@ -140,9 +161,30 @@ namespace Pitstop {
 
 		m_Thumbnail = m_Manager.getJoystickThumbnail(m_VendorIdentifier, m_ProductIdentifier);
 
-		// Add input processor
+		return true;
+	}
 
-		bool result = true;
+	bool RawInputJoystick::initialize(HANDLE handle, const RID_DEVICE_INFO& info)
+	{
+		m_Handle = handle;
+		m_Connected = false;
+
+		m_Info = info;
+
+		// Setup device
+
+		m_Device.dwFlags = RIDEV_DEVNOTIFY;
+		if (m_Type == Type::Raw)
+		{
+			// Ensure input is received even when the window loses focus
+
+			m_Device.dwFlags |= RIDEV_INPUTSINK;
+		}
+
+		m_Device.usUsagePage = info.hid.usUsagePage;
+		m_Device.usUsage = info.hid.usUsage;
+
+		// Add input processor
 
 		if (m_InputProcessor != nullptr)
 		{
@@ -150,14 +192,20 @@ namespace Pitstop {
 		}
 
 		m_InputProcessor = m_Manager.createInputProcessor(*this);
-		if (m_InputProcessor != nullptr)
+		if (m_InputProcessor != nullptr &&
+			!m_InputProcessor->setup())
 		{
-			result = m_InputProcessor->setup();
+			PS_LOG_ERROR(RawInputJoystick) << "Failed to setup input processor for device. "
+				<< "(VID: " << QString::number(m_VendorIdentifier, 16)
+				<< " PID: " << QString::number(m_ProductIdentifier, 16)
+				<< ")";
+
+			return false;
 		}
 
 		setConnected(m_Handle, true);
 
-		return result;
+		return true;
 	}
 
 	bool RawInputJoystick::process(const RAWINPUT& message)

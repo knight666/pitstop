@@ -271,73 +271,40 @@ namespace Pitstop {
 
 	RawInputJoystickPtr RawInputManager::createJoystick(const QString& devicePath)
 	{
-		// Extract properties from device path
+		bool created = false;
 
-		QRegExp match_path(
-			"\\\\\\\\?\\HID#"
-			"VID_([0-9A-Fa-f]+)"
-			"&PID_([0-9A-Fa-f]+)"
-			"(&([A-Za-z]+_?)([0-9A-Fa-f]+))?"
-			"(\\#[0-9A-Fa-f\\&]+\\#)"
-			"(\\{[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}\\})");
+		RawInputJoystickPtr joystick = getJoystickByPath(devicePath);
 
-		if (match_path.indexIn(devicePath) < 0)
-		{
-			PS_LOG_ERROR(RawInput) << "Failed to extract properties from device path. (" << devicePath << ")";
-
-			return RawInputJoystickPtr();
-		}
-
-		// Extract properties
-
-		QString unique_path = devicePath;
-
-		RawInputJoystick::Type device_type = RawInputJoystick::Type::Raw;
-		uint8_t device_xinput = (uint8_t)-1;
-
-		if (match_path.cap(3).size() > 0)
-		{
-			if (match_path.cap(4) == "IG_")
-			{
-				// Extract XInput identifier
-
-				device_type = RawInputJoystick::Type::XInput;
-				device_xinput = (uint8_t)match_path.cap(5).toUInt(nullptr, 16);
-			}
-
-			unique_path.replace(match_path.cap(3), "");
-		}
-
-		// Create joystick
-
-		RawInputJoystickPtr joystick;
-
-		QHash<QString, RawInputJoystickPtr>::iterator found_path = m_JoysticksByPath.find(unique_path);
-		if (found_path != m_JoysticksByPath.end())
-		{
-			joystick = found_path.value();
-		}
-		else
+		if (joystick == nullptr)
 		{
 			joystick = RawInputJoystickPtr(
 				new RawInputJoystick(
 					*this,
-					m_Window,
-					devicePath,
-					unique_path,
-					device_type,
-					(uint16_t)match_path.cap(1).toUInt(nullptr, 16),
-					(uint16_t)match_path.cap(2).toUInt(nullptr, 16),
-					stringToGuid(match_path.cap(7))));
+					m_Window));
 
-			m_JoysticksByPath.insert(unique_path, joystick);
+			created = true;
+		}
+
+		if (!joystick->setup(devicePath))
+		{
+			PS_LOG_ERROR(RawInputManager) << "Failed to setup joystick. (path: \"" << devicePath << "\")";
+			joystick.clear();
+
+			return joystick;
+		}
+
+		PS_LOG_INFO(RawInput) << "Setup joystick:";
+		PS_LOG_INFO(RawInput) << "- Path: \"" << joystick->getDevicePath() << "\"";
+		PS_LOG_INFO(RawInput) << "- Description: \"" << joystick->getDescription() << "\"";
+		PS_LOG_INFO(RawInput) << "- Type: \"" << joystick->getType() << "\"";
+		PS_LOG_INFO(RawInput) << "- Handle: " << joystick->getHandle() << "";
+
+		if (created)
+		{
+			m_JoysticksByPath.insert(joystick->getUniquePath(), joystick);
 
 			emit signalJoystickCreated(joystick);
 		}
-
-		// Set XInput index
-
-		joystick->setXinputIndex(device_xinput);
 
 		return joystick;
 	}
@@ -381,14 +348,8 @@ namespace Pitstop {
 		RawInputJoystickPtr joystick = createJoystick(device_path);
 
 		if (joystick != nullptr &&
-			joystick->setup(device, info))
+			joystick->initialize(device, info))
 		{
-			PS_LOG_INFO(RawInput) << "Joystick:";
-			PS_LOG_INFO(RawInput) << "- Description: \"" << joystick->getDescription() << "\"";
-			PS_LOG_INFO(RawInput) << "- Type: \"" << joystick->getType() << "\"";
-			PS_LOG_INFO(RawInput) << "- Path: \"" << joystick->getDevicePath() << "\"";
-			PS_LOG_INFO(RawInput) << "- Handle: " << joystick->getHandle() << "";
-
 			m_JoysticksByHandle.insert(device, joystick);
 		}
 		else
