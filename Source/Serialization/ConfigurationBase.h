@@ -2,13 +2,14 @@
 
 #include "Base/Main.h"
 #include "Serialization/ISerializable.h"
+#include "Serialization/ConfigurationEventDispatcher.h"
 
 namespace Pitstop {
 
 	class ConfigurationManager;
 
 	class ConfigurationBase
-		: public QObject
+		: public ConfigurationEventDispatcher
 		, public ISerializable
 	{
 
@@ -25,14 +26,8 @@ namespace Pitstop {
 		virtual bool serialize(QJsonObject& target, size_t version = SERIALIZATION_VERSION) = 0;
 		virtual bool deserialize(const QJsonObject& source, size_t version = SERIALIZATION_VERSION) = 0;
 
-	signals:
-
-		void signalSaveConfiguration();
-		void signalLoadConfiguration();
-
 	protected:
 
-		QSharedPointer<ConfigurationManager> m_Configuration;
 		QString m_ConfigurationName;
 
 	}; // class ConfigurationBase

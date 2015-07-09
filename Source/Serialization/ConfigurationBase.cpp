@@ -4,8 +4,8 @@
 
 namespace Pitstop {
 
-	ConfigurationBase::ConfigurationBase(QSharedPointer<ConfigurationManager> manager, const QString& name)
-		: m_Configuration(manager)
+	ConfigurationBase::ConfigurationBase(QSharedPointer<ConfigurationManager> configuration, const QString& name)
+		: ConfigurationEventDispatcher(configuration)
 		, m_ConfigurationName(name)
 	{
 		m_Configuration->install(*this);

@@ -2,6 +2,7 @@
 
 #include "Base/Main.h"
 #include "Serialization/ConfigurationBase.h"
+#include "Serialization/ConfigurationEventDispatcher.h"
 
 namespace Pitstop {
 
@@ -18,6 +19,9 @@ namespace Pitstop {
 		ConfigurationManager();
 		~ConfigurationManager();
 
+		void addEventDispatcher(ConfigurationEventDispatcher& eventDispatcher);
+		void removeEventDispatcher(ConfigurationEventDispatcher& eventDispatcher);
+
 		void install(ConfigurationBase& configuration);
 		void uninstall(ConfigurationBase& configuration);
 
@@ -31,6 +35,7 @@ namespace Pitstop {
 
 	private:
 
+		QVector<ConfigurationEventDispatcher*> m_EventDispatchers;
 		QVector<ConfigurationBase*> m_Installed;
 
 	}; // class ConfigurationManager

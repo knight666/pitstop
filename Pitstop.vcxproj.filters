@@ -167,6 +167,15 @@
     <ClCompile Include="Source\Serialization\ConfigurationBase.cpp">
       <Filter>Serialization</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigurationEventDispatcher.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ConfigurationEventDispatcher.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Serialization\ConfigurationEventDispatcher.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -325,6 +334,9 @@
       <Filter>Serialization</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Serialization\ConfigurationBase.h">
+      <Filter>Serialization</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Serialization\ConfigurationEventDispatcher.h">
       <Filter>Serialization</Filter>
     </CustomBuild>
   </ItemGroup>

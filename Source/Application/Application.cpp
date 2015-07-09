@@ -25,17 +25,22 @@ namespace Pitstop {
 
 	Application::Application(int& argc, char** argv, int flags /*= ApplicationFlags*/)
 		: QApplication(argc, argv, flags)
-		, m_Configuration(new ConfigurationManager())
-		, m_RawInput(new RawInputManager())
-		, m_UsbController(new UsbController())
-		, m_VirtualInput(new VirtualInputManager(m_Configuration, *m_RawInput))
-		, m_MainWindow(new MainWindow(*m_RawInput, *m_UsbController, *m_VirtualInput))
+		, m_RawInput(nullptr)
+		, m_UsbController(nullptr)
+		, m_VirtualInput(nullptr)
+		, m_MainWindow(nullptr)
 	{
 		s_Instance = this;
 
 		setApplicationName("Pitstop");
 
 		Logger::initialize();
+
+		m_Configuration = QSharedPointer<ConfigurationManager>(new ConfigurationManager());
+		m_RawInput = new RawInputManager();
+		m_UsbController = new UsbController();
+		m_VirtualInput = new VirtualInputManager(m_Configuration, *m_RawInput);
+		m_MainWindow = new MainWindow(*m_RawInput, *m_UsbController, *m_VirtualInput);
 
 		PS_LOG_INFO(Application) << "Initializing application.";
 
