@@ -41,8 +41,8 @@ namespace Pitstop {
 			if (index >= 1 &&
 				index < m_Form.cmbJoystick->count())
 			{
-				QVariant joystick_handle = m_Form.cmbJoystick->currentData(index);
-				joystick = m_RawInput.getJoystickByHandle((HANDLE)joystick_handle.toUInt());
+				HANDLE joystick_handle = (HANDLE)m_Form.cmbJoystick->currentData().toUInt();
+				joystick = m_RawInput.getJoystickByHandle(joystick_handle);
 			}
 
 			m_Device->setJoystick(joystick);
