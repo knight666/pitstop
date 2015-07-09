@@ -20,6 +20,7 @@ namespace Pitstop {
 
 	private slots:
 
+		void slotJoystickCreated(RawInputJoystickPtr joystick);
 		void slotJoystickConnected(RawInputJoystickPtr joystick, bool connected);
 
 		void slotJoystickChanged(RawInputJoystickPtr joystick);

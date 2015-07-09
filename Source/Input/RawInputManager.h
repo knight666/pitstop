@@ -29,6 +29,7 @@ namespace Pitstop {
 		// TEMP
 		RawInputJoystickPtr getJoystick() const;
 
+		RawInputJoystickPtr getJoystickByPath(const QString& devicePath) const;
 		RawInputJoystickPtr getJoystickByHandle(HANDLE device) const;
 
 		QVector<RawInputJoystickPtr> getJoysticks() const;
@@ -48,6 +49,7 @@ namespace Pitstop {
 
 	signals:
 
+		void signalJoystickCreated(RawInputJoystickPtr joystick);
 		void signalJoystickConnected(RawInputJoystickPtr joystick, bool connected);
 		void signalJoystickInput(RawInputJoystickPtr joystick);
 

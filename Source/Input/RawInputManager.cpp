@@ -172,6 +172,29 @@ namespace Pitstop {
 		return RawInputJoystickPtr();
 	}
 
+	RawInputJoystickPtr RawInputManager::getJoystickByPath(const QString& devicePath) const
+	{
+		QString unique_path = devicePath;
+
+		QRegExp match_path(
+			"\\\\\\\\?\\HID#"
+			"VID_[0-9A-Fa-f]+"
+			"&PID_[0-9A-Fa-f]+"
+			"(&[A-Za-z]+_?[0-9A-Fa-f]+)");
+		if (match_path.indexIn(unique_path) >= 0)
+		{
+			unique_path.replace(match_path.cap(1), "");
+		}
+
+		QHash<QString, RawInputJoystickPtr>::const_iterator found = m_JoysticksByPath.find(unique_path);
+		if (found != m_JoysticksByPath.end())
+		{
+			return found.value();
+		}
+
+		return RawInputJoystickPtr();
+	}
+
 	RawInputJoystickPtr RawInputManager::getJoystickByHandle(HANDLE device) const
 	{
 		QHash<HANDLE, RawInputJoystickPtr>::const_iterator found = m_JoysticksByHandle.find(device);
@@ -308,6 +331,8 @@ namespace Pitstop {
 					stringToGuid(match_path.cap(7))));
 
 			m_JoysticksByPath.insert(unique_path, joystick);
+
+			emit signalJoystickCreated(joystick);
 		}
 
 		// Set XInput index
