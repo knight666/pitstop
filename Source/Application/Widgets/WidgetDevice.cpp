@@ -1,13 +1,20 @@
 #include "Application/Widgets/WidgetDevice.h"
 
 #include "Application/Application.h"
+#include "Input/Usb/UsbController.h"
 #include "Input/RawInputManager.h"
 
 namespace Pitstop {
 
-	WidgetDevice::WidgetDevice(RawInputManager& rawInput, VirtualInputDevicePtr device, QWidget* parent /*= nullptr*/, Qt::WindowFlags flags /*= 0*/)
+	WidgetDevice::WidgetDevice(
+			RawInputManager& rawInput,
+			UsbController& usbController,
+			VirtualInputDevicePtr device,
+			QWidget* parent /*= nullptr*/,
+			Qt::WindowFlags flags /*= 0*/)
 		: QWidget(parent, flags)
 		, m_RawInput(rawInput)
+		, m_UsbController(usbController)
 		, m_Device(device)
 	{
 		connect(
@@ -117,10 +124,13 @@ namespace Pitstop {
 		}
 
 		UsbDevicePtr usb = m_Device->getUsbDevice();
-		if (usb != nullptr)
+		if (usb == nullptr)
 		{
-			usb->setPluggedIn(!usb->isPluggedIn());
+			usb = m_UsbController.createDevice();
+			m_Device->setUsbDevice(usb);
 		}
+
+		usb->setConnected(!usb->isConnected());
 
 		updateConnection();
 	}
@@ -190,11 +200,11 @@ namespace Pitstop {
 			usb = m_Device->getUsbDevice();
 		}
 
-		if (usb != nullptr)
-		{
-			m_Form.btnConnect->setText(usb->isPluggedIn() ? "Disconnect" : "Connect");
-		}
-		m_Form.btnConnect->setEnabled(usb != nullptr);
+		bool connected =
+			usb != nullptr &&
+			usb->isConnected();
+
+		m_Form.btnConnect->setText(connected ? "Disconnect" : "Connect");
 	}
 
 }; // namespace Pitstop

@@ -17,7 +17,8 @@ namespace Pitstop {
 
 		HANDLE getHubHandle() const { return m_HubHandle; }
 
-		UsbDevicePtr createDevice();
+		UsbDevicePtr createDevice(uint8_t index = (uint8_t)-1);
+		UsbDevicePtr createDevice(const QJsonObject& serialized);
 
 		UsbDevicePtr getDeviceByIndex(uint8_t index);
 

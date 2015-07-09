@@ -7,6 +7,9 @@
 
 namespace Pitstop {
 
+	class RawInputManager;
+	class UsbController;
+
 	class WidgetDevice
 		: public QWidget
 	{
@@ -15,7 +18,12 @@ namespace Pitstop {
 
 	public:
 
-		WidgetDevice(RawInputManager& rawInput, VirtualInputDevicePtr device, QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
+		WidgetDevice(
+			RawInputManager& rawInput,
+			UsbController& usbController,
+			VirtualInputDevicePtr device,
+			QWidget* parent = nullptr,
+			Qt::WindowFlags flags = 0);
 		~WidgetDevice();
 
 	private slots:
@@ -39,6 +47,7 @@ namespace Pitstop {
 	private:
 
 		RawInputManager& m_RawInput;
+		UsbController& m_UsbController;
 		VirtualInputDevicePtr m_Device;
 
 		Ui_DeviceForm m_Form;

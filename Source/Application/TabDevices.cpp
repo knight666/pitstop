@@ -50,9 +50,10 @@ namespace Pitstop {
 	{
 		WidgetDevicePtr device_widget(
 			new WidgetDevice(
-			*m_RawInput,
-			device,
-			m_Form.scrlDevicesContents));
+				*m_RawInput,
+				*m_UsbController,
+				device,
+				m_Form.scrlDevicesContents));
 
 		QVBoxLayout* layout = qobject_cast<QVBoxLayout*>(m_Form.scrlDevicesContents->layout());
 		if (layout != nullptr)
