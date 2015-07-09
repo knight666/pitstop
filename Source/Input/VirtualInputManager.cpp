@@ -32,6 +32,7 @@ namespace Pitstop {
 
 		m_Devices.push_back(device);
 
+		emit signalVirtualDeviceCreated(device);
 		emit signalSaveConfiguration();
 
 		return device;
@@ -93,13 +94,6 @@ namespace Pitstop {
 			else
 			{
 				device = createDevice();
-			}
-
-			for (QJsonObject::iterator it = device_object.begin(); it != device_object.end(); ++it)
-			{
-				QString value_string = it->toString();
-
-				int i = 0;
 			}
 
 			if (device == nullptr ||

@@ -41,6 +41,11 @@ namespace Pitstop {
 		virtual bool serialize(QJsonObject& target, size_t version) override;
 		bool deserialize(RawInputManager& rawInput, UsbController& usbController, const QJsonObject& source, size_t version);
 
+	signals:
+
+		void signalJoystickChanged(RawInputJoystickPtr joystick);
+		void signalUsbDeviceChanged(UsbDevicePtr usb);
+
 	public slots:
 
 		void slotJoystickInput(RawInputJoystick* joystick, bool processed);
