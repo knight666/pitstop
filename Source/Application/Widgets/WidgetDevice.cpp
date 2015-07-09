@@ -1,5 +1,6 @@
 #include "Application/Widgets/WidgetDevice.h"
 
+#include "Application/Application.h"
 #include "Input/RawInputManager.h"
 
 namespace Pitstop {
@@ -43,7 +44,13 @@ namespace Pitstop {
 				QVariant joystick_handle = m_Form.cmbJoystick->currentData(index);
 				joystick = m_RawInput.getJoystickByHandle((HANDLE)joystick_handle.toUInt());
 			}
-			m_Device->setJoystick(joystick);
+
+			if (m_Device->getJoystick() != joystick)
+			{
+				m_Device->setJoystick(joystick);
+
+				Application::get().saveConfiguration();
+			}
 		}
 
 		updateThumbnail();

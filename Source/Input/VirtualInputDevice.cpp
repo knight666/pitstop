@@ -44,7 +44,7 @@ namespace Pitstop {
 	{
 		if (m_Joystick != nullptr)
 		{
-			target["joystick"] = m_Joystick->getDevicePath();
+			target["joystick"] = m_Joystick->getUniquePath();
 		}
 
 		if (m_Usb != nullptr)

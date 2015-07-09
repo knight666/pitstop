@@ -1,5 +1,6 @@
 #include "Application/TabDevices.h"
 
+#include "Application/Application.h"
 #include "Input/Usb/UsbController.h"
 #include "Input/RawInputManager.h"
 #include "Input/VirtualInputManager.h"
@@ -51,6 +52,8 @@ namespace Pitstop {
 		}
 
 		m_Devices.push_back(device_widget);
+
+		Application::get().saveConfiguration();
 	}
 
 }; // namespace Pitstop
