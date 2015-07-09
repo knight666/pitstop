@@ -51,7 +51,6 @@ namespace Pitstop {
 		const QString& getDevicePath() const { return m_DevicePath; }
 
 		const GUID& getGuid() const { return m_Guid; }
-		QString getGuidString() const;
 
 		InputProcessorBase* getInputProcessor() const { return m_InputProcessor; }
 

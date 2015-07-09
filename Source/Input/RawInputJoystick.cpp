@@ -67,16 +67,6 @@ namespace Pitstop {
 		emit signalConnected(*this, m_Connected);
 	}
 
-	QString RawInputJoystick::getGuidString() const
-	{
-		OLECHAR* guid_string_data;
-		::StringFromCLSID(m_Guid, &guid_string_data);
-		QString result = QString::fromUtf16(guid_string_data);
-		::CoTaskMemFree(guid_string_data);
-
-		return result;
-	}
-
 	bool RawInputJoystick::setup(HANDLE handle, const RID_DEVICE_INFO& info)
 	{
 		m_Handle = handle;
@@ -102,7 +92,7 @@ namespace Pitstop {
 
 		retrieveFromRegistry(
 			m_Category,
-			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + getGuidString(),
+			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + guidToString(m_Guid),
 			"Category");
 
 		// Get translated name

@@ -265,7 +265,7 @@ namespace Pitstop {
 			return RawInputJoystickPtr();
 		}
 
-		// Create unique joystick key from device path
+		// Extract properties
 
 		QString unique_path = devicePath;
 
@@ -278,8 +278,8 @@ namespace Pitstop {
 			{
 				// Extract XInput identifier
 
-				device_xinput = (uint8_t)match_path.cap(5).toUInt(nullptr, 16);
 				device_type = RawInputJoystick::Type::XInput;
+				device_xinput = (uint8_t)match_path.cap(5).toUInt(nullptr, 16);
 			}
 
 			unique_path.replace(match_path.cap(3), "");
@@ -296,13 +296,6 @@ namespace Pitstop {
 		}
 		else
 		{
-			uint16_t vendor = (uint16_t)match_path.cap(1).toUInt(nullptr, 16);
-			uint16_t product = (uint16_t)match_path.cap(2).toUInt(nullptr, 16);
-
-			QString guid_string = match_path.cap(7);
-			GUID guid = { 0 };
-			::CLSIDFromString(guid_string.utf16(), &guid);
-
 			joystick = RawInputJoystickPtr(
 				new RawInputJoystick(
 					*this,
@@ -310,9 +303,9 @@ namespace Pitstop {
 					devicePath,
 					unique_path,
 					device_type,
-					vendor,
-					product,
-					guid));
+					(uint16_t)match_path.cap(1).toUInt(nullptr, 16),
+					(uint16_t)match_path.cap(2).toUInt(nullptr, 16),
+					stringToGuid(match_path.cap(7))));
 
 			m_JoysticksByPath.insert(unique_path, joystick);
 		}
