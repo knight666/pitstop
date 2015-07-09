@@ -27,7 +27,7 @@ namespace Pitstop {
 
 		void addSink(SinkPtr sink);
 
-		void write(Levels level, const char* module, const char* filename, int line, const char* message);
+		void write(Levels level, const char* module, const char* filepath, int line, const char* message);
 
 	private:
 

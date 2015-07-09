@@ -105,9 +105,10 @@ namespace Pitstop {
 			return;
 		}
 
-		// Send to USB device
+		// Write to USB device
 
-		if (m_Usb == nullptr)
+		if (m_Usb == nullptr ||
+			!m_Usb->isPluggedIn())
 		{
 			return;
 		}

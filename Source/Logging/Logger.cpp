@@ -39,7 +39,7 @@ namespace Pitstop {
 		m_Sinks.push_back(a_Sink);
 	}
 
-	void Logger::write(Levels level, const char* module, const char* filename, int line, const char* message)
+	void Logger::write(Levels level, const char* module, const char* filepath, int line, const char* message)
 	{
 		QMutexLocker locker(&m_Lock);
 
@@ -54,6 +54,9 @@ namespace Pitstop {
 			now->tm_hour,
 			now->tm_min,
 			now->tm_sec);
+
+		const char* path_last_slash = strrchr(filepath, '\\');
+		const char* filename = (path_last_slash != nullptr) ? (path_last_slash + 1) : filepath;
 
 		for (SinkPtr& sink : m_Sinks)
 		{
