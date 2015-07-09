@@ -73,7 +73,15 @@ namespace Pitstop {
 	{
 		if (m_Joystick != nullptr)
 		{
-			target["joystick"] = m_Joystick->getDevicePath();
+			QJsonObject joystick_object;
+			if (!m_Joystick->serialize(joystick_object, version))
+			{
+				PS_LOG_ERROR(VirtualInputDevice) << "Failed to save joystick.";
+
+				return false;
+			}
+
+			target["joystick"] = joystick_object;
 		}
 
 		if (m_Usb != nullptr)
@@ -86,11 +94,15 @@ namespace Pitstop {
 
 	bool VirtualInputDevice::deserialize(RawInputManager& rawInput, UsbController& usbController, const QJsonObject& source, size_t version)
 	{
-		QString joystick_string = source["joystick"].toString();
-		if (!joystick_string.isEmpty())
+		QJsonObject joystick_object = source["joystick"].toObject();
+		if (joystick_object.isEmpty())
 		{
-			setJoystick(rawInput.createJoystick(joystick_string));
+			PS_LOG_ERROR(VirtualInputDevice) << "Missing required \"joystick\" object.";
+
+			return false;
 		}
+
+		setJoystick(rawInput.createJoystick(joystick_object));
 
 		double usb_number = source["usb"].toDouble();
 		if (usb_number != 0.0)

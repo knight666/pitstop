@@ -25,6 +25,7 @@ namespace Pitstop {
 
 		RawInputJoystickPtr createJoystick(const QString& devicePath);
 		RawInputJoystickPtr createJoystick(HANDLE device);
+		RawInputJoystickPtr createJoystick(const QJsonObject& serialized);
 
 		// TEMP
 		RawInputJoystickPtr getJoystick() const;
