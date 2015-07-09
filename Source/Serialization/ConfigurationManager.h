@@ -6,7 +6,7 @@
 
 namespace Pitstop {
 
-	static const size_t CONFIGURATION_VERSION = 3;
+	static const size_t CONFIGURATION_VERSION = 4;
 
 	class ConfigurationManager
 		: public QObject
