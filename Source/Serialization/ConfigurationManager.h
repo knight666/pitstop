@@ -1,12 +1,11 @@
 #pragma once
 
 #include "Base/Main.h"
+#include "Serialization/ConfigurationBase.h"
 
 namespace Pitstop {
 
 	static const size_t CONFIGURATION_VERSION = 2;
-
-	class ConfigurationBase;
 
 	class ConfigurationManager
 		: public QObject

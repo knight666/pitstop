@@ -6,8 +6,9 @@
 
 namespace Pitstop {
 
-	VirtualInputManager::VirtualInputManager(RawInputManager& rawInput)
-		: m_RawInput(rawInput)
+	VirtualInputManager::VirtualInputManager(QSharedPointer<ConfigurationManager> configuration, RawInputManager& rawInput)
+		: ConfigurationBase(configuration, "virtualInput")
+		, m_RawInput(rawInput)
 	{
 	}
 

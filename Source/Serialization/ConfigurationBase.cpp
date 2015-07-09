@@ -1,20 +1,22 @@
 #include "Serialization/ConfigurationBase.h"
 
+#include "Serialization/ConfigurationManager.h"
+
 namespace Pitstop {
 
-	ConfigurationBase::ConfigurationBase(ConfigurationManager& manager, const QString& name)
-		: m_ConfigurationManager(manager)
+	ConfigurationBase::ConfigurationBase(QSharedPointer<ConfigurationManager> manager, const QString& name)
+		: m_Configuration(manager)
 		, m_ConfigurationName(name)
 	{
-		m_ConfigurationManager.install(*this);
+		m_Configuration->install(*this);
 	}
 
 	ConfigurationBase::~ConfigurationBase()
 	{
-		m_ConfigurationManager.uninstall(*this);
+		m_Configuration->uninstall(*this);
 	}
 
-	bool ConfigurationBase::saveConfiguration(QJsonObject& target, size_t version)
+	bool ConfigurationBase::saveConfiguration(QJsonObject& root, size_t version)
 	{
 		QJsonObject configuration_object;
 		if (!serialize(configuration_object, version))
@@ -23,14 +25,14 @@ namespace Pitstop {
 
 			return false;
 		}
-		target[m_ConfigurationName] = configuration_object;
+		root[m_ConfigurationName] = configuration_object;
 
 		return true;
 	}
 
-	bool ConfigurationBase::loadConfiguration(const QJsonObject& source, size_t version)
+	bool ConfigurationBase::loadConfiguration(const QJsonObject& root, size_t version)
 	{
-		QJsonObject configuration_object = source[m_ConfigurationName].toObject();
+		QJsonObject configuration_object = root[m_ConfigurationName].toObject();
 		if (configuration_object.isEmpty())
 		{
 			PS_LOG_ERROR(ConfigurationManager) << "Missing \"" << m_ConfigurationName << "\" while loading configuration.";
