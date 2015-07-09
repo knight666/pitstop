@@ -49,6 +49,13 @@ namespace Pitstop {
 		emit signalConnected(*this, m_Connected);
 	}
 
+	void RawInputJoystick::setDescription(const QString& value)
+	{
+		m_Description = value;
+
+		emit signalPropertyChanged();
+	}
+
 	bool RawInputJoystick::setup(const QString& devicePath)
 	{
 		// Extract properties from device path
@@ -160,6 +167,8 @@ namespace Pitstop {
 		// Get thumbnail
 
 		m_Thumbnail = m_Manager.getJoystickThumbnail(m_VendorIdentifier, m_ProductIdentifier);
+
+		emit signalPropertyChanged();
 
 		return true;
 	}

@@ -34,7 +34,7 @@ namespace Pitstop {
 		void setXinputIndex(uint8_t value) { m_XinputIndex = value; }
 
 		const QString& getDescription() const { return m_Description; }
-		void setDescription(const QString& value) { m_Description = value; }
+		void setDescription(const QString& value);
 
 		const QString& getCategory() const { return m_Category; }
 
@@ -69,6 +69,7 @@ namespace Pitstop {
 
 	signals:
 
+		void signalPropertyChanged();
 		void signalConnected(RawInputJoystick& joystick, bool connected);
 		void signalJoystickInput(RawInputJoystick* joystick, bool processed);
 
