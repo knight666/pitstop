@@ -9,8 +9,11 @@ namespace Pitstop {
 	class UsbController;
 
 	class UsbDevice
-		: public ISerializable
+		: public QObject
+		, public ISerializable
 	{
+
+		Q_OBJECT
 
 	public:
 
@@ -25,6 +28,10 @@ namespace Pitstop {
 		bool write(DWORD command, QVector<uint8_t>& input, QVector<uint8_t>& output);
 
 		virtual bool serialize(QJsonObject& target, size_t version) override;
+
+	signals:
+
+		void signalConnectionChanged(bool connected);
 
 	private:
 
