@@ -355,9 +355,8 @@ namespace Pitstop {
 
 		RawInputJoystickPtr joystick = createJoystick(device_path);
 
-		if (joystick->setup(
-			device,
-			info))
+		if (joystick != nullptr &&
+			joystick->setup(device, info))
 		{
 			PS_LOG_INFO(RawInput) << "Joystick:";
 			PS_LOG_INFO(RawInput) << "- Description: \"" << joystick->getDescription() << "\"";
