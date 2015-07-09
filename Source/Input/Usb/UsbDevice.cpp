@@ -5,8 +5,12 @@
 
 namespace Pitstop {
 
-	UsbDevice::UsbDevice(UsbController& controller, uint8_t identifier)
-		: m_Controller(controller)
+	UsbDevice::UsbDevice(
+			QSharedPointer<ConfigurationManager> configuration,
+			UsbController& controller,
+			uint8_t identifier)
+		: ConfigurationEventDispatcher(configuration)
+		, m_Controller(controller)
 		, m_Identifier(identifier)
 		, m_Connected(false)
 	{
@@ -34,9 +38,10 @@ namespace Pitstop {
 
 		if (write(value ? 0x002A4000 : 0x002A4004, input, output))
 		{
-			emit signalConnectionChanged(value);
-
 			m_Connected = value;
+
+			emit signalConnectionChanged(value);
+			emit signalSaveConfiguration();
 		}
 	}
 

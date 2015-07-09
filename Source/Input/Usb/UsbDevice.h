@@ -2,6 +2,7 @@
 
 #include "Base/Main.h"
 #include "Input/XInputState.h"
+#include "Serialization/ConfigurationEventDispatcher.h"
 #include "Serialization/ISerializable.h"
 
 namespace Pitstop {
@@ -9,7 +10,7 @@ namespace Pitstop {
 	class UsbController;
 
 	class UsbDevice
-		: public QObject
+		: public ConfigurationEventDispatcher
 		, public ISerializable
 	{
 
@@ -17,7 +18,10 @@ namespace Pitstop {
 
 	public:
 
-		UsbDevice(UsbController& controller, uint8_t identifier);
+		UsbDevice(
+			QSharedPointer<ConfigurationManager> configuration,
+			UsbController& controller,
+			uint8_t identifier);
 		~UsbDevice();
 
 		uint8_t getIdentifier() const { return m_Identifier; }

@@ -12,7 +12,7 @@ namespace Pitstop {
 
 	public:
 
-		UsbController();
+		UsbController(QSharedPointer<ConfigurationManager> configuration);
 		~UsbController();
 
 		HANDLE getHubHandle() const { return m_HubHandle; }
@@ -26,6 +26,7 @@ namespace Pitstop {
 
 	private:
 
+		QSharedPointer<ConfigurationManager> m_Configuration;
 		HDEVINFO m_HubInfo;
 		QString m_HubPath;
 		HANDLE m_HubHandle;
