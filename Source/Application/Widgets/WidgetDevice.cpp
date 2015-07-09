@@ -11,6 +11,10 @@ namespace Pitstop {
 		, m_Device(device)
 	{
 		connect(
+			&m_RawInput, SIGNAL(signalJoystickCreated(RawInputJoystickPtr)),
+			this, SLOT(slotJoystickCreated(RawInputJoystickPtr)));
+
+		connect(
 			&m_RawInput, SIGNAL(signalJoystickConnected(RawInputJoystickPtr, bool)),
 			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
 
@@ -35,10 +39,18 @@ namespace Pitstop {
 			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
 
 		disconnect(
-			this, SLOT(signalJoystickChanged(RawInputJoystickPtr)));
+			this, SLOT(slotJoystickChanged(RawInputJoystickPtr)));
 
 		disconnect(
 			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
+
+		disconnect(
+			this, SLOT(slotJoystickCreated(RawInputJoystickPtr)));
+	}
+
+	void WidgetDevice::slotJoystickCreated(RawInputJoystickPtr joystick)
+	{
+		updateJoysticks();
 	}
 
 	void WidgetDevice::slotJoystickConnected(RawInputJoystickPtr joystick, bool connected)
@@ -50,13 +62,18 @@ namespace Pitstop {
 	{
 		int selected = 0;
 
+		QString joystick_path;
+		if (m_Device->getJoystick() != nullptr)
+		{
+			joystick_path = m_Device->getJoystick()->getUniquePath();
+		}
+
 		for (int i = 0; i < m_Form.cmbJoystick->count(); ++i)
 		{
 			QVariant item_data = m_Form.cmbJoystick->itemData(i);
 			if (item_data.isValid())
 			{
-				HANDLE item_joystick = (HANDLE)item_data.toUInt();
-				if (item_joystick == m_Device->getJoystickHandle())
+				if (item_data.toString() == joystick_path)
 				{
 					selected = i;
 
@@ -82,8 +99,8 @@ namespace Pitstop {
 			if (index >= 1 &&
 				index < m_Form.cmbJoystick->count())
 			{
-				HANDLE joystick_handle = (HANDLE)m_Form.cmbJoystick->currentData().toUInt();
-				joystick = m_RawInput.getJoystickByHandle(joystick_handle);
+				QString joystick_path = m_Form.cmbJoystick->currentData().toString();
+				joystick = m_RawInput.getJoystickByPath(joystick_path);
 			}
 
 			m_Device->setJoystick(joystick);
@@ -121,8 +138,7 @@ namespace Pitstop {
 		QVector<RawInputJoystickPtr> joysticks = m_RawInput.getJoysticks();
 		for (RawInputJoystickPtr& joystick : joysticks)
 		{
-			if (!joystick->isConnected() ||
-				joystick->getType() != RawInputJoystick::Type::Raw)
+			if (joystick->getType() != RawInputJoystick::Type::Raw)
 			{
 				continue;
 			}
@@ -135,7 +151,7 @@ namespace Pitstop {
 
 			m_Form.cmbJoystick->addItem(
 				joystick->getDescription(),
-				QVariant((uint)joystick->getHandle()));
+				QVariant(joystick->getUniquePath()));
 
 			current++;
 		}
