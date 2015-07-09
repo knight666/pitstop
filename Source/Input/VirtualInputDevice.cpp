@@ -5,8 +5,9 @@
 
 namespace Pitstop {
 
-	VirtualInputDevice::VirtualInputDevice(VirtualInputManager& manager, uint8_t index)
-		: m_Manager(manager)
+	VirtualInputDevice::VirtualInputDevice(VirtualInputManager& virtualInput, QSharedPointer<ConfigurationManager>& configuration, uint8_t index)
+		: ConfigurationEventDispatcher(configuration)
+		, m_VirtualInput(virtualInput)
 		, m_Index(index)
 		, m_Usb(nullptr)
 	{
@@ -25,6 +26,18 @@ namespace Pitstop {
 
 	void VirtualInputDevice::setJoystick(RawInputJoystickPtr joystick)
 	{
+		if (m_Joystick == joystick)
+		{
+			return;
+		}
+
+		if (m_Joystick != nullptr)
+		{
+			disconnect(
+				m_Joystick.data(), SIGNAL(signalJoystickInput(RawInputJoystick*, bool)),
+				this, SLOT(slotJoystickInput(RawInputJoystick*, bool)));
+		}
+
 		if (joystick != nullptr)
 		{
 			connect(
@@ -33,14 +46,23 @@ namespace Pitstop {
 		}
 
 		m_Joystick = joystick;
+
+		emit signalSaveConfiguration();
 	}
 
 	void VirtualInputDevice::setUsbDevice(UsbDevicePtr usb)
 	{
+		if (m_Usb == usb)
+		{
+			return;
+		}
+
 		m_Usb = usb;
+
+		emit signalSaveConfiguration();
 	}
 
-	bool VirtualInputDevice::serialize(QJsonObject& target, size_t version /*= SERIALIZATION_VERSION*/)
+	bool VirtualInputDevice::serialize(QJsonObject& target, size_t version)
 	{
 		if (m_Joystick != nullptr)
 		{
@@ -55,7 +77,7 @@ namespace Pitstop {
 		return true;
 	}
 
-	bool VirtualInputDevice::deserialize(const QJsonObject& source, size_t version /*= SERIALIZATION_VERSION*/)
+	bool VirtualInputDevice::deserialize(const QJsonObject& source, size_t version)
 	{
 		return true;
 	}

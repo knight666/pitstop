@@ -21,9 +21,15 @@ namespace Pitstop {
 	{
 		PS_LOG_INFO(VirtualInput) << "Creating device " << m_Devices.size() << ".";
 
-		VirtualInputDevicePtr device(new VirtualInputDevice(*this, m_Devices.size()));
+		VirtualInputDevicePtr device(
+			new VirtualInputDevice(
+				*this,
+				m_Configuration,
+				m_Devices.size()));
 
 		m_Devices.push_back(device);
+
+		emit signalSaveConfiguration();
 
 		return device;
 	}
@@ -33,7 +39,7 @@ namespace Pitstop {
 		return (index < m_Devices.size()) ? m_Devices[index] : VirtualInputDevicePtr();
 	}
 
-	bool VirtualInputManager::serialize(QJsonObject& target, size_t version /*= SERIALIZATION_VERSION*/)
+	bool VirtualInputManager::serialize(QJsonObject& target, size_t version)
 	{
 		QJsonArray devices_array;
 		for (VirtualInputDevicePtr& device : m_Devices)
@@ -50,7 +56,7 @@ namespace Pitstop {
 		return true;
 	}
 
-	bool VirtualInputManager::deserialize(const QJsonObject& source, size_t version /*= SERIALIZATION_VERSION*/)
+	bool VirtualInputManager::deserialize(const QJsonObject& source, size_t version)
 	{
 		return true;
 	}

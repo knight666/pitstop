@@ -25,9 +25,6 @@ namespace Pitstop {
 
 		static Application& get();
 
-		bool saveConfiguration();
-		bool loadConfiguration();
-
 		int run();
 
 	private:

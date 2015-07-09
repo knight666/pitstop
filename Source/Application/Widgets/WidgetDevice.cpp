@@ -45,12 +45,7 @@ namespace Pitstop {
 				joystick = m_RawInput.getJoystickByHandle((HANDLE)joystick_handle.toUInt());
 			}
 
-			if (m_Device->getJoystick() != joystick)
-			{
-				m_Device->setJoystick(joystick);
-
-				Application::get().saveConfiguration();
-			}
+			m_Device->setJoystick(joystick);
 		}
 
 		updateThumbnail();
