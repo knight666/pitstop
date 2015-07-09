@@ -25,8 +25,7 @@ namespace Pitstop {
 		}
 
 		QString message = QString::fromUtf16(
-			(const ushort*)&message_buffer[0],
-			wcslen(&message_buffer[0]));
+			(const ushort*)&message_buffer[0]);
 
 		// strip newline at end
 
@@ -37,6 +36,24 @@ namespace Pitstop {
 		}
 
 		return message;
+	}
+
+	GUID stringToGuid(const QString& guid)
+	{
+		GUID result = { 0 };
+		::CLSIDFromString(guid.utf16(), &result);
+
+		return result;
+	}
+
+	QString guidToString(const GUID& guid)
+	{
+		OLECHAR* guid_string_data;
+		::StringFromCLSID(guid, &guid_string_data);
+		QString result = QString::fromUtf16(guid_string_data);
+		::CoTaskMemFree(guid_string_data);
+
+		return result;
 	}
 
 }; // namespace Pitstop
