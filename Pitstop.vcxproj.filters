@@ -149,6 +149,24 @@
     <ClCompile Include="GeneratedFiles\Release\qrc_Pitstop.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigurationBase.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigurationManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ConfigurationBase.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ConfigurationManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Serialization\ConfigurationManager.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Serialization\ConfigurationBase.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -303,5 +321,11 @@
       <Filter>Application\Widgets</Filter>
     </CustomBuild>
     <CustomBuild Include="Pitstop.qrc" />
+    <CustomBuild Include="Source\Serialization\ConfigurationManager.h">
+      <Filter>Serialization</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Serialization\ConfigurationBase.h">
+      <Filter>Serialization</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>
