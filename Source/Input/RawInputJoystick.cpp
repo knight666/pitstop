@@ -223,6 +223,14 @@ namespace Pitstop {
 		return result;
 	}
 
+	bool RawInputJoystick::serialize(QJsonObject& target, size_t version)
+	{
+		target["path"] = m_DevicePath;
+		target["description"] = m_Description;
+
+		return true;
+	}
+
 	bool RawInputJoystick::retrieveFromRegistry(QString& target, const QString& path, const QString& keyName)
 	{
 		HKEY key = NULL;
@@ -260,68 +268,6 @@ namespace Pitstop {
 		target = QString::fromUtf16(&data[0]);
 
 		return true;
-	}
-
-	QString RawInputJoystick::findDevicePath(const GUID& guid)
-	{
-		QString device_path;
-
-		SP_DEVICE_INTERFACE_DATA device_interface_data = { 0 };
-		device_interface_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
-
-		HDEVINFO device_info = ::SetupDiGetClassDevsW(
-			&guid,
-			nullptr,
-			nullptr,
-			DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-
-		DWORD member_index = 0;
-		while (::SetupDiEnumDeviceInterfaces(
-			device_info,
-			nullptr,
-			&guid,
-			member_index,
-			&device_interface_data) == TRUE)
-		{
-			SP_DEVINFO_DATA device_detail_data = { 0 };
-			device_detail_data.cbSize = sizeof(SP_DEVINFO_DATA);
-
-			DWORD buffer_size = 0;
-
-			if (::SetupDiGetDeviceInterfaceDetailW(
-				device_info,
-				&device_interface_data,
-				nullptr,
-				0,
-				&buffer_size,
-				&device_detail_data) == FALSE)
-			{
-				QVector<uint8_t> detail_data;
-				detail_data.resize(buffer_size + sizeof(DWORD));
-
-				SP_DEVICE_INTERFACE_DETAIL_DATA_W* detail_data_ptr = (SP_DEVICE_INTERFACE_DETAIL_DATA_W*)&detail_data[0];
-				detail_data_ptr->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
-
-				if (::SetupDiGetDeviceInterfaceDetailW(
-					device_info,
-					&device_interface_data,
-					(SP_DEVICE_INTERFACE_DETAIL_DATA_W*)&detail_data[0],
-					buffer_size,
-					&buffer_size,
-					&device_detail_data) == TRUE)
-				{
-					device_path = QString::fromUtf16((const ushort*)&detail_data_ptr->DevicePath[0]);
-
-					break;
-				}
-			}
-
-			DWORD last_error = ::GetLastError();
-
-			member_index++;
-		}
-
-		return device_path;
 	}
 
 }; // namespace Pitstop

@@ -360,6 +360,38 @@ namespace Pitstop {
 		return joystick;
 	}
 
+	RawInputJoystickPtr RawInputManager::createJoystick(const QJsonObject& serialized)
+	{
+		// Joystick from path
+
+		if (!serialized.contains("path") ||
+			!serialized["path"].isString())
+		{
+			PS_LOG_ERROR(RawInputManager) << "Missing required field \"path\"";
+
+			return RawInputJoystickPtr();
+		}
+
+		RawInputJoystickPtr joystick = createJoystick(serialized["path"].toString());
+
+		if (joystick == nullptr)
+		{
+			PS_LOG_ERROR(RawInputManager) << "Failed to create joystick.";
+
+			return RawInputJoystickPtr();
+		}
+
+		// Description
+
+		if (serialized.contains("description") &&
+			serialized["description"].isString())
+		{
+			joystick->setDescription(serialized["description"].toString());
+		}
+
+		return joystick;
+	}
+
 	void RawInputManager::registerInputProcessor(uint16_t vendor, uint16_t product, InputProcessorBase::FactoryMethod method)
 	{
 		uint32_t key = (vendor << 16) | product;
