@@ -3,22 +3,21 @@
 #include "Base/Main.h"
 
 #include "Input/VirtualInputDevice.h"
-#include "Serialization/ISerializable.h"
+#include "Serialization/ConfigurationBase.h"
 
 namespace Pitstop {
 
 	class RawInputManager;
 
 	class VirtualInputManager
-		: public QObject
-		, public ISerializable
+		: public ConfigurationBase
 	{
 
 		Q_OBJECT
 
 	public:
 
-		VirtualInputManager(RawInputManager& rawInput);
+		VirtualInputManager(QSharedPointer<ConfigurationManager> configuration, RawInputManager& rawInput);
 		~VirtualInputManager();
 
 		VirtualInputDevicePtr createDevice();

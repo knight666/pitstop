@@ -2,9 +2,10 @@
 
 #include "Base/Main.h"
 #include "Serialization/ISerializable.h"
-#include "Serialization/ConfigurationManager.h"
 
 namespace Pitstop {
+
+	class ConfigurationManager;
 
 	class ConfigurationBase
 		: public QObject
@@ -15,11 +16,11 @@ namespace Pitstop {
 
 	public:
 
-		ConfigurationBase(ConfigurationManager& manager, const QString& name);
+		ConfigurationBase(QSharedPointer<ConfigurationManager> configuration, const QString& name);
 		virtual ~ConfigurationBase();
 
-		bool saveConfiguration(QJsonObject& target, size_t version);
-		bool loadConfiguration(const QJsonObject& source, size_t version);
+		bool saveConfiguration(QJsonObject& root, size_t version);
+		bool loadConfiguration(const QJsonObject& root, size_t version);
 
 		virtual bool serialize(QJsonObject& target, size_t version = SERIALIZATION_VERSION) = 0;
 		virtual bool deserialize(const QJsonObject& source, size_t version = SERIALIZATION_VERSION) = 0;
@@ -31,7 +32,7 @@ namespace Pitstop {
 
 	protected:
 
-		ConfigurationManager& m_ConfigurationManager;
+		QSharedPointer<ConfigurationManager> m_Configuration;
 		QString m_ConfigurationName;
 
 	}; // class ConfigurationBase
