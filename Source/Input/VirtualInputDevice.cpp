@@ -1,11 +1,16 @@
 #include "Input/VirtualInputDevice.h"
 
+#include "Input/RawInputManager.h"
 #include "Input/VirtualInputManager.h"
 #include "Input/XInputState.h"
+#include "Usb/UsbController.h"
 
 namespace Pitstop {
 
-	VirtualInputDevice::VirtualInputDevice(VirtualInputManager& virtualInput, QSharedPointer<ConfigurationManager>& configuration, uint8_t index)
+	VirtualInputDevice::VirtualInputDevice(
+			QSharedPointer<ConfigurationManager>& configuration,
+			VirtualInputManager& virtualInput,
+			uint8_t index)
 		: ConfigurationEventDispatcher(configuration)
 		, m_VirtualInput(virtualInput)
 		, m_Index(index)
@@ -77,8 +82,20 @@ namespace Pitstop {
 		return true;
 	}
 
-	bool VirtualInputDevice::deserialize(const QJsonObject& source, size_t version)
+	bool VirtualInputDevice::deserialize(RawInputManager& rawInput, UsbController& usbController, const QJsonObject& source, size_t version)
 	{
+		QString joystick_string = source["joystick"].toString();
+		if (!joystick_string.isEmpty())
+		{
+			setJoystick(rawInput.createJoystick(joystick_string));
+		}
+
+		double usb_number = source["usb"].toDouble();
+		if (usb_number != 0.0)
+		{
+			setUsbDevice(usbController.createDevice());
+		}
+
 		return true;
 	}
 

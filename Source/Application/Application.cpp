@@ -39,7 +39,7 @@ namespace Pitstop {
 		m_Configuration = QSharedPointer<ConfigurationManager>(new ConfigurationManager());
 		m_RawInput = new RawInputManager();
 		m_UsbController = new UsbController();
-		m_VirtualInput = new VirtualInputManager(m_Configuration, *m_RawInput);
+		m_VirtualInput = new VirtualInputManager(m_Configuration, *m_RawInput, *m_UsbController);
 		m_MainWindow = new MainWindow(*m_RawInput, *m_UsbController, *m_VirtualInput);
 
 		PS_LOG_INFO(Application) << "Initializing application.";
@@ -81,12 +81,12 @@ namespace Pitstop {
 			return false;
 		}
 
+		m_MainWindow->show();
+
 		if (!m_Configuration->load())
 		{
 			m_Configuration->save();
 		}
-
-		m_MainWindow->show();
 
 		return exec();
 	}

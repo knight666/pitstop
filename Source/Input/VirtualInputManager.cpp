@@ -1,14 +1,17 @@
 #include "Input/VirtualInputManager.h"
 
 #include "Input/RawInputManager.h"
-
-#define MAX_DEVICES 4
+#include "Usb/UsbController.h"
 
 namespace Pitstop {
 
-	VirtualInputManager::VirtualInputManager(QSharedPointer<ConfigurationManager> configuration, RawInputManager& rawInput)
+	VirtualInputManager::VirtualInputManager(
+			QSharedPointer<ConfigurationManager> configuration,
+			RawInputManager& rawInput,
+			UsbController& usbController)
 		: ConfigurationBase(configuration, "virtualInput")
 		, m_RawInput(rawInput)
+		, m_UsbController(usbController)
 	{
 	}
 
@@ -23,8 +26,8 @@ namespace Pitstop {
 
 		VirtualInputDevicePtr device(
 			new VirtualInputDevice(
-				*this,
 				m_Configuration,
+				*this,
 				m_Devices.size()));
 
 		m_Devices.push_back(device);
@@ -58,6 +61,56 @@ namespace Pitstop {
 
 	bool VirtualInputManager::deserialize(const QJsonObject& source, size_t version)
 	{
+		if (!source.contains("devices"))
+		{
+			PS_LOG_ERROR(VirtualInputManager) << "Missing \"devices\" array in configuration.";
+
+			return false;
+		}
+
+		QJsonArray devices_array = source["devices"].toArray();
+		if (devices_array.isEmpty())
+		{
+			return true;
+		}
+
+		for (int i = 0; i < devices_array.size(); ++i)
+		{
+			QJsonObject device_object = devices_array.at(i).toObject();
+			if (device_object.isEmpty())
+			{
+				PS_LOG_ERROR(VirtualInputManager) << "Not a device object.";
+
+				return false;
+			}
+
+			VirtualInputDevicePtr device;
+
+			if (i < m_Devices.size())
+			{
+				device = m_Devices[i];
+			}
+			else
+			{
+				device = createDevice();
+			}
+
+			for (QJsonObject::iterator it = device_object.begin(); it != device_object.end(); ++it)
+			{
+				QString value_string = it->toString();
+
+				int i = 0;
+			}
+
+			if (device == nullptr ||
+				!device->deserialize(m_RawInput, m_UsbController, device_object, version))
+			{
+				PS_LOG_ERROR(VirtualInputManager) << "Failed to load virtual device.";
+
+				return false;
+			}
+		}
+
 		return true;
 	}
 

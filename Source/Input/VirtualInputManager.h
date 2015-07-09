@@ -17,7 +17,10 @@ namespace Pitstop {
 
 	public:
 
-		VirtualInputManager(QSharedPointer<ConfigurationManager> configuration, RawInputManager& rawInput);
+		VirtualInputManager(
+			QSharedPointer<ConfigurationManager> configuration,
+			RawInputManager& rawInput,
+			UsbController& usbController);
 		~VirtualInputManager();
 
 		VirtualInputDevicePtr createDevice();
@@ -30,6 +33,7 @@ namespace Pitstop {
 	private:
 
 		RawInputManager& m_RawInput;
+		UsbController& m_UsbController;
 		QVector<VirtualInputDevicePtr> m_Devices;
 
 	}; // class VirtualInputManager

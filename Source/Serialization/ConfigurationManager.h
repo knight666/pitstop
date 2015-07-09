@@ -35,6 +35,21 @@ namespace Pitstop {
 
 	private:
 
+		class ScopedLock
+		{
+
+		public:
+
+			ScopedLock(bool& locked) : m_Locked(locked) { m_Locked = true; }
+			~ScopedLock() { m_Locked = false; }
+
+		private:
+
+			bool& m_Locked;
+
+		};
+
+		bool m_Locked;
 		QVector<ConfigurationEventDispatcher*> m_EventDispatchers;
 		QVector<ConfigurationBase*> m_Installed;
 
