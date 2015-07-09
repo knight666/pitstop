@@ -52,8 +52,6 @@ namespace Pitstop {
 		}
 
 		m_Devices.push_back(device_widget);
-
-		Application::get().saveConfiguration();
 	}
 
 }; // namespace Pitstop

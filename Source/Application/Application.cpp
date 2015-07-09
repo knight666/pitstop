@@ -65,16 +65,6 @@ namespace Pitstop {
 		s_Instance = nullptr;
 	}
 
-	bool Application::saveConfiguration()
-	{
-		return m_Configuration->save();
-	}
-
-	bool Application::loadConfiguration()
-	{
-		return m_Configuration->load();
-	}
-
 	int Application::run()
 	{
 		if (!m_RawInput->initialize((HWND)m_MainWindow->winId()))
@@ -91,9 +81,9 @@ namespace Pitstop {
 			return false;
 		}
 
-		if (!loadConfiguration())
+		if (!m_Configuration->load())
 		{
-			saveConfiguration();
+			m_Configuration->save();
 		}
 
 		m_MainWindow->show();
