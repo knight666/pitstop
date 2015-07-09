@@ -5,6 +5,7 @@
 namespace Pitstop {
 
 	ConfigurationManager::ConfigurationManager()
+		: m_Locked(false)
 	{
 	}
 
@@ -101,6 +102,13 @@ namespace Pitstop {
 
 	bool ConfigurationManager::save()
 	{
+		if (m_Locked)
+		{
+			return true;
+		}
+
+		ScopedLock locked(m_Locked);
+
 		PS_LOG_INFO(ConfigurationManager) << "Saving configuration to disk. (version " << CONFIGURATION_VERSION << ")";
 
 		QJsonObject configuration_root;
@@ -139,6 +147,13 @@ namespace Pitstop {
 
 	bool ConfigurationManager::load()
 	{
+		if (m_Locked)
+		{
+			return true;
+		}
+
+		ScopedLock locked(m_Locked);
+
 		PS_LOG_INFO(ConfigurationManager) << "Loading configuration from disk.";
 
 		QDir app_directory(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
@@ -151,12 +166,13 @@ namespace Pitstop {
 			return false;
 		}
 
-		QJsonDocument configuration_document = QJsonDocument::fromJson(configuration_file.readAll());
+		QJsonParseError errors;
+		QJsonDocument configuration_document = QJsonDocument::fromJson(configuration_file.readAll(), &errors);
 		configuration_file.close();
 
-		if (configuration_document.isNull())
+		if (errors.error != QJsonParseError::NoError)
 		{
-			PS_LOG_ERROR(ConfigurationManager) << "Failed to parse configuration document.";
+			PS_LOG_ERROR(ConfigurationManager) << "Failed to parse configuration document. (error: \"" << errors.errorString() << "\")";
 
 			return false;
 		}

@@ -23,9 +23,6 @@ namespace Pitstop {
 		bool saveConfiguration(QJsonObject& root, size_t version);
 		bool loadConfiguration(const QJsonObject& root, size_t version);
 
-		virtual bool serialize(QJsonObject& target, size_t version) = 0;
-		virtual bool deserialize(const QJsonObject& source, size_t version) = 0;
-
 	protected:
 
 		QString m_ConfigurationName;

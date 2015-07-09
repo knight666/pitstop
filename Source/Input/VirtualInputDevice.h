@@ -24,7 +24,10 @@ namespace Pitstop {
 
 	public:
 
-		VirtualInputDevice(VirtualInputManager& virtualInput, QSharedPointer<ConfigurationManager>& configuration, uint8_t index);
+		VirtualInputDevice(
+			QSharedPointer<ConfigurationManager>& configuration,
+			VirtualInputManager& virtualInput,
+			uint8_t index);
 		~VirtualInputDevice();
 
 		HANDLE getJoystickHandle() const;
@@ -36,7 +39,7 @@ namespace Pitstop {
 		void setUsbDevice(UsbDevicePtr usb);
 
 		virtual bool serialize(QJsonObject& target, size_t version) override;
-		virtual bool deserialize(const QJsonObject& source, size_t version) override;
+		bool deserialize(RawInputManager& rawInput, UsbController& usbController, const QJsonObject& source, size_t version);
 
 	public slots:
 
