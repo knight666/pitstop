@@ -44,6 +44,7 @@ namespace Pitstop {
 		RawInputManager& m_RawInput;
 		HDEVINFO m_HubInfo;
 		QString m_HubPath;
+		GUID m_HubGuid;
 		HANDLE m_HubHandle;
 		QVector<UsbDevicePtr> m_Devices;
 

@@ -12,6 +12,8 @@ namespace Pitstop {
 		: m_Configuration(configuration)
 		, m_RawInput(rawInput)
 		, m_HubInfo(NULL)
+		, m_HubGuid(GUID_NULL)
+		, m_HubHandle(NULL)
 	{
 	}
 
@@ -143,6 +145,8 @@ namespace Pitstop {
 			return false;
 		}
 
+		m_HubGuid = device_interface_data.InterfaceClassGuid;
+
 		SP_DEVINFO_DATA device_detail_data = { 0 };
 		device_detail_data.cbSize = sizeof(SP_DEVINFO_DATA);
 
@@ -228,6 +232,64 @@ namespace Pitstop {
 
 	void UsbController::slotUsbDeviceConnectionChanged(bool connected)
 	{
+		HDEVINFO hardware_device_info = ::SetupDiGetClassDevsW(
+			&m_HubGuid,
+			NULL,
+			NULL,
+			DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+
+		BOOL found = TRUE;
+
+		DWORD member_index = 0;
+		while (1)
+		{
+			SP_DEVICE_INTERFACE_DATA device_interface_data = { 0 };
+			device_interface_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
+
+			if (::SetupDiEnumDeviceInterfaces(
+					hardware_device_info,
+					NULL,
+					&m_HubGuid,
+					member_index,
+					&device_interface_data) == FALSE)
+			{
+				break;
+			}
+
+			SP_DEVINFO_DATA device_detail_data = { 0 };
+			device_detail_data.cbSize = sizeof(SP_DEVINFO_DATA);
+
+			DWORD buffer_size = 0;
+
+			if (::SetupDiGetDeviceInterfaceDetailW(
+				hardware_device_info,
+				&device_interface_data,
+				NULL,
+				0,
+				&buffer_size,
+				&device_detail_data) == FALSE)
+			{
+				QVector<uint8_t> detail_data;
+				detail_data.resize(buffer_size + sizeof(DWORD));
+
+				SP_DEVICE_INTERFACE_DETAIL_DATA_W* detail_data_ptr = (SP_DEVICE_INTERFACE_DETAIL_DATA_W*)&detail_data[0];
+				detail_data_ptr->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
+
+				if (::SetupDiGetDeviceInterfaceDetailW(
+					hardware_device_info,
+					&device_interface_data,
+					detail_data_ptr,
+					buffer_size,
+					&buffer_size,
+					&device_detail_data) == TRUE)
+				{
+					int i = 0;
+				}
+			}
+
+			member_index++;
+		}
+
 		if (connected)
 		{
 			m_RawInput.updateRegisteredDevices();
