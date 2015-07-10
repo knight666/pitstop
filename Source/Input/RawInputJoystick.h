@@ -54,6 +54,8 @@ namespace Pitstop {
 
 		const QString& getUniquePath() const { return m_UniquePath; }
 
+		const QString& getInstancePath() const { return m_InstancePath; }
+
 		const GUID& getGuid() const { return m_Guid; }
 
 		InputProcessorBase* getInputProcessor() const { return m_InputProcessor; }
@@ -93,6 +95,7 @@ namespace Pitstop {
 		RID_DEVICE_INFO m_Info;
 		QString m_DevicePath;
 		QString m_UniquePath;
+		QString m_InstancePath;
 		GUID m_Guid;
 		InputProcessorBase* m_InputProcessor;
 		QSharedPointer<QImage> m_Thumbnail;

@@ -81,8 +81,10 @@ namespace Pitstop {
 			return false;
 		}
 
+		m_Description.clear();
 		m_DevicePath = devicePath;
 		m_UniquePath = devicePath;
+		m_InstancePath.clear();
 		m_Type = Type::Raw;
 		m_XinputIndex = (uint8_t)-1;
 
@@ -126,6 +128,78 @@ namespace Pitstop {
 			return false;
 		}
 
+		// Retrieve device information
+
+		HDEVINFO device_info = ::SetupDiGetClassDevsW(
+			&m_Guid,
+			NULL,
+			NULL,
+			DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+		if (device_info == NULL)
+		{
+			PS_LOG_ERROR(RawInputJoystick) << "Failed to retrieve device info. (GUID: \"" << guidToString(m_Guid) << "\")";
+
+			return false;
+		}
+
+		SP_DEVICE_INTERFACE_DATA device_interface_data = { 0 };
+		device_interface_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
+
+		if (::SetupDiEnumDeviceInterfaces(
+			device_info,
+			NULL,
+			&m_Guid,
+			0,
+			&device_interface_data) == FALSE)
+		{
+			PS_LOG_ERROR(RawInputJoystick) << "Failed to enumerate device interface. (GUID: \"" << guidToString(m_Guid) << "\")";
+
+			return false;
+		}
+
+		SP_DEVINFO_DATA device_detail_data = { 0 };
+		device_detail_data.cbSize = sizeof(SP_DEVINFO_DATA);
+
+		DWORD buffer_size = 0;
+
+		if (::SetupDiGetDeviceInterfaceDetailW(
+			device_info,
+			&device_interface_data,
+			NULL,
+			0,
+			&buffer_size,
+			&device_detail_data) == TRUE)
+		{
+			PS_LOG_ERROR(RawInputJoystick) << "Failed to retrieve device detail data. (GUID: \"" << guidToString(m_Guid) << "\")";
+
+			return false;
+		}
+
+		// Instance path
+
+		DWORD device_instance_size = 0;
+
+		if (::SetupDiGetDeviceInstanceIdW(
+			device_info,
+			&device_detail_data,
+			nullptr,
+			0,
+			&device_instance_size) == FALSE &&
+			device_instance_size > 0)
+		{
+			QVector<WCHAR> device_instance_data(device_instance_size);
+
+			if (::SetupDiGetDeviceInstanceIdW(
+				device_info,
+				&device_detail_data,
+				&device_instance_data[0],
+				device_instance_data.size(),
+				&device_instance_size) == TRUE)
+			{
+				m_InstancePath = QString::fromUtf16(&device_instance_data[0]);
+			}
+		}
+
 		// Category
 
 		retrieveFromRegistry(
@@ -133,15 +207,11 @@ namespace Pitstop {
 			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + guidToString(m_Guid),
 			"Category");
 
-		bool translated = true;
-
 		// Description
-
-		m_Description = devicePath;
 
 		QVector<wchar_t> device_name_data(128);
 
-		translated = ::HidD_GetProductString(
+		bool translated = ::HidD_GetProductString(
 			m_FileHandle,
 			&device_name_data[0],
 			device_name_data.size() * sizeof(wchar_t)) == TRUE;
