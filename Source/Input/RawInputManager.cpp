@@ -30,6 +30,18 @@ namespace Pitstop {
 
 		m_Window = window;
 
+		if (!updateRegisteredDevices())
+		{
+			return false;
+		}
+
+		m_Initialized = true;
+
+		return true;
+	}
+
+	bool RawInputManager::updateRegisteredDevices()
+	{
 		QVector<RAWINPUTDEVICELIST> device_info_list;
 
 		UINT device_count = 0;
@@ -85,8 +97,6 @@ namespace Pitstop {
 				return false;
 			}
 		}
-
-		m_Initialized = true;
 
 		return true;
 	}
