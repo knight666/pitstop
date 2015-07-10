@@ -8,6 +8,9 @@
 
 namespace Pitstop {
 
+	class RawInputJoystick;
+	class WidgetJoystick;
+
 	class DialogJoystickDetails
 		: public QDialog
 	{
@@ -16,12 +19,17 @@ namespace Pitstop {
 
 	public:
 
-		DialogJoystickDetails(QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
+		DialogJoystickDetails(WidgetJoystick& widget);
 		~DialogJoystickDetails();
 
 	private:
 
+		void addRow(const QString& name, const QString& value);
+
+	private:
+
 		Ui_DialogJoystickDetails m_Form;
+		QSharedPointer<RawInputJoystick> m_Joystick;
 
 	}; // class DialogJoystickDetails
 
