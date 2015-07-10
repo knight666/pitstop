@@ -10,12 +10,12 @@ namespace Pitstop {
 
 	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HWND window)
 		: m_Manager(manager)
-		, m_XinputIndex((uint8_t)-1)
-		, m_Connected(false)
+		, m_Type(Type::Raw)
 		, m_VendorIdentifier(0)
 		, m_ProductIdentifier(0)
+		, m_XinputIndex((uint8_t)-1)
+		, m_Connected(false)
 		, m_Handle(NULL)
-		, m_Type(Type::Raw)
 		, m_InputProcessor(nullptr)
 	{
 		memset(&m_Device, 0, sizeof(m_Device));
@@ -49,73 +49,72 @@ namespace Pitstop {
 		emit signalConnected(*this, m_Connected);
 	}
 
-	bool RawInputJoystick::setup(HANDLE handle, const RID_DEVICE_INFO& info, const QString& path)
+	void RawInputJoystick::setDescription(const QString& value)
 	{
-		m_Connected = false;
-		m_Handle = handle;
+		m_Description = value;
 
-		m_Info = info;
-		m_Device.usUsagePage = info.hid.usUsagePage;
-		m_Device.usUsage = info.hid.usUsage;
+		emit signalPropertyChanged();
+	}
 
-		m_DevicePath = path;
-		m_Description = path;
+	bool RawInputJoystick::setup(const QString& devicePath)
+	{
+		// Extract properties from device path
 
-		// Extract GUID
+		QRegExp match_path(
+			"\\\\\\\\?\\HID#"
+			"VID_([0-9A-Fa-f]+)"
+			"&PID_([0-9A-Fa-f]+)"
+			"(&([A-Za-z]+_?)([0-9A-Fa-f]+))?"
+			"(\\#[0-9A-Fa-f\\&]+\\#)"
+			"(\\{[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}\\})");
 
-		QRegExp extract_guid("(\\{.+\\})");
-		if (extract_guid.indexIn(m_DevicePath) < 0)
+		if (match_path.indexIn(devicePath) < 0)
 		{
+			PS_LOG_ERROR(RawInputJoystick) << "Failed to extract properties from device path. (" << devicePath << ")";
+
 			return false;
 		}
 
-		m_GuidString = extract_guid.cap(1);
-		::CLSIDFromString(m_GuidString.utf16(), &m_Guid);
+		// Extract properties
 
-		// Extract VID and PID
+		m_DevicePath = devicePath;
+		m_UniquePath = devicePath;
+		m_Type = Type::Raw;
+		m_XinputIndex = (uint8_t)-1;
 
-		QRegExp extract_info("VID_([A-Fa-f0-9]+)&PID_([A-Fa-f0-9]+)");
-		if (extract_info.indexIn(m_DevicePath) < 0)
+		if (match_path.cap(3).size() > 0)
 		{
-			return false;
+			if (match_path.cap(4) == "IG_")
+			{
+				// Extract XInput identifier
+
+				m_Type = RawInputJoystick::Type::XInput;
+				m_XinputIndex = (uint8_t)match_path.cap(5).toUInt(nullptr, 16);
+			}
+
+			m_UniquePath.replace(match_path.cap(3), "");
 		}
 
-		QString vid = extract_info.cap(1);
-		m_VendorIdentifier = vid.toInt(nullptr, 16);
+		m_VendorIdentifier = (uint16_t)match_path.cap(1).toUInt(nullptr, 16);
+		m_ProductIdentifier = (uint16_t)match_path.cap(2).toUInt(nullptr, 16);
 
-		QString pid = extract_info.cap(2);
-		m_ProductIdentifier = pid.toInt(nullptr, 16);
-
-		// Check if managed by XInput
-
-		m_Device.dwFlags = RIDEV_DEVNOTIFY;
-
-		if (m_DevicePath.indexOf("IG_") >= 0)
-		{
-			m_Type = Type::XInput;
-		}
-		else
-		{
-			m_Type = Type::Raw;
-
-			// Ensure input is received even when the window loses focus
-
-			m_Device.dwFlags |= RIDEV_INPUTSINK;
-		}
+		m_Guid = stringToGuid(match_path.cap(7));
 
 		// Get category
 
 		retrieveFromRegistry(
 			m_Category,
-			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + m_GuidString,
+			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + guidToString(m_Guid),
 			"Category");
 
-		// Get translated name
+		// Get description
+
+		m_Description = devicePath;
 
 		bool translated = false;
 
 		HANDLE hid_handle = ::CreateFileW(
-			path.utf16(),
+			m_DevicePath.utf16(),
 			GENERIC_READ | GENERIC_WRITE,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,
 			NULL,
@@ -134,9 +133,7 @@ namespace Pitstop {
 
 			if (translated)
 			{
-				m_Description = QString::fromUtf16(
-					&device_name_data[0],
-					(int)wcslen((const wchar_t*)&device_name_data[0]));
+				m_Description = QString::fromUtf16(&device_name_data[0]);
 
 				translated = !m_Description.isEmpty();
 			}
@@ -171,9 +168,32 @@ namespace Pitstop {
 
 		m_Thumbnail = m_Manager.getJoystickThumbnail(m_VendorIdentifier, m_ProductIdentifier);
 
-		// Add input processor
+		emit signalPropertyChanged();
 
-		bool result = true;
+		return true;
+	}
+
+	bool RawInputJoystick::initialize(HANDLE handle, const RID_DEVICE_INFO& info)
+	{
+		m_Handle = handle;
+		m_Connected = false;
+
+		m_Info = info;
+
+		// Setup device
+
+		m_Device.dwFlags = RIDEV_DEVNOTIFY;
+		if (m_Type == Type::Raw)
+		{
+			// Ensure input is received even when the window loses focus
+
+			m_Device.dwFlags |= RIDEV_INPUTSINK;
+		}
+
+		m_Device.usUsagePage = info.hid.usUsagePage;
+		m_Device.usUsage = info.hid.usUsage;
+
+		// Add input processor
 
 		if (m_InputProcessor != nullptr)
 		{
@@ -181,14 +201,20 @@ namespace Pitstop {
 		}
 
 		m_InputProcessor = m_Manager.createInputProcessor(*this);
-		if (m_InputProcessor != nullptr)
+		if (m_InputProcessor != nullptr &&
+			!m_InputProcessor->setup())
 		{
-			result = m_InputProcessor->setup();
+			PS_LOG_ERROR(RawInputJoystick) << "Failed to setup input processor for device. "
+				<< "(VID: " << QString::number(m_VendorIdentifier, 16)
+				<< " PID: " << QString::number(m_ProductIdentifier, 16)
+				<< ")";
+
+			return false;
 		}
 
 		setConnected(m_Handle, true);
 
-		return result;
+		return true;
 	}
 
 	bool RawInputJoystick::process(const RAWINPUT& message)
@@ -206,89 +232,51 @@ namespace Pitstop {
 		return result;
 	}
 
+	bool RawInputJoystick::serialize(QJsonObject& target, size_t version)
+	{
+		target["path"] = m_DevicePath;
+		target["description"] = m_Description;
+
+		return true;
+	}
+
 	bool RawInputJoystick::retrieveFromRegistry(QString& target, const QString& path, const QString& keyName)
 	{
 		HKEY key = NULL;
-		if (::RegOpenKeyExW(HKEY_LOCAL_MACHINE, (const wchar_t*)path.utf16(), 0, KEY_READ | KEY_WOW64_64KEY, &key) != ERROR_SUCCESS)
+		if (::RegOpenKeyExW(
+			HKEY_LOCAL_MACHINE,
+			(const wchar_t*)path.utf16(),
+			0,
+			KEY_READ | KEY_WOW64_64KEY,
+			&key) != ERROR_SUCCESS)
 		{
 			return false;
 		}
 
 		DWORD length = 0;
-		if (::RegQueryValueExW(key, (const wchar_t*)keyName.utf16(), nullptr, nullptr, nullptr, &length) != ERROR_SUCCESS)
+		if (::RegQueryValueExW(
+			key,
+			(const wchar_t*)keyName.utf16(),
+			nullptr,
+			nullptr,
+			nullptr,
+			&length) != ERROR_SUCCESS)
 		{
 			return false;
 		}
 
-		QVector<ushort> data;
-		data.resize((int)length);
-		::RegQueryValueExW(key, (const wchar_t*)keyName.utf16(), nullptr, nullptr, (BYTE*)&data[0], &length);
+		QVector<ushort> data((int)length);
+		::RegQueryValueExW(
+			key,
+			(const wchar_t*)keyName.utf16(),
+			nullptr,
+			nullptr,
+			(BYTE*)&data[0],
+			&length);
 
-		target = QString::fromUtf16(&data[0], (int)length);
+		target = QString::fromUtf16(&data[0]);
 
 		return true;
-	}
-
-	QString RawInputJoystick::findDevicePath(const GUID& guid)
-	{
-		QString device_path;
-
-		SP_DEVICE_INTERFACE_DATA device_interface_data = { 0 };
-		device_interface_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
-
-		HDEVINFO device_info = ::SetupDiGetClassDevsW(
-			&guid,
-			nullptr,
-			nullptr,
-			DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-
-		DWORD member_index = 0;
-		while (::SetupDiEnumDeviceInterfaces(
-			device_info,
-			nullptr,
-			&guid,
-			member_index,
-			&device_interface_data) == TRUE)
-		{
-			SP_DEVINFO_DATA device_detail_data = { 0 };
-			device_detail_data.cbSize = sizeof(SP_DEVINFO_DATA);
-
-			DWORD buffer_size = 0;
-
-			if (::SetupDiGetDeviceInterfaceDetailW(
-				device_info,
-				&device_interface_data,
-				nullptr,
-				0,
-				&buffer_size,
-				&device_detail_data) == FALSE)
-			{
-				QVector<uint8_t> detail_data;
-				detail_data.resize(buffer_size + sizeof(DWORD));
-
-				SP_DEVICE_INTERFACE_DETAIL_DATA_W* detail_data_ptr = (SP_DEVICE_INTERFACE_DETAIL_DATA_W*)&detail_data[0];
-				detail_data_ptr->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
-
-				if (::SetupDiGetDeviceInterfaceDetailW(
-					device_info,
-					&device_interface_data,
-					(SP_DEVICE_INTERFACE_DETAIL_DATA_W*)&detail_data[0],
-					buffer_size,
-					&buffer_size,
-					&device_detail_data) == TRUE)
-				{
-					device_path = QString::fromUtf16((const ushort*)&detail_data_ptr->DevicePath[0]);
-
-					break;
-				}
-			}
-
-			DWORD last_error = ::GetLastError();
-
-			member_index++;
-		}
-
-		return device_path;
 	}
 
 }; // namespace Pitstop

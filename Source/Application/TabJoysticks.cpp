@@ -17,19 +17,19 @@ namespace Pitstop {
 	TabJoysticks::~TabJoysticks()
 	{
 		disconnect(
-			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
+			this, SLOT(slotJoystickCreated(RawInputJoystickPtr, bool)));
 	}
 
 	void TabJoysticks::setup(RawInputManager& rawInput)
 	{
 		connect(
-			&rawInput, SIGNAL(signalJoystickConnected(RawInputJoystickPtr, bool)),
-			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
+			&rawInput, SIGNAL(signalJoystickCreated(RawInputJoystickPtr)),
+			this, SLOT(slotJoystickCreated(RawInputJoystickPtr)));
 	}
 
-	void TabJoysticks::slotJoystickConnected(RawInputJoystickPtr joystick, bool connected)
+	void TabJoysticks::slotJoystickCreated(RawInputJoystickPtr joystick)
 	{
-		QHash<QString, WidgetJoystickPtr>::iterator found = m_Joysticks.find(joystick->getDevicePath());
+		QHash<QString, WidgetJoystickPtr>::iterator found = m_Joysticks.find(joystick->getUniquePath());
 		if (found != m_Joysticks.end())
 		{
 			return;
@@ -44,7 +44,7 @@ namespace Pitstop {
 			layout->addWidget(widget.data());
 		}
 
-		m_Joysticks.insert(joystick->getDevicePath(), widget);
+		m_Joysticks.insert(joystick->getUniquePath(), widget);
 	}
 
 }; // namespace Pitstop

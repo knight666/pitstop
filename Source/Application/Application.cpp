@@ -12,20 +12,35 @@
 #include "Input/Usb/UsbController.h"
 #include "Input/RawInputManager.h"
 #include "Input/VirtualInputManager.h"
-#include "Logging/SinkFile.h"
+#include "Serialization/ConfigurationManager.h"
 
 namespace Pitstop {
 
+	Application* Application::s_Instance = nullptr;
+
+	Application& Application::get()
+	{
+		return *s_Instance;
+	}
+
 	Application::Application(int& argc, char** argv, int flags /*= ApplicationFlags*/)
 		: QApplication(argc, argv, flags)
-		, m_RawInput(new RawInputManager())
-		, m_UsbController(new UsbController())
-		, m_VirtualInput(new VirtualInputManager(*m_RawInput))
-		, m_MainWindow(new MainWindow(*m_RawInput, *m_UsbController, *m_VirtualInput))
+		, m_RawInput(nullptr)
+		, m_UsbController(nullptr)
+		, m_VirtualInput(nullptr)
+		, m_MainWindow(nullptr)
 	{
+		s_Instance = this;
+
 		setApplicationName("Pitstop");
 
 		Logger::initialize();
+
+		m_Configuration = QSharedPointer<ConfigurationManager>(new ConfigurationManager());
+		m_RawInput = new RawInputManager();
+		m_UsbController = new UsbController(m_Configuration, *m_RawInput);
+		m_VirtualInput = new VirtualInputManager(m_Configuration, *m_RawInput, *m_UsbController);
+		m_MainWindow = new MainWindow(*m_RawInput, *m_UsbController, *m_VirtualInput);
 
 		PS_LOG_INFO(Application) << "Initializing application.";
 
@@ -39,12 +54,15 @@ namespace Pitstop {
 	{
 		PS_LOG_INFO(Application) << "Closing application.";
 
+		delete m_MainWindow;
 		delete m_VirtualInput;
 		delete m_UsbController;
 		delete m_RawInput;
-		delete m_MainWindow;
+		m_Configuration.clear();
 
 		Logger::destroy();
+
+		s_Instance = nullptr;
 	}
 
 	int Application::run()
@@ -64,6 +82,11 @@ namespace Pitstop {
 		}
 
 		m_MainWindow->show();
+
+		if (!m_Configuration->load())
+		{
+			m_Configuration->save();
+		}
 
 		return exec();
 	}

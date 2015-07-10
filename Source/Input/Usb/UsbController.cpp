@@ -1,17 +1,26 @@
 #include "Input/Usb/UsbController.h"
 
+#include "Input/RawInputManager.h"
+
 #define MAX_USB_DEVICES 4
 
 namespace Pitstop {
 
-	UsbController::UsbController()
-		: m_HubInfo(NULL)
+	UsbController::UsbController(
+			QSharedPointer<ConfigurationManager> configuration,
+			RawInputManager& rawInput)
+		: m_Configuration(configuration)
+		, m_RawInput(rawInput)
+		, m_HubInfo(NULL)
 	{
 	}
 
 	UsbController::~UsbController()
 	{
 		PS_LOG_INFO(UsbController) << "Destroying USB controller.";
+
+		disconnect(
+			this, SLOT(slotUsbDeviceConnectionChanged(bool)));
 
 		m_Devices.clear();
 
@@ -22,16 +31,71 @@ namespace Pitstop {
 		}
 	}
 
-	UsbDevicePtr UsbController::createDevice()
+	UsbDevicePtr UsbController::createDevice(uint8_t index /*= (uint8_t)-1*/)
 	{
 		UsbDevicePtr device;
 
-		if (m_Devices.size() < MAX_USB_DEVICES)
-		{
-			PS_LOG_INFO(Usb) << "Creating device " << m_Devices.size() << ".";
+		uint8_t identifier = (index >= MAX_USB_DEVICES)
+			? m_Devices.size()
+			: index;
 
-			device = UsbDevicePtr(new UsbDevice(*this, (uint8_t)m_Devices.size() + 1));
+		if (identifier <= MAX_USB_DEVICES)
+		{
+			identifier++;
+
+			PS_LOG_INFO(UsbController) << "Creating device " << identifier << ".";
+
+			device = UsbDevicePtr(
+				new UsbDevice(
+					m_Configuration,
+					*this,
+					identifier));
+
+			connect(
+				device.data(), SIGNAL(signalConnectionChanged(bool)),
+				this, SLOT(slotUsbDeviceConnectionChanged(bool)));
+
 			m_Devices.push_back(device);
+		}
+
+		return device;
+	}
+
+	UsbDevicePtr UsbController::createDevice(const QJsonObject& serialized)
+	{
+		// Device
+
+		if (!serialized.contains("identifier") ||
+			!serialized["identifier"].isDouble())
+		{
+			PS_LOG_ERROR(UsbController) << "Missing required field \"identifier\".";
+
+			return UsbDevicePtr();
+		}
+
+		uint8_t identifier = (uint8_t)serialized["identifier"].toDouble();
+		if (identifier < 1 ||
+			identifier > MAX_USB_DEVICES)
+		{
+			PS_LOG_ERROR(UsbController) << "Identifier " << identifier << " is out of range.";
+
+			return UsbDevicePtr();
+		}
+
+		UsbDevicePtr device = createDevice(identifier - 1);
+		if (device == nullptr)
+		{
+			PS_LOG_ERROR(UsbController) << "Failed to create device. (identifier " << identifier << ")";
+
+			return device;
+		}
+
+		// Connected
+
+		if (serialized.contains("connected") &&
+			serialized["connected"].isBool())
+		{
+			device->setConnected(serialized["connected"].toBool());
 		}
 
 		return device;
@@ -59,7 +123,7 @@ namespace Pitstop {
 			DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
 		if (m_HubInfo == NULL)
 		{
-			PS_LOG_ERROR(Usb) << "Failed to retrieve handle to virtual USB hub.";
+			PS_LOG_ERROR(UsbController) << "Failed to retrieve handle to virtual USB hub.";
 
 			return false;
 		}
@@ -74,7 +138,7 @@ namespace Pitstop {
 			0,
 			&device_interface_data) == FALSE)
 		{
-			PS_LOG_ERROR(Usb) << "Failed to initialize device interface.";
+			PS_LOG_ERROR(UsbController) << "Failed to initialize device interface.";
 
 			return false;
 		}
@@ -92,7 +156,7 @@ namespace Pitstop {
 			&buffer_size,
 			&device_detail_data) == TRUE)
 		{
-			PS_LOG_ERROR(Usb) << "Failed to retrieve size of device interface.";
+			PS_LOG_ERROR(UsbController) << "Failed to retrieve size of device interface.";
 
 			return false;
 		}
@@ -111,7 +175,7 @@ namespace Pitstop {
 			&buffer_size,
 			&device_detail_data) == FALSE)
 		{
-			PS_LOG_ERROR(Usb) << "Failed to retrieve device interface data.";
+			PS_LOG_ERROR(UsbController) << "Failed to retrieve device interface data.";
 
 			return false;
 		}
@@ -129,7 +193,7 @@ namespace Pitstop {
 			NULL);
 		if (m_HubHandle == NULL)
 		{
-			PS_LOG_ERROR(Usb) << "Failed to open handle to USB hub.";
+			PS_LOG_ERROR(UsbController) << "Failed to open handle to USB hub.";
 
 			return false;
 		}
@@ -153,13 +217,21 @@ namespace Pitstop {
 				&written,
 				nullptr) != FALSE)
 			{
-				PS_LOG_INFO(Usb) << "Disconnecting dangling USB device " << i << ".";
+				PS_LOG_INFO(UsbController) << "Disconnecting dangling USB device " << i << ".";
 			}
 		}
 
-		PS_LOG_INFO(Usb) << "Initialized.";
+		PS_LOG_INFO(UsbController) << "Initialized.";
 
 		return true;
+	}
+
+	void UsbController::slotUsbDeviceConnectionChanged(bool connected)
+	{
+		if (connected)
+		{
+			m_RawInput.updateRegisteredDevices();
+		}
 	}
 
 }; // namespace Pitstop

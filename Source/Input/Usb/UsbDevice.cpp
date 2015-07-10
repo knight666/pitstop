@@ -5,26 +5,30 @@
 
 namespace Pitstop {
 
-	UsbDevice::UsbDevice(UsbController& controller, uint8_t identifier)
-		: m_Controller(controller)
+	UsbDevice::UsbDevice(
+			QSharedPointer<ConfigurationManager> configuration,
+			UsbController& controller,
+			uint8_t identifier)
+		: ConfigurationEventDispatcher(configuration)
+		, m_Controller(controller)
 		, m_Identifier(identifier)
-		, m_PluggedIn(false)
+		, m_Connected(false)
 	{
 	}
 
 	UsbDevice::~UsbDevice()
 	{
-		setPluggedIn(false);
+		setConnected(false);
 	}
 
-	void UsbDevice::setPluggedIn(bool value)
+	void UsbDevice::setConnected(bool value)
 	{
-		if (value == m_PluggedIn)
+		if (value == m_Connected)
 		{
 			return;
 		}
 
-		PS_LOG_ERROR(UsbDevice) << "setPluggedIn identifier " << m_Identifier << " connected " << value;
+		PS_LOG_TRACE(UsbDevice) << "setPluggedIn identifier " << m_Identifier << " connected " << value;
 
 		QVector<uint8_t> input(16);
 		input[0] = 0x10;
@@ -32,9 +36,13 @@ namespace Pitstop {
 
 		QVector<uint8_t> output;
 
-		write(value ? 0x002A4000 : 0x002A4004, input, output);
+		if (write(value ? 0x002A4000 : 0x002A4004, input, output))
+		{
+			m_Connected = value;
 
-		m_PluggedIn = value;
+			emit signalConnectionChanged(value);
+			emit signalSaveConfiguration();
+		}
 	}
 
 	bool UsbDevice::write(DWORD command, QVector<uint8_t>& input, QVector<uint8_t>& output)
@@ -65,6 +73,14 @@ namespace Pitstop {
 
 			return false;
 		}
+
+		return true;
+	}
+
+	bool UsbDevice::serialize(QJsonObject& target, size_t version)
+	{
+		target["identifier"] = m_Identifier;
+		target["connected"] = m_Connected;
 
 		return true;
 	}

@@ -4,14 +4,18 @@
 #include "Input/Process/InputProcessorBase.h"
 #include "Input/Usb/UsbDevice.h"
 #include "Input/RawInputJoystick.h"
+#include "Serialization/ConfigurationEventDispatcher.h"
+#include "Serialization/ISerializable.h"
 
 namespace Pitstop {
 
+	class ConfigurationManager;
 	class VirtualInputManager;
 	struct XInputState;
 
 	class VirtualInputDevice
-		: public QObject
+		: public ConfigurationEventDispatcher
+		, public ISerializable
 	{
 
 		Q_OBJECT
@@ -20,7 +24,10 @@ namespace Pitstop {
 
 	public:
 
-		VirtualInputDevice(VirtualInputManager& manager, uint8_t index);
+		VirtualInputDevice(
+			QSharedPointer<ConfigurationManager>& configuration,
+			VirtualInputManager& virtualInput,
+			uint8_t index);
 		~VirtualInputDevice();
 
 		HANDLE getJoystickHandle() const;
@@ -30,6 +37,14 @@ namespace Pitstop {
 
 		const UsbDevicePtr& getUsbDevice() const { return m_Usb; }
 		void setUsbDevice(UsbDevicePtr usb);
+
+		virtual bool serialize(QJsonObject& target, size_t version) override;
+		bool deserialize(RawInputManager& rawInput, UsbController& usbController, const QJsonObject& source, size_t version);
+
+	signals:
+
+		void signalJoystickChanged(RawInputJoystickPtr joystick);
+		void signalUsbDeviceChanged(UsbDevicePtr usb);
 
 	public slots:
 
@@ -41,7 +56,7 @@ namespace Pitstop {
 
 	private:
 
-		VirtualInputManager& m_Manager;
+		VirtualInputManager& m_VirtualInput;
 		uint8_t m_Index;
 		RawInputJoystickPtr m_Joystick;
 		UsbDevicePtr m_Usb;

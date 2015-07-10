@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/Main.h"
+#include "Serialization/ISerializable.h"
 
 namespace Pitstop {
 
@@ -9,6 +10,7 @@ namespace Pitstop {
 
 	class RawInputJoystick
 		: public QObject
+		, public ISerializable
 	{
 
 		Q_OBJECT
@@ -32,6 +34,7 @@ namespace Pitstop {
 		void setXinputIndex(uint8_t value) { m_XinputIndex = value; }
 
 		const QString& getDescription() const { return m_Description; }
+		void setDescription(const QString& value);
 
 		const QString& getCategory() const { return m_Category; }
 
@@ -49,27 +52,30 @@ namespace Pitstop {
 
 		const QString& getDevicePath() const { return m_DevicePath; }
 
+		const QString& getUniquePath() const { return m_UniquePath; }
+
 		const GUID& getGuid() const { return m_Guid; }
-		const QString& getGuidString() const { return m_GuidString; }
 
 		InputProcessorBase* getInputProcessor() const { return m_InputProcessor; }
 
 		QSharedPointer<QImage> getThumbnail() const { return m_Thumbnail; }
 
-		bool setup(HANDLE handle, const RID_DEVICE_INFO& info, const QString& path);
+		bool setup(const QString& devicePath);
+		bool initialize(HANDLE handle, const RID_DEVICE_INFO& info);
 
 		bool process(const RAWINPUT& message);
 
+		virtual bool serialize(QJsonObject& target, size_t version) override;
+
 	signals:
 
+		void signalPropertyChanged();
 		void signalConnected(RawInputJoystick& joystick, bool connected);
 		void signalJoystickInput(RawInputJoystick* joystick, bool processed);
 
 	private:
 
 		bool retrieveFromRegistry(QString& target, const QString& path, const QString& keyName);
-
-		QString findDevicePath(const GUID& guid);
 
 	private:
 
@@ -85,8 +91,8 @@ namespace Pitstop {
 		RAWINPUTDEVICE m_Device;
 		RID_DEVICE_INFO m_Info;
 		QString m_DevicePath;
+		QString m_UniquePath;
 		GUID m_Guid;
-		QString m_GuidString;
 		InputProcessorBase* m_InputProcessor;
 		QSharedPointer<QImage> m_Thumbnail;
 

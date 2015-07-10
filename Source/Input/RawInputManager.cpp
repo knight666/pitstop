@@ -30,6 +30,18 @@ namespace Pitstop {
 
 		m_Window = window;
 
+		if (!updateRegisteredDevices())
+		{
+			return false;
+		}
+
+		m_Initialized = true;
+
+		return true;
+	}
+
+	bool RawInputManager::updateRegisteredDevices()
+	{
 		QVector<RAWINPUTDEVICELIST> device_info_list;
 
 		UINT device_count = 0;
@@ -85,8 +97,6 @@ namespace Pitstop {
 				return false;
 			}
 		}
-
-		m_Initialized = true;
 
 		return true;
 	}
@@ -172,6 +182,29 @@ namespace Pitstop {
 		return RawInputJoystickPtr();
 	}
 
+	RawInputJoystickPtr RawInputManager::getJoystickByPath(const QString& devicePath) const
+	{
+		QString unique_path = devicePath;
+
+		QRegExp match_path(
+			"\\\\\\\\?\\HID#"
+			"VID_[0-9A-Fa-f]+"
+			"&PID_[0-9A-Fa-f]+"
+			"(&[A-Za-z]+_?[0-9A-Fa-f]+)");
+		if (match_path.indexIn(unique_path) >= 0)
+		{
+			unique_path.replace(match_path.cap(1), "");
+		}
+
+		QHash<QString, RawInputJoystickPtr>::const_iterator found = m_JoysticksByPath.find(unique_path);
+		if (found != m_JoysticksByPath.end())
+		{
+			return found.value();
+		}
+
+		return RawInputJoystickPtr();
+	}
+
 	RawInputJoystickPtr RawInputManager::getJoystickByHandle(HANDLE device) const
 	{
 		QHash<HANDLE, RawInputJoystickPtr>::const_iterator found = m_JoysticksByHandle.find(device);
@@ -246,6 +279,46 @@ namespace Pitstop {
 			wcslen(&device_path_data[0]));
 	}
 
+	RawInputJoystickPtr RawInputManager::createJoystick(const QString& devicePath)
+	{
+		bool created = false;
+
+		RawInputJoystickPtr joystick = getJoystickByPath(devicePath);
+
+		if (joystick == nullptr)
+		{
+			joystick = RawInputJoystickPtr(
+				new RawInputJoystick(
+					*this,
+					m_Window));
+
+			created = true;
+		}
+
+		if (!joystick->setup(devicePath))
+		{
+			PS_LOG_ERROR(RawInputManager) << "Failed to setup joystick. (path: \"" << devicePath << "\")";
+			joystick.clear();
+
+			return joystick;
+		}
+
+		PS_LOG_INFO(RawInput) << "Setup joystick:";
+		PS_LOG_INFO(RawInput) << "- Path: \"" << joystick->getDevicePath() << "\"";
+		PS_LOG_INFO(RawInput) << "- Description: \"" << joystick->getDescription() << "\"";
+		PS_LOG_INFO(RawInput) << "- Type: \"" << joystick->getType() << "\"";
+		PS_LOG_INFO(RawInput) << "- Handle: " << joystick->getHandle() << "";
+
+		if (created)
+		{
+			m_JoysticksByPath.insert(joystick->getUniquePath(), joystick);
+
+			emit signalJoystickCreated(joystick);
+		}
+
+		return joystick;
+	}
+
 	RawInputJoystickPtr RawInputManager::createJoystick(HANDLE device)
 	{
 		// Check if handle is already known
@@ -282,81 +355,48 @@ namespace Pitstop {
 			return RawInputJoystickPtr();
 		}
 
-		// Extract properties from device path
+		RawInputJoystickPtr joystick = createJoystick(device_path);
 
-		QRegExp match_path(
-			"\\\\\\\\?\\HID#"
-			"VID_([0-9A-Fa-f]+)"
-			"&PID_([0-9A-Fa-f]+)"
-			"(&([A-Za-z]+_?)([0-9A-Fa-f]+))?"
-			"(\\#[0-9A-Fa-f\\&]+\\#)"
-			"(\\{[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}\\})");
-
-		if (match_path.indexIn(device_path) < 0)
+		if (joystick != nullptr &&
+			joystick->initialize(device, info))
 		{
-			PS_LOG_ERROR(RawInput) << "Failed to extract properties from device path. (" << device_path << ")";
+			m_JoysticksByHandle.insert(device, joystick);
+		}
+		else
+		{
+			joystick.clear();
+		}
+
+		return joystick;
+	}
+
+	RawInputJoystickPtr RawInputManager::createJoystick(const QJsonObject& serialized)
+	{
+		// Joystick from path
+
+		if (!serialized.contains("path") ||
+			!serialized["path"].isString())
+		{
+			PS_LOG_ERROR(RawInputManager) << "Missing required field \"path\"";
 
 			return RawInputJoystickPtr();
 		}
 
-		// Create unique joystick key from device path
+		RawInputJoystickPtr joystick = createJoystick(serialized["path"].toString());
 
-		QString joystick_key = device_path;
-
-		uint8_t device_xinput = (uint8_t)-1;
-
-		if (match_path.cap(3).size() > 0)
+		if (joystick == nullptr)
 		{
-			joystick_key.replace(match_path.cap(3), "");
+			PS_LOG_ERROR(RawInputManager) << "Failed to create joystick.";
 
-			if (match_path.cap(4) == "IG_")
-			{
-				// Extract XInput identifier
-
-				device_xinput = (uint8_t)match_path.cap(5).toUInt(nullptr, 16);
-			}
+			return RawInputJoystickPtr();
 		}
 
-		// Create joystick
+		// Description
 
-		RawInputJoystickPtr joystick;
-
-		QHash<QString, RawInputJoystickPtr>::iterator found_path = m_JoysticksByPath.find(joystick_key);
-		if (found_path != m_JoysticksByPath.end())
+		if (serialized.contains("description") &&
+			serialized["description"].isString())
 		{
-			joystick = found_path.value();
-		}
-		else
-		{
-			joystick = RawInputJoystickPtr(
-				new RawInputJoystick(
-					*this,
-					m_Window));
-
-			if (joystick->setup(
-				device,
-				info,
-				device_path))
-			{
-				PS_LOG_INFO(RawInput) << "Joystick:";
-				PS_LOG_INFO(RawInput) << "- Description: \"" << joystick->getDescription() << "\"";
-				PS_LOG_INFO(RawInput) << "- Type: \"" << joystick->getType() << "\"";
-				PS_LOG_INFO(RawInput) << "- Path: \"" << joystick->getDevicePath() << "\"";
-				PS_LOG_INFO(RawInput) << "- Handle: " << joystick->getHandle() << "";
-
-				m_JoysticksByPath.insert(joystick_key, joystick);
-			}
-			else
-			{
-				joystick.clear();
-			}
-		}
-
-		if (joystick != nullptr)
-		{
-			joystick->setXinputIndex(device_xinput);
-
-			m_JoysticksByHandle.insert(device, joystick);
+			joystick->setDescription(serialized["description"].toString());
 		}
 
 		return joystick;

@@ -1,17 +1,44 @@
 #include "Application/Widgets/WidgetDevice.h"
 
+#include "Application/Application.h"
+#include "Input/Usb/UsbController.h"
 #include "Input/RawInputManager.h"
 
 namespace Pitstop {
 
-	WidgetDevice::WidgetDevice(RawInputManager& rawInput, VirtualInputDevicePtr device, QWidget* parent /*= nullptr*/, Qt::WindowFlags flags /*= 0*/)
+	WidgetDevice::WidgetDevice(
+			RawInputManager& rawInput,
+			UsbController& usbController,
+			VirtualInputDevicePtr device,
+			QWidget* parent /*= nullptr*/,
+			Qt::WindowFlags flags /*= 0*/)
 		: QWidget(parent, flags)
 		, m_RawInput(rawInput)
+		, m_UsbController(usbController)
 		, m_Device(device)
 	{
 		connect(
+			&m_RawInput, SIGNAL(signalJoystickCreated(RawInputJoystickPtr)),
+			this, SLOT(slotJoystickCreated(RawInputJoystickPtr)));
+
+		connect(
 			&m_RawInput, SIGNAL(signalJoystickConnected(RawInputJoystickPtr, bool)),
 			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
+
+		connect(
+			device.data(), SIGNAL(signalJoystickChanged(RawInputJoystickPtr)),
+			this, SLOT(slotJoystickChanged(RawInputJoystickPtr)));
+
+		connect(
+			device.data(), SIGNAL(signalUsbDeviceChanged(UsbDevicePtr)),
+			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+
+		if (device->getUsbDevice() != nullptr)
+		{
+			connect(
+				device->getUsbDevice().data(), SIGNAL(signalConnectionChanged(bool)),
+				this, SLOT(slotUsbDeviceConnectionChanged(bool)));
+		}
 
 		m_Form.setupUi(this);
 
@@ -23,12 +50,82 @@ namespace Pitstop {
 	WidgetDevice::~WidgetDevice()
 	{
 		disconnect(
+			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+
+		disconnect(
+			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+
+		disconnect(
+			this, SLOT(slotJoystickChanged(RawInputJoystickPtr)));
+
+		disconnect(
 			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
+
+		disconnect(
+			this, SLOT(slotJoystickCreated(RawInputJoystickPtr)));
+	}
+
+	void WidgetDevice::slotJoystickCreated(RawInputJoystickPtr joystick)
+	{
+		updateJoysticks();
 	}
 
 	void WidgetDevice::slotJoystickConnected(RawInputJoystickPtr joystick, bool connected)
 	{
 		updateJoysticks();
+	}
+
+	void WidgetDevice::slotJoystickChanged(RawInputJoystickPtr joystick)
+	{
+		int selected = 0;
+
+		QString joystick_path;
+		if (m_Device->getJoystick() != nullptr)
+		{
+			joystick_path = m_Device->getJoystick()->getUniquePath();
+		}
+
+		for (int i = 0; i < m_Form.cmbJoystick->count(); ++i)
+		{
+			QVariant item_data = m_Form.cmbJoystick->itemData(i);
+			if (item_data.isValid())
+			{
+				if (item_data.toString() == joystick_path)
+				{
+					selected = i;
+
+					break;
+				}
+			}
+		}
+
+		m_Form.cmbJoystick->setCurrentIndex(selected);
+	}
+
+	void WidgetDevice::slotUsbDeviceChanged(UsbDevicePtr usb)
+	{
+		UsbDevice* device = qobject_cast<UsbDevice*>(sender());
+
+		disconnect(
+			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+
+		connect(
+			device, SIGNAL(signalUsbDeviceChanged(UsbDevicePtr)),
+			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+
+		disconnect(
+			this, SLOT(slotUsbDeviceConnectionChanged(bool)));
+
+		connect(
+			usb.data(), SIGNAL(signalConnectionChanged(bool)),
+			this, SLOT(slotUsbDeviceConnectionChanged(bool)));
+
+		updateConnection();
+	}
+
+	void WidgetDevice::slotUsbDeviceConnectionChanged(bool connected)
+	{
+		updateConnection();
 	}
 
 	void WidgetDevice::on_cmbJoystick_currentIndexChanged(int index)
@@ -40,9 +137,10 @@ namespace Pitstop {
 			if (index >= 1 &&
 				index < m_Form.cmbJoystick->count())
 			{
-				QVariant joystick_handle = m_Form.cmbJoystick->currentData(index);
-				joystick = m_RawInput.getJoystickByHandle((HANDLE)joystick_handle.toUInt());
+				QString joystick_path = m_Form.cmbJoystick->currentData().toString();
+				joystick = m_RawInput.getJoystickByPath(joystick_path);
 			}
+
 			m_Device->setJoystick(joystick);
 		}
 
@@ -57,18 +155,23 @@ namespace Pitstop {
 		}
 
 		UsbDevicePtr usb = m_Device->getUsbDevice();
-		if (usb != nullptr)
+		if (usb == nullptr)
 		{
-			usb->setPluggedIn(!usb->isPluggedIn());
+			usb = m_UsbController.createDevice();
+			m_Device->setUsbDevice(usb);
 		}
+
+		usb->setConnected(!usb->isConnected());
 
 		updateConnection();
 	}
 
 	void WidgetDevice::updateJoysticks()
 	{
-		int current = 0;
 		int selected = 0;
+		int current = 1;
+
+		bool previous = m_Form.cmbJoystick->blockSignals(true);
 
 		m_Form.cmbJoystick->clear();
 		m_Form.cmbJoystick->addItem("<None>");
@@ -76,8 +179,7 @@ namespace Pitstop {
 		QVector<RawInputJoystickPtr> joysticks = m_RawInput.getJoysticks();
 		for (RawInputJoystickPtr& joystick : joysticks)
 		{
-			if (!joystick->isConnected() ||
-				joystick->getType() != RawInputJoystick::Type::Raw)
+			if (joystick->getType() != RawInputJoystick::Type::Raw)
 			{
 				continue;
 			}
@@ -90,10 +192,12 @@ namespace Pitstop {
 
 			m_Form.cmbJoystick->addItem(
 				joystick->getDescription(),
-				QVariant((uint)joystick->getHandle()));
+				QVariant(joystick->getUniquePath()));
 
 			current++;
 		}
+
+		m_Form.cmbJoystick->blockSignals(previous);
 
 		m_Form.cmbJoystick->setCurrentIndex(selected);
 	}
@@ -127,11 +231,11 @@ namespace Pitstop {
 			usb = m_Device->getUsbDevice();
 		}
 
-		if (usb != nullptr)
-		{
-			m_Form.btnConnect->setText(usb->isPluggedIn() ? "Disconnect" : "Connect");
-		}
-		m_Form.btnConnect->setEnabled(usb != nullptr);
+		bool connected =
+			usb != nullptr &&
+			usb->isConnected();
+
+		m_Form.btnConnect->setText(connected ? "Disconnect" : "Connect");
 	}
 
 }; // namespace Pitstop
