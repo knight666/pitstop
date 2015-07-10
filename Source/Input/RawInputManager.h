@@ -20,6 +20,8 @@ namespace Pitstop {
 
 		bool initialize(HWND window);
 
+		bool updateRegisteredDevices();
+
 		void processInput(LPARAM lParam, WPARAM wParam);
 		void processConnectionChanged(LPARAM lParam, WPARAM wParam);
 

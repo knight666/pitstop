@@ -1,11 +1,16 @@
 #include "Input/Usb/UsbController.h"
 
+#include "Input/RawInputManager.h"
+
 #define MAX_USB_DEVICES 4
 
 namespace Pitstop {
 
-	UsbController::UsbController(QSharedPointer<ConfigurationManager> configuration)
+	UsbController::UsbController(
+			QSharedPointer<ConfigurationManager> configuration,
+			RawInputManager& rawInput)
 		: m_Configuration(configuration)
+		, m_RawInput(rawInput)
 		, m_HubInfo(NULL)
 	{
 	}
@@ -13,6 +18,9 @@ namespace Pitstop {
 	UsbController::~UsbController()
 	{
 		PS_LOG_INFO(UsbController) << "Destroying USB controller.";
+
+		disconnect(
+			this, SLOT(slotUsbDeviceConnectionChanged(bool)));
 
 		m_Devices.clear();
 
@@ -37,10 +45,15 @@ namespace Pitstop {
 
 			PS_LOG_INFO(UsbController) << "Creating device " << identifier << ".";
 
-			device = UsbDevicePtr(new UsbDevice(
-				m_Configuration,
-				*this,
-				identifier));
+			device = UsbDevicePtr(
+				new UsbDevice(
+					m_Configuration,
+					*this,
+					identifier));
+
+			connect(
+				device.data(), SIGNAL(signalConnectionChanged(bool)),
+				this, SLOT(slotUsbDeviceConnectionChanged(bool)));
 
 			m_Devices.push_back(device);
 		}
@@ -211,6 +224,14 @@ namespace Pitstop {
 		PS_LOG_INFO(UsbController) << "Initialized.";
 
 		return true;
+	}
+
+	void UsbController::slotUsbDeviceConnectionChanged(bool connected)
+	{
+		if (connected)
+		{
+			m_RawInput.updateRegisteredDevices();
+		}
 	}
 
 }; // namespace Pitstop
