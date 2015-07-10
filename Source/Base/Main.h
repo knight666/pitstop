@@ -20,9 +20,13 @@
 
 #include <Windows.h>
 
-// SetupAPI
+// WinDDK
 
-#include <SetupAPI.h>
+extern "C" {
+	#include <api/hidsdi.h>
+	#include <api/SetupAPI.h>
+	#include <hid/hidclient/hid.h>
+};
 
 // Qt Core
 
@@ -62,10 +66,6 @@
 #include <QtCore/QUrlQuery>
 #include <QtCore/QVariant>
 #include <QtCore/QWaitCondition>
-
-extern "C" {
-	#include <hidsdi.h>
-};
 
 #include "Base/Utils.h"
 #include "Logging/Context.h"
