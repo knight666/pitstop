@@ -36,7 +36,7 @@ namespace Pitstop {
 
 		QVector<uint8_t> output;
 
-		if (write(value ? 0x002A4000 : 0x002A4004, input, output))
+		if (write(value ? USB_COMMAND_CONNECT : USB_COMMAND_DISCONNECT, input, output))
 		{
 			m_Connected = value;
 

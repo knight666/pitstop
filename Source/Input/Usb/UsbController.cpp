@@ -211,7 +211,7 @@ namespace Pitstop {
 
 			if (::DeviceIoControl(
 				m_HubHandle,
-				0x002A4004,
+				USB_COMMAND_DISCONNECT,
 				input, 16,
 				nullptr, 0,
 				&written,
