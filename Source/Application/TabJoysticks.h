@@ -25,7 +25,7 @@ namespace Pitstop {
 
 	public slots:
 
-		void slotJoystickConnected(RawInputJoystickPtr joystick, bool connected);
+		void slotJoystickCreated(RawInputJoystickPtr joystick);
 
 	private:
 

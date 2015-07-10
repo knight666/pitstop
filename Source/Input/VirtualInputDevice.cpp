@@ -1,12 +1,18 @@
 #include "Input/VirtualInputDevice.h"
 
+#include "Input/RawInputManager.h"
 #include "Input/VirtualInputManager.h"
 #include "Input/XInputState.h"
+#include "Usb/UsbController.h"
 
 namespace Pitstop {
 
-	VirtualInputDevice::VirtualInputDevice(VirtualInputManager& manager, uint8_t index)
-		: m_Manager(manager)
+	VirtualInputDevice::VirtualInputDevice(
+			QSharedPointer<ConfigurationManager>& configuration,
+			VirtualInputManager& virtualInput,
+			uint8_t index)
+		: ConfigurationEventDispatcher(configuration)
+		, m_VirtualInput(virtualInput)
 		, m_Index(index)
 		, m_Usb(nullptr)
 	{
@@ -25,6 +31,18 @@ namespace Pitstop {
 
 	void VirtualInputDevice::setJoystick(RawInputJoystickPtr joystick)
 	{
+		if (m_Joystick == joystick)
+		{
+			return;
+		}
+
+		if (m_Joystick != nullptr)
+		{
+			disconnect(
+				m_Joystick.data(), SIGNAL(signalJoystickInput(RawInputJoystick*, bool)),
+				this, SLOT(slotJoystickInput(RawInputJoystick*, bool)));
+		}
+
 		if (joystick != nullptr)
 		{
 			connect(
@@ -33,11 +51,94 @@ namespace Pitstop {
 		}
 
 		m_Joystick = joystick;
+
+		emit signalJoystickChanged(m_Joystick);
+		emit signalSaveConfiguration();
 	}
 
 	void VirtualInputDevice::setUsbDevice(UsbDevicePtr usb)
 	{
+		if (m_Usb == usb)
+		{
+			return;
+		}
+
 		m_Usb = usb;
+
+		emit signalUsbDeviceChanged(m_Usb);
+		emit signalSaveConfiguration();
+	}
+
+	bool VirtualInputDevice::serialize(QJsonObject& target, size_t version)
+	{
+		// Joystick
+
+		if (m_Joystick != nullptr)
+		{
+			QJsonObject joystick_object;
+			if (!m_Joystick->serialize(joystick_object, version))
+			{
+				PS_LOG_ERROR(VirtualInputDevice) << "Failed to save joystick.";
+
+				return false;
+			}
+
+			target["joystick"] = joystick_object;
+		}
+
+		// USB device
+
+		if (m_Usb != nullptr)
+		{
+			QJsonObject usb_object;
+			if (!m_Usb->serialize(usb_object, version))
+			{
+				PS_LOG_ERROR(VirtualInputDevice) << "Failed to save USB device.";
+
+				return false;
+			}
+
+			target["usb"] = usb_object;
+		}
+
+		return true;
+	}
+
+	bool VirtualInputDevice::deserialize(RawInputManager& rawInput, UsbController& usbController, const QJsonObject& source, size_t version)
+	{
+		// Joystick
+
+		QJsonObject joystick_object = source["joystick"].toObject();
+		if (!joystick_object.isEmpty())
+		{
+			RawInputJoystickPtr joystick = rawInput.createJoystick(joystick_object);
+			if (joystick == nullptr)
+			{
+				PS_LOG_ERROR(VirtualInputDevice) << "Failed to load joystick.";
+
+				return false;
+			}
+
+			setJoystick(joystick);
+		}
+
+		// USB device
+
+		QJsonObject usb_object = source["usb"].toObject();
+		if (!usb_object.isEmpty())
+		{
+			UsbDevicePtr usb = usbController.createDevice(usb_object);
+			if (usb == nullptr)
+			{
+				PS_LOG_ERROR(VirtualInputDevice) << "Failed to load USB device.";
+
+				return false;
+			}
+
+			setUsbDevice(usb);
+		}
+
+		return true;
 	}
 
 	void VirtualInputDevice::slotJoystickInput(RawInputJoystick* joystick, bool processed)
@@ -63,9 +164,10 @@ namespace Pitstop {
 			return;
 		}
 
-		// Send to USB device
+		// Write to USB device
 
-		if (m_Usb == nullptr)
+		if (m_Usb == nullptr ||
+			!m_Usb->isConnected())
 		{
 			return;
 		}

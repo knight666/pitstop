@@ -9,28 +9,37 @@ namespace Pitstop {
 		m_Form.setupUi(this);
 
 		connect(
+			m_Joystick.data(), SIGNAL(signalPropertyChanged()),
+			this, SLOT(slotJoystickPropertyChanged()));
+
+		connect(
 			m_Joystick.data(), SIGNAL(signalConnected(RawInputJoystick&, bool)),
 			this, SLOT(slotJoystickConnected(RawInputJoystick&, bool)));
 
-		slotJoystickConnected(*joystick, joystick->isConnected());
+		slotJoystickPropertyChanged();
+		slotJoystickConnected(*m_Joystick, m_Joystick->isConnected());
 	}
 
 	WidgetJoystick::~WidgetJoystick()
 	{
 		disconnect(
 			this, SLOT(slotJoystickConnected(RawInputJoystick&, bool)));
+
+		disconnect(
+			this, SLOT(slotJoystickPropertyChanged()));
 	}
 
-	void WidgetJoystick::slotJoystickConnected(RawInputJoystick& joystick, bool connected)
+	void WidgetJoystick::slotJoystickPropertyChanged()
 	{
-		if (m_Joystick != &joystick)
-		{
-			return;
-		}
+		// Name
+
+		m_Form.lblName->setText(
+			QString("%1")
+			.arg(m_Joystick->getDescription()));
 
 		// Thumbnail
 
-		QSharedPointer<QImage> thumbnail = joystick.getThumbnail();
+		QSharedPointer<QImage> thumbnail = m_Joystick->getThumbnail();
 
 		if (thumbnail != nullptr &&
 			!thumbnail.isNull())
@@ -39,18 +48,19 @@ namespace Pitstop {
 			m_Form.lblImage->adjustSize();
 		}
 
-		// Name
-
-		m_Form.lblName->setText(
-			QString("%1")
-				.arg(m_Joystick->getDescription()));
-
 		// Link
 
-		m_Form.btnLink->setDisabled(joystick.getType() == RawInputJoystick::Type::XInput);
+		m_Form.btnLink->setDisabled(m_Joystick->getType() == RawInputJoystick::Type::XInput);
 
 		// XInput
 
+		m_Form.lblXinput->setText(
+			QString("%1")
+			.arg(m_Joystick->getXinputIndex()));
+	}
+
+	void WidgetJoystick::slotJoystickConnected(RawInputJoystick& joystick, bool connected)
+	{
 		QString icon_resource = ":/Icons/Resources/";
 
 		if (connected)
@@ -63,10 +73,7 @@ namespace Pitstop {
 		}
 
 		m_Form.icoConnected->setPixmap(QPixmap(icon_resource));
-
-		m_Form.lblXinput->setText(
-			QString("%1")
-				.arg(m_Joystick->getXinputIndex()));
 	}
+
 
 }; // namespace Pitstop

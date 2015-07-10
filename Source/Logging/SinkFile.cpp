@@ -18,9 +18,27 @@ namespace Pitstop {
 
 	void SinkFile::Write(Levels level, const char* module, const char* timestamp, const char* filename, int line, const char* message)
 	{
-		if (m_File.open(QIODevice::WriteOnly | QIODevice::Append))
+		if (!m_File.open(QIODevice::WriteOnly | QIODevice::Append))
 		{
-			char logmessage_formatted[1024] = { 0 };
+			return;
+		}
+
+		char logmessage_formatted[1024] = { 0 };
+
+		if (level >= Levels::Warning)
+		{
+			_snprintf(
+				logmessage_formatted,
+				1023,
+				"(%s:%d) (%s) [%s] [%s] ",
+				filename,
+				line,
+				timestamp,
+				LevelToString(level),
+				module);
+		}
+		else
+		{
 			_snprintf(
 				logmessage_formatted,
 				1023,
@@ -28,12 +46,12 @@ namespace Pitstop {
 				timestamp,
 				LevelToString(level),
 				module);
-			m_File.write(logmessage_formatted);
-
-			m_File.write(message);
-
-			m_File.close();
 		}
+		
+		m_File.write(logmessage_formatted);
+		m_File.write(message);
+
+		m_File.close();
 	}
 
 }; // namespace Pitstop

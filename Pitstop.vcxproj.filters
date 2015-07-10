@@ -149,6 +149,45 @@
     <ClCompile Include="GeneratedFiles\Release\qrc_Pitstop.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigurationBase.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigurationManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ConfigurationBase.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ConfigurationManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Serialization\ConfigurationManager.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Serialization\ConfigurationBase.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigurationEventDispatcher.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ConfigurationEventDispatcher.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Serialization\ConfigurationEventDispatcher.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UsbDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UsbDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UsbController.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UsbController.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -181,6 +220,9 @@
     <Filter Include="Logging">
       <UniqueIdentifier>{9f28b14d-0745-49a0-bf84-936424ac99d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Serialization">
+      <UniqueIdentifier>{b6e2eb6f-8f7a-4236-8937-5aa55ad614cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Base\Main.h">
@@ -197,12 +239,6 @@
     </ClInclude>
     <ClInclude Include="Source\Input\XInputState.h">
       <Filter>Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\Usb\UsbController.h">
-      <Filter>Input\Usb</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\Usb\UsbDevice.h">
-      <Filter>Input\Usb</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\Process\InputProcessorBase.h">
       <Filter>Input\Process</Filter>
@@ -242,6 +278,9 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_WidgetDevice.h">
       <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Serialization\ISerializable.h">
+      <Filter>Serialization</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -297,5 +336,20 @@
       <Filter>Application\Widgets</Filter>
     </CustomBuild>
     <CustomBuild Include="Pitstop.qrc" />
+    <CustomBuild Include="Source\Serialization\ConfigurationManager.h">
+      <Filter>Serialization</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Serialization\ConfigurationBase.h">
+      <Filter>Serialization</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Serialization\ConfigurationEventDispatcher.h">
+      <Filter>Serialization</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\Usb\UsbDevice.h">
+      <Filter>Input\Usb</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\Usb\UsbController.h">
+      <Filter>Input\Usb</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

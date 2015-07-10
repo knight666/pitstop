@@ -7,6 +7,9 @@
 
 namespace Pitstop {
 
+	class RawInputManager;
+	class UsbController;
+
 	class WidgetDevice
 		: public QWidget
 	{
@@ -15,12 +18,23 @@ namespace Pitstop {
 
 	public:
 
-		WidgetDevice(RawInputManager& rawInput, VirtualInputDevicePtr device, QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
+		WidgetDevice(
+			RawInputManager& rawInput,
+			UsbController& usbController,
+			VirtualInputDevicePtr device,
+			QWidget* parent = nullptr,
+			Qt::WindowFlags flags = 0);
 		~WidgetDevice();
 
 	private slots:
 
+		void slotJoystickCreated(RawInputJoystickPtr joystick);
 		void slotJoystickConnected(RawInputJoystickPtr joystick, bool connected);
+
+		void slotJoystickChanged(RawInputJoystickPtr joystick);
+
+		void slotUsbDeviceChanged(UsbDevicePtr usb);
+		void slotUsbDeviceConnectionChanged(bool connected);
 
 		void on_cmbJoystick_currentIndexChanged(int index);
 		void on_btnConnect_pressed();
@@ -35,6 +49,7 @@ namespace Pitstop {
 	private:
 
 		RawInputManager& m_RawInput;
+		UsbController& m_UsbController;
 		VirtualInputDevicePtr m_Device;
 
 		Ui_DeviceForm m_Form;

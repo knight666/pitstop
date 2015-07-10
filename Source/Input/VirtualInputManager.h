@@ -3,29 +3,41 @@
 #include "Base/Main.h"
 
 #include "Input/VirtualInputDevice.h"
+#include "Serialization/ConfigurationBase.h"
 
 namespace Pitstop {
 
 	class RawInputManager;
 
 	class VirtualInputManager
-		: public QObject
+		: public ConfigurationBase
 	{
 
 		Q_OBJECT
 
 	public:
 
-		VirtualInputManager(RawInputManager& rawInput);
+		VirtualInputManager(
+			QSharedPointer<ConfigurationManager> configuration,
+			RawInputManager& rawInput,
+			UsbController& usbController);
 		~VirtualInputManager();
 
 		VirtualInputDevicePtr createDevice();
 
 		VirtualInputDevicePtr getDeviceByIndex(uint8_t index) const;
 
+		virtual bool serialize(QJsonObject& target, size_t version) override;
+		virtual bool deserialize(const QJsonObject& source, size_t version) override;
+
+	signals:
+
+		void signalVirtualDeviceCreated(VirtualInputDevicePtr device);
+
 	private:
 
 		RawInputManager& m_RawInput;
+		UsbController& m_UsbController;
 		QVector<VirtualInputDevicePtr> m_Devices;
 
 	}; // class VirtualInputManager

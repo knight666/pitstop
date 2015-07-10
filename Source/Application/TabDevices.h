@@ -31,6 +31,8 @@ namespace Pitstop {
 
 		void on_btnAdd_pressed();
 
+		void slotVirtualDeviceCreated(VirtualInputDevicePtr device);
+
 	private:
 
 		Ui_TabDevices m_Form;

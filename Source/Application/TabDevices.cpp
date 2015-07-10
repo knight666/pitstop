@@ -1,5 +1,6 @@
 #include "Application/TabDevices.h"
 
+#include "Application/Application.h"
 #include "Input/Usb/UsbController.h"
 #include "Input/RawInputManager.h"
 #include "Input/VirtualInputManager.h"
@@ -19,6 +20,8 @@ namespace Pitstop {
 
 	TabDevices::~TabDevices()
 	{
+		disconnect(
+			this, SLOT(slotVirtualDeviceCreated(VirtualInputDevicePtr)));
 	}
 
 	void TabDevices::setup(
@@ -26,21 +29,29 @@ namespace Pitstop {
 		UsbController& usb,
 		VirtualInputManager& virtualInput)
 	{
-		m_UsbController = &usb;
 		m_RawInput = &rawInput;
+
+		m_UsbController = &usb;
+
 		m_VirtualInput = &virtualInput;
+
+		connect(
+			m_VirtualInput, SIGNAL(signalVirtualDeviceCreated(VirtualInputDevicePtr)),
+			this, SLOT(slotVirtualDeviceCreated(VirtualInputDevicePtr)));
 	}
 
 	void TabDevices::on_btnAdd_pressed()
 	{
 		VirtualInputDevicePtr device = m_VirtualInput->createDevice();
+		device->setUsbDevice(m_UsbController->createDevice());
+	}
 
-		UsbDevicePtr usb = m_UsbController->createDevice();
-		device->setUsbDevice(usb);
-
+	void TabDevices::slotVirtualDeviceCreated(VirtualInputDevicePtr device)
+	{
 		WidgetDevicePtr device_widget(
 			new WidgetDevice(
 				*m_RawInput,
+				*m_UsbController,
 				device,
 				m_Form.scrlDevicesContents));
 
