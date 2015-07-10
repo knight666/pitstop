@@ -27,6 +27,8 @@ namespace Pitstop {
 		void slotJoystickPropertyChanged();
 		void slotJoystickConnected(RawInputJoystick& joystick, bool connected);
 
+		void on_btnDetails_pressed();
+
 	private:
 
 		Ui_JoystickForm m_Form;
