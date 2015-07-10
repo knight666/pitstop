@@ -79,7 +79,7 @@ namespace Pitstop {
 
 	void WidgetJoystick::on_btnDetails_pressed()
 	{
-		DialogJoystickDetails details(this);
+		DialogJoystickDetails details(*this);
 		details.exec();
 	}
 

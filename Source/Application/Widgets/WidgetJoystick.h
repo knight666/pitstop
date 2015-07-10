@@ -22,6 +22,8 @@ namespace Pitstop {
 		WidgetJoystick(RawInputJoystickPtr joystick, QWidget* parent = nullptr);
 		~WidgetJoystick();
 
+		RawInputJoystickPtr getJoystick() const { return m_Joystick; }
+
 	public slots:
 
 		void slotJoystickPropertyChanged();
