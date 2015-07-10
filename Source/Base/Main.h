@@ -25,6 +25,7 @@
 extern "C" {
 	#include <api/hidsdi.h>
 	#include <api/SetupAPI.h>
+	#include <ddk/hidclass.h>
 	#include <hid/hidclient/hid.h>
 };
 
