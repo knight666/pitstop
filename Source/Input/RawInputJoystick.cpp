@@ -1,6 +1,5 @@
 #include "Input/RawInputJoystick.h"
 
-#include <SetupAPI.h>
 #include <QtCore/QRegularExpression>
 
 #include "Input/Process/InputProcessorBase.h"
@@ -16,6 +15,7 @@ namespace Pitstop {
 		, m_XinputIndex((uint8_t)-1)
 		, m_Connected(false)
 		, m_Handle(NULL)
+		, m_FileHandle(NULL)
 		, m_InputProcessor(nullptr)
 	{
 		memset(&m_Device, 0, sizeof(m_Device));
@@ -24,6 +24,12 @@ namespace Pitstop {
 
 	RawInputJoystick::~RawInputJoystick()
 	{
+		if (m_FileHandle != NULL)
+		{
+			::CloseHandle(m_FileHandle);
+			m_FileHandle = NULL;
+		}
+
 		delete m_InputProcessor;
 	}
 
@@ -75,8 +81,6 @@ namespace Pitstop {
 			return false;
 		}
 
-		// Extract properties
-
 		m_DevicePath = devicePath;
 		m_UniquePath = devicePath;
 		m_Type = Type::Raw;
@@ -100,20 +104,14 @@ namespace Pitstop {
 
 		m_Guid = stringToGuid(match_path.cap(7));
 
-		// Get category
+		// Open file handle
 
-		retrieveFromRegistry(
-			m_Category,
-			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + guidToString(m_Guid),
-			"Category");
+		if (m_FileHandle != NULL)
+		{
+			::CloseHandle(m_FileHandle);
+		}
 
-		// Get description
-
-		m_Description = devicePath;
-
-		bool translated = false;
-
-		HANDLE hid_handle = ::CreateFileW(
+		m_FileHandle = ::CreateFileW(
 			m_DevicePath.utf16(),
 			GENERIC_READ | GENERIC_WRITE,
 			FILE_SHARE_READ | FILE_SHARE_WRITE,
@@ -121,24 +119,38 @@ namespace Pitstop {
 			OPEN_EXISTING,
 			0,
 			NULL);
-
-		if (hid_handle != NULL)
+		if (m_FileHandle == NULL)
 		{
-			QVector<ushort> device_name_data(128);
+			PS_LOG_ERROR(RawInputJoystick) << "Failed to open file handle to device. (\"" << devicePath << "\")";
 
-			translated = ::HidD_GetProductString(
-				hid_handle,
-				&device_name_data[0],
-				device_name_data.size() * sizeof(ushort)) == TRUE;
+			return false;
+		}
 
-			if (translated)
-			{
-				m_Description = QString::fromUtf16(&device_name_data[0]);
+		// Category
 
-				translated = !m_Description.isEmpty();
-			}
+		retrieveFromRegistry(
+			m_Category,
+			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + guidToString(m_Guid),
+			"Category");
 
-			::CloseHandle(hid_handle);
+		bool translated = true;
+
+		// Description
+
+		m_Description = devicePath;
+
+		QVector<wchar_t> device_name_data(128);
+
+		translated = ::HidD_GetProductString(
+			m_FileHandle,
+			&device_name_data[0],
+			device_name_data.size() * sizeof(wchar_t)) == TRUE;
+
+		if (translated)
+		{
+			m_Description = QString::fromUtf16(&device_name_data[0]);
+
+			translated = !m_Description.isEmpty();
 		}
 
 		if (!translated)

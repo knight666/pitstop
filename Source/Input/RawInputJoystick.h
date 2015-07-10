@@ -88,6 +88,7 @@ namespace Pitstop {
 		uint16_t m_VendorIdentifier;
 		uint16_t m_ProductIdentifier;
 		HANDLE m_Handle;
+		HANDLE m_FileHandle;
 		RAWINPUTDEVICE m_Device;
 		RID_DEVICE_INFO m_Info;
 		QString m_DevicePath;
