@@ -106,6 +106,10 @@ namespace Pitstop {
 
 		m_Guid = stringToGuid(match_path.cap(7));
 
+		m_InstancePath = devicePath.mid(4);
+		m_InstancePath.replace(QRegExp("#\\{[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}\\}"), "");
+		m_InstancePath.replace("#", "\\");
+
 		// Open file handle
 
 		if (m_FileHandle != NULL)
@@ -142,62 +146,110 @@ namespace Pitstop {
 			return false;
 		}
 
-		SP_DEVICE_INTERFACE_DATA device_interface_data = { 0 };
-		device_interface_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
+		// Find instance of class
 
-		if (::SetupDiEnumDeviceInterfaces(
+		bool instance_found = false;
+
+		SP_DEVINFO_DATA device_info_data = { 0 };
+		device_info_data.cbSize = sizeof(SP_DEVINFO_DATA);
+		
+		DWORD member_index = 0;
+
+		while (::SetupDiEnumDeviceInfo(
 			device_info,
-			NULL,
-			&m_Guid,
-			0,
-			&device_interface_data) == FALSE)
+			member_index,
+			&device_info_data) == TRUE)
 		{
-			PS_LOG_ERROR(RawInputJoystick) << "Failed to enumerate device interface. (GUID: \"" << guidToString(m_Guid) << "\")";
-
-			return false;
-		}
-
-		SP_DEVINFO_DATA device_detail_data = { 0 };
-		device_detail_data.cbSize = sizeof(SP_DEVINFO_DATA);
-
-		DWORD buffer_size = 0;
-
-		if (::SetupDiGetDeviceInterfaceDetailW(
-			device_info,
-			&device_interface_data,
-			NULL,
-			0,
-			&buffer_size,
-			&device_detail_data) == TRUE)
-		{
-			PS_LOG_ERROR(RawInputJoystick) << "Failed to retrieve device detail data. (GUID: \"" << guidToString(m_Guid) << "\")";
-
-			return false;
-		}
-
-		// Instance path
-
-		DWORD device_instance_size = 0;
-
-		if (::SetupDiGetDeviceInstanceIdW(
-			device_info,
-			&device_detail_data,
-			nullptr,
-			0,
-			&device_instance_size) == FALSE &&
-			device_instance_size > 0)
-		{
-			QVector<WCHAR> device_instance_data(device_instance_size);
+			DWORD device_instance_size = 0;
 
 			if (::SetupDiGetDeviceInstanceIdW(
 				device_info,
-				&device_detail_data,
-				&device_instance_data[0],
-				device_instance_data.size(),
-				&device_instance_size) == TRUE)
+				&device_info_data,
+				nullptr,
+				0,
+				&device_instance_size) == FALSE &&
+				device_instance_size > 0)
 			{
-				m_InstancePath = QString::fromUtf16(&device_instance_data[0]);
+				QVector<WCHAR> device_instance_data(device_instance_size);
+
+				if (::SetupDiGetDeviceInstanceIdW(
+					device_info,
+					&device_info_data,
+					&device_instance_data[0],
+					device_instance_data.size(),
+					&device_instance_size) == TRUE)
+				{
+					QString device_instance_identifier = QString::fromUtf16(&device_instance_data[0]);
+					if (m_InstancePath.compare(device_instance_identifier, Qt::CaseInsensitive) == 0)
+					{
+						instance_found = true;
+
+						break;
+					}
+				}
 			}
+
+			member_index++;
+		}
+
+		if (!instance_found)
+		{
+			PS_LOG_ERROR(RawInputJoystick) << "Failed to find device instance. (GUID: \"" << guidToString(m_Guid) << "\")";
+
+			return false;
+		}
+
+		SP_DEVICE_INTERFACE_DATA device_interface_data = { 0 };
+		device_interface_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
+
+		member_index = 0;
+
+		while (::SetupDiEnumDeviceInterfaces(
+			device_info,
+			&device_info_data,
+			&m_Guid,
+			member_index,
+			&device_interface_data) == TRUE)
+		{
+			SP_DEVICE_INTERFACE_DETAIL_DATA_W device_interface_detail_data = { 0 };
+			device_interface_detail_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
+
+			SP_DEVINFO_DATA device_detail_data = { 0 };
+			device_detail_data.cbSize = sizeof(SP_DEVINFO_DATA);
+
+			DWORD buffer_size = 0;
+
+			::SetupDiGetDeviceInterfaceDetailW(
+				device_info,
+				&device_interface_data,
+				NULL,
+				0,
+				&buffer_size,
+				&device_detail_data);
+
+			if (buffer_size > 0)
+			{
+				QVector<uint8_t> device_interface_detail_data(buffer_size + sizeof(DWORD));
+
+				SP_DEVICE_INTERFACE_DETAIL_DATA_W* device_interface_detail_data_ptr = (SP_DEVICE_INTERFACE_DETAIL_DATA_W*)&device_interface_detail_data[0];
+				device_interface_detail_data_ptr->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
+
+				if (::SetupDiGetDeviceInterfaceDetailW(
+					device_info,
+					&device_interface_data,
+					device_interface_detail_data_ptr,
+					buffer_size,
+					NULL,
+					NULL) == TRUE)
+				{
+					int i = 0;
+				}
+			}
+
+			DWORD error = GetLastError();
+			QString error_string = windowsErrorToString(error);
+
+			member_index++;
 		}
 
 		// Category
@@ -242,6 +294,50 @@ namespace Pitstop {
 					m_Description = m_Description.mid(
 						last_semicolon + 1,
 						m_Description.length() - last_semicolon);
+				}
+			}
+		}
+
+		const unsigned int FLAG_NUM = 30;
+		DWORD flags[] = {SPDRP_LOCATION_INFORMATION, SPDRP_FRIENDLYNAME, SPDRP_ENUMERATOR_NAME, SPDRP_PHYSICAL_DEVICE_OBJECT_NAME, SPDRP_DEVICEDESC,
+			SPDRP_ADDRESS, SPDRP_BUSNUMBER, SPDRP_BUSTYPEGUID, SPDRP_CHARACTERISTICS, SPDRP_CLASS, SPDRP_CLASSGUID,
+			SPDRP_COMPATIBLEIDS, SPDRP_CONFIGFLAGS, SPDRP_DEVICE_POWER_DATA, SPDRP_DEVTYPE, SPDRP_DRIVER,
+			SPDRP_ENUMERATOR_NAME, SPDRP_EXCLUSIVE, SPDRP_HARDWAREID, SPDRP_INSTALL_STATE, SPDRP_LEGACYBUSTYPE,
+			SPDRP_LOCATION_PATHS, SPDRP_LOWERFILTERS, SPDRP_MFG, 
+			SPDRP_PHYSICAL_DEVICE_OBJECT_NAME, SPDRP_UI_NUMBER, SPDRP_UI_NUMBER_DESC_FORMAT, SPDRP_UPPERFILTERS, 
+			SPDRP_SECURITY_SDS, SPDRP_SECURITY, SPDRP_SERVICE };
+		for (DWORD flag_index = 0; flag_index < sizeof(flags) / sizeof(DWORD); ++flag_index)
+		{
+			DWORD registry_type = 0;
+			DWORD required_size = 0;
+
+			::SetupDiGetDeviceRegistryPropertyW(
+				device_info,
+				&device_info_data,
+				flags[flag_index],
+				&registry_type,
+				NULL,
+				0,
+				&required_size);
+			if (required_size > 0)
+			{
+				QVector<BYTE> property_data((int)required_size);
+
+				BOOL registry_result = ::SetupDiGetDeviceRegistryPropertyW(
+					device_info,
+					&device_info_data,
+					flags[flag_index],
+					NULL,
+					&property_data[0],
+					property_data.size(),
+					NULL);
+				if (registry_result == TRUE)
+				{
+					BYTE* property_data_ptr = &property_data[0];
+
+					QString registry_string = QString::fromUtf16((const ushort*)&property_data[0]);
+
+					int i = 0;
 				}
 			}
 		}
