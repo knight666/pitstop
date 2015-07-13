@@ -152,7 +152,7 @@ namespace Pitstop {
 
 		SP_DEVINFO_DATA device_info_data = { 0 };
 		device_info_data.cbSize = sizeof(SP_DEVINFO_DATA);
-		
+
 		DWORD member_index = 0;
 
 		while (::SetupDiEnumDeviceInfo(
@@ -197,59 +197,6 @@ namespace Pitstop {
 			PS_LOG_ERROR(RawInputJoystick) << "Failed to find device instance. (GUID: \"" << guidToString(m_Guid) << "\")";
 
 			return false;
-		}
-
-		SP_DEVICE_INTERFACE_DATA device_interface_data = { 0 };
-		device_interface_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DATA);
-
-		member_index = 0;
-
-		while (::SetupDiEnumDeviceInterfaces(
-			device_info,
-			&device_info_data,
-			&m_Guid,
-			member_index,
-			&device_interface_data) == TRUE)
-		{
-			SP_DEVICE_INTERFACE_DETAIL_DATA_W device_interface_detail_data = { 0 };
-			device_interface_detail_data.cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
-
-			SP_DEVINFO_DATA device_detail_data = { 0 };
-			device_detail_data.cbSize = sizeof(SP_DEVINFO_DATA);
-
-			DWORD buffer_size = 0;
-
-			::SetupDiGetDeviceInterfaceDetailW(
-				device_info,
-				&device_interface_data,
-				NULL,
-				0,
-				&buffer_size,
-				&device_detail_data);
-
-			if (buffer_size > 0)
-			{
-				QVector<uint8_t> device_interface_detail_data(buffer_size + sizeof(DWORD));
-
-				SP_DEVICE_INTERFACE_DETAIL_DATA_W* device_interface_detail_data_ptr = (SP_DEVICE_INTERFACE_DETAIL_DATA_W*)&device_interface_detail_data[0];
-				device_interface_detail_data_ptr->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
-
-				if (::SetupDiGetDeviceInterfaceDetailW(
-					device_info,
-					&device_interface_data,
-					device_interface_detail_data_ptr,
-					buffer_size,
-					NULL,
-					NULL) == TRUE)
-				{
-					int i = 0;
-				}
-			}
-
-			DWORD error = GetLastError();
-			QString error_string = windowsErrorToString(error);
-
-			member_index++;
 		}
 
 		// Category
@@ -298,14 +245,23 @@ namespace Pitstop {
 			}
 		}
 
-		const unsigned int FLAG_NUM = 30;
-		DWORD flags[] = {SPDRP_LOCATION_INFORMATION, SPDRP_FRIENDLYNAME, SPDRP_ENUMERATOR_NAME, SPDRP_PHYSICAL_DEVICE_OBJECT_NAME, SPDRP_DEVICEDESC,
-			SPDRP_ADDRESS, SPDRP_BUSNUMBER, SPDRP_BUSTYPEGUID, SPDRP_CHARACTERISTICS, SPDRP_CLASS, SPDRP_CLASSGUID,
-			SPDRP_COMPATIBLEIDS, SPDRP_CONFIGFLAGS, SPDRP_DEVICE_POWER_DATA, SPDRP_DEVTYPE, SPDRP_DRIVER,
-			SPDRP_ENUMERATOR_NAME, SPDRP_EXCLUSIVE, SPDRP_HARDWAREID, SPDRP_INSTALL_STATE, SPDRP_LEGACYBUSTYPE,
-			SPDRP_LOCATION_PATHS, SPDRP_LOWERFILTERS, SPDRP_MFG, 
-			SPDRP_PHYSICAL_DEVICE_OBJECT_NAME, SPDRP_UI_NUMBER, SPDRP_UI_NUMBER_DESC_FORMAT, SPDRP_UPPERFILTERS, 
-			SPDRP_SECURITY_SDS, SPDRP_SECURITY, SPDRP_SERVICE };
+		DWORD flags[] = {
+			SPDRP_DEVICEDESC, SPDRP_HARDWAREID, SPDRP_COMPATIBLEIDS,
+			SPDRP_UNUSED0, SPDRP_SERVICE, SPDRP_UNUSED1,
+			SPDRP_UNUSED2, SPDRP_CLASS, SPDRP_CLASSGUID,
+			SPDRP_DRIVER, SPDRP_CONFIGFLAGS, SPDRP_MFG,
+			SPDRP_FRIENDLYNAME, SPDRP_LOCATION_INFORMATION, SPDRP_PHYSICAL_DEVICE_OBJECT_NAME,
+			SPDRP_CAPABILITIES, SPDRP_UI_NUMBER, SPDRP_UPPERFILTERS,
+			SPDRP_LOWERFILTERS, SPDRP_BUSTYPEGUID, SPDRP_LEGACYBUSTYPE,
+			SPDRP_BUSNUMBER, SPDRP_ENUMERATOR_NAME, SPDRP_SECURITY,
+			SPDRP_SECURITY_SDS, SPDRP_DEVTYPE, SPDRP_EXCLUSIVE,
+			SPDRP_CHARACTERISTICS, SPDRP_ADDRESS, SPDRP_UI_NUMBER_DESC_FORMAT,
+			SPDRP_DEVICE_POWER_DATA, SPDRP_REMOVAL_POLICY, SPDRP_REMOVAL_POLICY_HW_DEFAULT,
+			SPDRP_REMOVAL_POLICY_OVERRIDE, SPDRP_INSTALL_STATE, SPDRP_LOCATION_PATHS,
+			SPDRP_BASE_CONTAINERID
+		};
+		QString flag_output[sizeof(flags) / sizeof(DWORD)] = { 0 };
+
 		for (DWORD flag_index = 0; flag_index < sizeof(flags) / sizeof(DWORD); ++flag_index)
 		{
 			DWORD registry_type = 0;
@@ -337,10 +293,14 @@ namespace Pitstop {
 
 					QString registry_string = QString::fromUtf16((const ushort*)&property_data[0]);
 
+					flag_output[flag_index] = registry_string;
+
 					int i = 0;
 				}
 			}
 		}
+
+		// Match HID ContainerID to USB ContainerID
 
 		// Get thumbnail
 
