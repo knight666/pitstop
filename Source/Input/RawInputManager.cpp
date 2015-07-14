@@ -305,6 +305,7 @@ namespace Pitstop {
 
 		PS_LOG_INFO(RawInput) << "Setup joystick:";
 		PS_LOG_INFO(RawInput) << "- Path: \"" << joystick->getDevicePath() << "\"";
+		PS_LOG_INFO(RawInput) << "- Instance: \"" << joystick->getInstancePath() << "\"";
 		PS_LOG_INFO(RawInput) << "- Description: \"" << joystick->getDescription() << "\"";
 		PS_LOG_INFO(RawInput) << "- Type: \"" << joystick->getType() << "\"";
 		PS_LOG_INFO(RawInput) << "- Handle: " << joystick->getHandle() << "";

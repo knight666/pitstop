@@ -3,6 +3,10 @@
 #include "Base/Main.h"
 #include "Input/Usb/UsbDevice.h"
 
+#define USB_COMMAND_CONNECT            CTL_CODE(FILE_DEVICE_BUS_EXTENDER, 0x0000, METHOD_BUFFERED, FILE_READ_ACCESS)
+#define USB_COMMAND_DISCONNECT         CTL_CODE(FILE_DEVICE_BUS_EXTENDER, 0x0001, METHOD_BUFFERED, FILE_READ_ACCESS)
+#define USB_COMMAND_WRITE              CTL_CODE(FILE_DEVICE_BUS_EXTENDER, 0x0003, METHOD_BUFFERED, FILE_READ_ACCESS)
+
 namespace Pitstop {
 
 	class RawInputManager;
@@ -40,6 +44,7 @@ namespace Pitstop {
 		RawInputManager& m_RawInput;
 		HDEVINFO m_HubInfo;
 		QString m_HubPath;
+		GUID m_HubGuid;
 		HANDLE m_HubHandle;
 		QVector<UsbDevicePtr> m_Devices;
 
