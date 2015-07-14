@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="Icons">
+    <file>Resources/ControllerInverted.png</file>
     <file>Resources/Clouds-50.png</file>
     <file>Resources/Connected-50.png</file>
     <file>Resources/Controller-50.png</file>

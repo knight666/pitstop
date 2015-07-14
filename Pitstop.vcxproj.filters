@@ -215,6 +215,15 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_ContainerManager.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetControllerList.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetControllerList.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetControllerList.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -318,6 +327,9 @@
     <ClInclude Include="GeneratedFiles\ui_DialogJoystickDetails.h">
       <Filter>GeneratedFiles</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_WidgetControllerList.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Source\Application\MainWindow.ui">
@@ -398,6 +410,12 @@
     </CustomBuild>
     <CustomBuild Include="Source\Input\Container\ContainerManager.h">
       <Filter>Input\Container</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetControllerList.h">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetControllerList.ui">
+      <Filter>Application\Widgets</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
