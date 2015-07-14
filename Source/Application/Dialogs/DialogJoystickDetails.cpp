@@ -22,7 +22,9 @@ namespace Pitstop {
 		type_stream << m_Joystick->getType();
 		addRow("Type", type_string);
 
-		addRow("Controller", QString::number(m_Joystick->getXinputIndex()));
+		addRow("XInput index", QString::number(m_Joystick->getXinputIndex()));
+
+		addRow("Virtual index", QString::number(m_Joystick->getVirtualIndex()));
 
 		addRow("Enumerator name", m_Joystick->getRegistryProperty<QString>(SPDRP_ENUMERATOR_NAME));
 
@@ -32,7 +34,7 @@ namespace Pitstop {
 		{
 			if (i > 0)
 			{
-				hardware_identifiers_string += "\n";
+				hardware_identifiers_string += "; ";
 			}
 			hardware_identifiers_string += hardware_identifiers[i];
 		}

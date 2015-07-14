@@ -20,8 +20,9 @@ namespace Pitstop {
 
 		enum class Type
 		{
-			Raw,
+			RawInput,
 			XInput,
+			Virtual
 		};
 
 		enum class DeviceClass
@@ -39,10 +40,10 @@ namespace Pitstop {
 		uint8_t getXinputIndex() const { return m_XinputIndex; }
 		void setXinputIndex(uint8_t value) { m_XinputIndex = value; }
 
+		uint8_t getVirtualIndex() const { return m_VirtualIndex; }
+
 		const QString& getDescription() const { return m_Description; }
 		void setDescription(const QString& value);
-
-		const QString& getCategory() const { return m_Category; }
 
 		Type getType() const { return m_Type; }
 
@@ -94,8 +95,8 @@ namespace Pitstop {
 		RawInputManager& m_Manager;
 		bool m_Connected;
 		uint8_t m_XinputIndex;
+		uint8_t m_VirtualIndex;
 		QString m_Description;
-		QString m_Category;
 		Type m_Type;
 		uint16_t m_VendorIdentifier;
 		uint16_t m_ProductIdentifier;
