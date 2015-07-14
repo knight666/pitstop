@@ -5,6 +5,7 @@
 
 namespace Pitstop {
 
+	class ContainerManager;
 	class RawInputJoystick;
 
 	class RawInputManager
@@ -15,7 +16,7 @@ namespace Pitstop {
 
 	public:
 
-		RawInputManager();
+		RawInputManager(QSharedPointer<ContainerManager> containers);
 		~RawInputManager();
 
 		bool initialize(HWND window);
@@ -64,6 +65,7 @@ namespace Pitstop {
 
 	private:
 
+		QSharedPointer<ContainerManager> m_Containers;
 		bool m_Initialized;
 		HWND m_Window;
 		QHash<HANDLE, RawInputJoystickPtr> m_JoysticksByHandle;
