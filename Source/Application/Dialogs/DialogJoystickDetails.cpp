@@ -1,6 +1,7 @@
 #include "Application/Dialogs/DialogJoystickDetails.h"
 
 #include "Application/Widgets/WidgetJoystick.h"
+#include "Input/Container/ContainerDevice.h"
 
 namespace Pitstop {
 
@@ -38,9 +39,11 @@ namespace Pitstop {
 
 		addRow("Class", m_Joystick->getRegistryProperty<QString>(SPDRP_CLASS));
 
-		addRow("USB class", m_Joystick->getRegistryProperty<QString>(SPDRP_CLASS, RawInputJoystick::DeviceClass::USB));
+		QSharedPointer<ContainerDevice> container = m_Joystick->getContainer();
 
-		addRow("USB location information", m_Joystick->getRegistryProperty<QString>(SPDRP_LOCATION_INFORMATION, RawInputJoystick::DeviceClass::USB));
+		addRow("USB class", container->getRegistryProperty<QString>(SPDRP_CLASS));
+
+		addRow("USB location information", container->getRegistryProperty<QString>(SPDRP_LOCATION_INFORMATION));
 
 		QString hardware_identifiers_string;
 		QStringList hardware_identifiers = m_Joystick->getRegistryProperty<QStringList>(SPDRP_HARDWAREID);

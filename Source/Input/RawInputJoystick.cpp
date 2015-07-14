@@ -18,7 +18,6 @@ namespace Pitstop {
 		, m_Handle(NULL)
 		, m_FileHandle(NULL)
 		, m_DeviceInfo(NULL)
-		, m_UsbInfo(NULL)
 		, m_InputProcessor(nullptr)
 	{
 		memset(&m_Info, 0, sizeof(m_Info));
@@ -27,8 +26,6 @@ namespace Pitstop {
 		m_Device.hwndTarget = window;
 
 		memset(&m_DeviceInfoData, 0, sizeof(SP_DEVINFO_DATA));
-
-		memset(&m_UsbInfoData, 0, sizeof(SP_DEVINFO_DATA));
 	}
 
 	RawInputJoystick::~RawInputJoystick()
@@ -95,25 +92,20 @@ namespace Pitstop {
 			return false;
 		}
 
-		m_Description.clear();
 		m_DevicePath = devicePath;
-		m_UniquePath = devicePath;
+		m_Description.clear();
 		m_InstancePath.clear();
 		m_Type = Type::RawInput;
 		m_XinputIndex = (uint8_t)-1;
 		m_VirtualIndex = (uint8_t)-1;
 
-		if (match_path.cap(3).size() > 0)
+		if (match_path.cap(3).size() > 0 &&
+			match_path.cap(4) == "IG_")
 		{
-			if (match_path.cap(4) == "IG_")
-			{
-				// Extract XInput identifier
+			// Extract XInput identifier
 
-				m_Type = RawInputJoystick::Type::XInput;
-				m_XinputIndex = (uint8_t)match_path.cap(5).toUInt(nullptr, 16);
-			}
-
-			m_UniquePath.replace(match_path.cap(3), "");
+			m_Type = RawInputJoystick::Type::XInput;
+			m_XinputIndex = (uint8_t)match_path.cap(5).toUInt(nullptr, 16);
 		}
 
 		m_VendorIdentifier = (uint16_t)match_path.cap(1).toUInt(nullptr, 16);
@@ -178,43 +170,46 @@ namespace Pitstop {
 
 		bool instance_found = false;
 
-		DWORD member_index = 0;
-
-		while (::SetupDiEnumDeviceInfo(
-			m_DeviceInfo,
-			member_index,
-			&m_DeviceInfoData) == TRUE)
+		for (DWORD i = 0;
+			::SetupDiEnumDeviceInfo(
+				m_DeviceInfo,
+				i,
+				&m_DeviceInfoData) == TRUE;
+			++i)
 		{
 			DWORD device_instance_size = 0;
 
-			if (::SetupDiGetDeviceInstanceIdW(
+			::SetupDiGetDeviceInstanceIdW(
 				m_DeviceInfo,
 				&m_DeviceInfoData,
 				nullptr,
 				0,
-				&device_instance_size) == FALSE &&
-				device_instance_size > 0)
+				&device_instance_size);
+
+			if (device_instance_size == 0)
 			{
-				QVector<WCHAR> device_instance_data(device_instance_size);
-
-				if (::SetupDiGetDeviceInstanceIdW(
-					m_DeviceInfo,
-					&m_DeviceInfoData,
-					&device_instance_data[0],
-					device_instance_data.size(),
-					&device_instance_size) == TRUE)
-				{
-					QString device_instance_identifier = QString::fromUtf16(&device_instance_data[0]);
-					if (m_InstancePath.compare(device_instance_identifier, Qt::CaseInsensitive) == 0)
-					{
-						instance_found = true;
-
-						break;
-					}
-				}
+				continue;
 			}
 
-			member_index++;
+			QVector<WCHAR> device_instance_data(device_instance_size);
+
+			if (::SetupDiGetDeviceInstanceIdW(
+				m_DeviceInfo,
+				&m_DeviceInfoData,
+				&device_instance_data[0],
+				device_instance_data.size(),
+				&device_instance_size) == FALSE)
+			{
+				continue;
+			}
+
+			QString device_instance_identifier = QString::fromUtf16(&device_instance_data[0]);
+			if (m_InstancePath.compare(device_instance_identifier, Qt::CaseInsensitive) == 0)
+			{
+				instance_found = true;
+
+				break;
+			}
 		}
 
 		if (!instance_found)
@@ -247,59 +242,16 @@ namespace Pitstop {
 			m_Description = getRegistryProperty<QString>(SPDRP_DEVICEDESC);
 		}
 
-		// Find matching USB device
+		// Check if the device is a virtual controller
 
-		QString hid_container = getRegistryProperty<QString>(SPDRP_BASE_CONTAINERID, DeviceClass::HID);
-		bool container_found = false;
+		QString container_location = m_Container->getRegistryProperty<QString>(SPDRP_LOCATION_INFORMATION);
 
-		m_UsbInfo = ::SetupDiGetClassDevsW(
-			NULL,
-			L"USB",
-			NULL,
-			DIGCF_ALLCLASSES | DIGCF_PRESENT);
-
-		memset(&m_UsbInfoData, 0, sizeof(SP_DEVINFO_DATA));
-		m_UsbInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
-
-		if (m_UsbInfo != INVALID_HANDLE_VALUE)
+		QRegExp match_virtual("SCP Virtual.+\\#([0-9]+)");
+		if (match_virtual.indexIn(container_location) >= 0)
 		{
-			for (DWORD i = 0;
-				::SetupDiEnumDeviceInfo(
-					m_UsbInfo,
-					i,
-					&m_UsbInfoData) == TRUE;
-				++i)
-			{
-				QString usb_container = getRegistryProperty<QString>(SPDRP_BASE_CONTAINERID, DeviceClass::USB);
-				if (usb_container == hid_container)
-				{
-					container_found = true;
+			m_Type = Type::Virtual;
 
-					break;
-				}
-			}
-		}
-
-		if (container_found)
-		{
-			QString usb_location = getRegistryProperty<QString>(SPDRP_LOCATION_INFORMATION, DeviceClass::USB);
-
-			// Check if the device is a virtual controller
-
-			QRegExp match_virtual("SCP Virtual.+\\#([0-9]+)");
-			if (match_virtual.indexIn(usb_location) >= 0)
-			{
-				m_Type = Type::Virtual;
-
-				m_VirtualIndex = (uint8_t)match_path.cap(1).toUInt();
-			}
-		}
-		else
-		{
-			m_UsbInfo = NULL;
-
-			memset(&m_UsbInfoData, 0, sizeof(SP_DEVINFO_DATA));
-			m_UsbInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
+			m_VirtualIndex = (uint8_t)match_path.cap(1).toUInt();
 		}
 
 		// Get thumbnail
@@ -376,61 +328,6 @@ namespace Pitstop {
 		target["description"] = m_Description;
 
 		return true;
-	}
-
-	bool RawInputJoystick::getRegistryProperty(DeviceClass deviceClass, DWORD key, QVector<BYTE>& output, DWORD& keyType)
-	{
-		HDEVINFO info = NULL;
-		SP_DEVINFO_DATA* info_data = nullptr;
-
-		switch (deviceClass)
-		{
-
-		case DeviceClass::USB:
-			info = m_UsbInfo;
-			info_data = &m_UsbInfoData;
-			break;
-
-		case DeviceClass::HID:
-		default:
-			info = m_DeviceInfo;
-			info_data = &m_DeviceInfoData;
-			break;
-
-		}
-
-		if (info == NULL)
-		{
-			return false;
-		}
-
-		DWORD required_size = 0;
-
-		::SetupDiGetDeviceRegistryPropertyW(
-			info,
-			info_data,
-			key,
-			&keyType,
-			NULL,
-			0,
-			&required_size);
-		if (required_size == 0)
-		{
-			return false;
-		}
-
-		output.resize((int)required_size);
-
-		BOOL registry_result = ::SetupDiGetDeviceRegistryPropertyW(
-			info,
-			info_data,
-			key,
-			NULL,
-			&output[0],
-			output.size(),
-			NULL);
-
-		return (registry_result == TRUE);
 	}
 
 	bool RawInputJoystick::retrieveFromRegistry(QString& target, const QString& path, const QString& keyName)
