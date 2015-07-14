@@ -29,7 +29,7 @@ namespace Pitstop {
 
 	void TabJoysticks::slotJoystickCreated(RawInputJoystickPtr joystick)
 	{
-		QHash<QString, WidgetJoystickPtr>::iterator found = m_Joysticks.find(joystick->getUniquePath());
+		QHash<QString, WidgetJoystickPtr>::iterator found = m_Joysticks.find(joystick->getIdentifier());
 		if (found != m_Joysticks.end())
 		{
 			return;
@@ -44,7 +44,7 @@ namespace Pitstop {
 			layout->addWidget(widget.data());
 		}
 
-		m_Joysticks.insert(joystick->getUniquePath(), widget);
+		m_Joysticks.insert(joystick->getIdentifier(), widget);
 	}
 
 }; // namespace Pitstop

@@ -2,7 +2,7 @@
 
 #include <QtCore/QRegularExpression>
 
-#include "Input/Container/ContainerDevice.h"
+#include "Input/Container/ContainerManager.h"
 #include "Input/Process/InputProcessorBase.h"
 #include "Input/RawInputManager.h"
 
@@ -71,7 +71,12 @@ namespace Pitstop {
 		emit signalPropertyChanged();
 	}
 
-	bool RawInputJoystick::setup(QSharedPointer<ContainerDevice> container, const QString& devicePath)
+	const QString& RawInputJoystick::getIdentifier() const
+	{
+		return m_Container->getIdentifier();
+	}
+
+	bool RawInputJoystick::setup(ContainerManager& containers, const QString& devicePath)
 	{
 		// Extract properties from device path
 
@@ -91,7 +96,6 @@ namespace Pitstop {
 		}
 
 		m_Description.clear();
-		m_Container = container;
 		m_DevicePath = devicePath;
 		m_UniquePath = devicePath;
 		m_InstancePath.clear();
@@ -120,6 +124,16 @@ namespace Pitstop {
 		m_InstancePath = devicePath.mid(4);
 		m_InstancePath.replace(QRegExp("#\\{[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}\\}"), "");
 		m_InstancePath.replace("#", "\\");
+
+		// Get container
+
+		m_Container = containers.findContainerByGuidAndInstanceIdentifier(m_Guid, m_InstancePath);
+		if (m_Container == nullptr)
+		{
+			PS_LOG_ERROR(RawInputJoystick) << "Failed to get container for device path. (path \"" << devicePath << "\")";
+
+			return false;
+		}
 
 		// Open file handle
 

@@ -22,7 +22,7 @@ namespace Pitstop {
 		PS_LOG_INFO(RawInputManager) << "Destroying raw input.";
 
 		m_JoysticksByHandle.clear();
-		m_JoysticksByPath.clear();
+		m_JoysticksByIdentifier.clear();
 		m_JoystickThumbnails.clear();
 	}
 
@@ -195,27 +195,26 @@ namespace Pitstop {
 		return RawInputJoystickPtr();
 	}
 
-	RawInputJoystickPtr RawInputManager::getJoystickByPath(const QString& devicePath) const
+	RawInputJoystickPtr RawInputManager::getJoystickByIdentifier(const QString& identifier) const
 	{
-		QString unique_path = devicePath;
-
-		QRegExp match_path(
-			"\\\\\\\\?\\HID#"
-			"VID_[0-9A-Fa-f]+"
-			"&PID_[0-9A-Fa-f]+"
-			"(&[A-Za-z]+_?[0-9A-Fa-f]+)");
-		if (match_path.indexIn(unique_path) >= 0)
-		{
-			unique_path.replace(match_path.cap(1), "");
-		}
-
-		QHash<QString, RawInputJoystickPtr>::const_iterator found = m_JoysticksByPath.find(unique_path);
-		if (found != m_JoysticksByPath.end())
+		QHash<QString, RawInputJoystickPtr>::const_iterator found = m_JoysticksByIdentifier.find(identifier);
+		if (found != m_JoysticksByIdentifier.end())
 		{
 			return found.value();
 		}
 
 		return RawInputJoystickPtr();
+	}
+
+	RawInputJoystickPtr RawInputManager::getJoystickByDevicePath(const QString& devicePath) const
+	{
+		QSharedPointer<ContainerDevice> container = m_Containers->findContainerByDevicePath(devicePath);
+		if (container == nullptr)
+		{
+			return RawInputJoystickPtr();
+		}
+
+		return getJoystickByIdentifier(container->getIdentifier());
 	}
 
 	RawInputJoystickPtr RawInputManager::getJoystickByHandle(HANDLE device) const
@@ -233,7 +232,7 @@ namespace Pitstop {
 	{
 		QVector<RawInputJoystickPtr> joysticks;
 
-		for (const RawInputJoystickPtr& joystick : m_JoysticksByPath)
+		for (const RawInputJoystickPtr& joystick : m_JoysticksByIdentifier)
 		{
 			joysticks.push_back(joystick);
 		}
@@ -296,7 +295,7 @@ namespace Pitstop {
 	{
 		bool created = false;
 
-		RawInputJoystickPtr joystick = getJoystickByPath(devicePath);
+		RawInputJoystickPtr joystick = getJoystickByDevicePath(devicePath);
 
 		if (joystick == nullptr)
 		{
@@ -314,16 +313,7 @@ namespace Pitstop {
 			created = true;
 		}
 
-		QSharedPointer<ContainerDevice> container = m_Containers->findContainerByDevicePath(devicePath);
-		if (container == nullptr)
-		{
-			PS_LOG_ERROR(RawInputManager) << "Failed to get container for device path. (path \"" << devicePath << "\")";
-			joystick.clear();
-
-			return joystick;
-		}
-
-		if (!joystick->setup(container, devicePath))
+		if (!joystick->setup(*m_Containers, devicePath))
 		{
 			PS_LOG_ERROR(RawInputManager) << "Failed to setup joystick. (path \"" << devicePath << "\")";
 			joystick.clear();
@@ -340,7 +330,7 @@ namespace Pitstop {
 
 		if (created)
 		{
-			m_JoysticksByPath.insert(joystick->getUniquePath(), joystick);
+			m_JoysticksByIdentifier.insert(joystick->getIdentifier(), joystick);
 
 			emit signalJoystickCreated(joystick);
 		}
