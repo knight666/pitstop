@@ -26,6 +26,7 @@ namespace Pitstop {
 
 	Application::Application(int& argc, char** argv, int flags /*= ApplicationFlags*/)
 		: QApplication(argc, argv, flags)
+		, m_Quit(false)
 		, m_RawInput(nullptr)
 		, m_UsbController(nullptr)
 		, m_VirtualInput(nullptr)
