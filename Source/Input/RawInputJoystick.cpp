@@ -2,6 +2,7 @@
 
 #include <QtCore/QRegularExpression>
 
+#include "Input/Container/ContainerDevice.h"
 #include "Input/Process/InputProcessorBase.h"
 #include "Input/RawInputManager.h"
 
@@ -70,7 +71,7 @@ namespace Pitstop {
 		emit signalPropertyChanged();
 	}
 
-	bool RawInputJoystick::setup(const QString& devicePath)
+	bool RawInputJoystick::setup(QSharedPointer<ContainerDevice> container, const QString& devicePath)
 	{
 		// Extract properties from device path
 
@@ -90,6 +91,7 @@ namespace Pitstop {
 		}
 
 		m_Description.clear();
+		m_Container = container;
 		m_DevicePath = devicePath;
 		m_UniquePath = devicePath;
 		m_InstancePath.clear();
