@@ -9,7 +9,7 @@ namespace Pitstop {
 
 	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HWND window)
 		: m_Manager(manager)
-		, m_Type(Type::Raw)
+		, m_Type(Type::RawInput)
 		, m_VendorIdentifier(0)
 		, m_ProductIdentifier(0)
 		, m_XinputIndex((uint8_t)-1)
@@ -17,12 +17,17 @@ namespace Pitstop {
 		, m_Handle(NULL)
 		, m_FileHandle(NULL)
 		, m_DeviceInfo(NULL)
+		, m_UsbInfo(NULL)
 		, m_InputProcessor(nullptr)
 	{
+		memset(&m_Info, 0, sizeof(m_Info));
+
 		memset(&m_Device, 0, sizeof(m_Device));
 		m_Device.hwndTarget = window;
 
 		memset(&m_DeviceInfoData, 0, sizeof(SP_DEVINFO_DATA));
+
+		memset(&m_UsbInfoData, 0, sizeof(SP_DEVINFO_DATA));
 	}
 
 	RawInputJoystick::~RawInputJoystick()
@@ -88,8 +93,9 @@ namespace Pitstop {
 		m_DevicePath = devicePath;
 		m_UniquePath = devicePath;
 		m_InstancePath.clear();
-		m_Type = Type::Raw;
+		m_Type = Type::RawInput;
 		m_XinputIndex = (uint8_t)-1;
+		m_VirtualIndex = (uint8_t)-1;
 
 		if (match_path.cap(3).size() > 0)
 		{
@@ -202,13 +208,6 @@ namespace Pitstop {
 			return false;
 		}
 
-		// Category
-
-		retrieveFromRegistry(
-			m_Category,
-			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + guidToString(m_Guid),
-			"Category");
-
 		// Description
 
 		QVector<wchar_t> device_name_data(128);
@@ -232,72 +231,60 @@ namespace Pitstop {
 			m_Description = getRegistryProperty<QString>(SPDRP_DEVICEDESC);
 		}
 
-		QString tests[] = {
-			getRegistryProperty<QString>(SPDRP_CLASS),
-			getRegistryProperty<QString>(SPDRP_CLASSGUID),
-			getRegistryProperty<QString>(SPDRP_BASE_CONTAINERID),
-			getRegistryProperty<QString>(SPDRP_DEVICEDESC),
-			getRegistryProperty<QString>(SPDRP_DRIVER),
-		};
+		// Find matching USB device
 
-		QStringList hardware_ids = getRegistryProperty<QStringList>(SPDRP_HARDWAREID);
+		QString hid_container = getRegistryProperty<QString>(SPDRP_BASE_CONTAINERID, DeviceClass::HID);
+		bool container_found = false;
 
-		DWORD flags[] = {
-			SPDRP_DEVICEDESC, SPDRP_HARDWAREID, SPDRP_COMPATIBLEIDS,
-			SPDRP_UNUSED0, SPDRP_SERVICE, SPDRP_UNUSED1,
-			SPDRP_UNUSED2, SPDRP_CLASS, SPDRP_CLASSGUID,
-			SPDRP_DRIVER, SPDRP_CONFIGFLAGS, SPDRP_MFG,
-			SPDRP_FRIENDLYNAME, SPDRP_LOCATION_INFORMATION, SPDRP_PHYSICAL_DEVICE_OBJECT_NAME,
-			SPDRP_CAPABILITIES, SPDRP_UI_NUMBER, SPDRP_UPPERFILTERS,
-			SPDRP_LOWERFILTERS, SPDRP_BUSTYPEGUID, SPDRP_LEGACYBUSTYPE,
-			SPDRP_BUSNUMBER, SPDRP_ENUMERATOR_NAME, SPDRP_SECURITY,
-			SPDRP_SECURITY_SDS, SPDRP_DEVTYPE, SPDRP_EXCLUSIVE,
-			SPDRP_CHARACTERISTICS, SPDRP_ADDRESS, SPDRP_UI_NUMBER_DESC_FORMAT,
-			SPDRP_DEVICE_POWER_DATA, SPDRP_REMOVAL_POLICY, SPDRP_REMOVAL_POLICY_HW_DEFAULT,
-			SPDRP_REMOVAL_POLICY_OVERRIDE, SPDRP_INSTALL_STATE, SPDRP_LOCATION_PATHS,
-			SPDRP_BASE_CONTAINERID
-		};
-		QString flag_output[sizeof(flags) / sizeof(DWORD)] = { 0 };
+		m_UsbInfo = ::SetupDiGetClassDevsW(
+			NULL,
+			L"USB",
+			NULL,
+			DIGCF_ALLCLASSES | DIGCF_PRESENT);
 
-		for (DWORD flag_index = 0; flag_index < sizeof(flags) / sizeof(DWORD); ++flag_index)
+		memset(&m_UsbInfoData, 0, sizeof(SP_DEVINFO_DATA));
+		m_UsbInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
+
+		if (m_UsbInfo != INVALID_HANDLE_VALUE)
 		{
-			DWORD registry_type = 0;
-			DWORD required_size = 0;
-
-			::SetupDiGetDeviceRegistryPropertyW(
-				m_DeviceInfo,
-				&m_DeviceInfoData,
-				flags[flag_index],
-				&registry_type,
-				NULL,
-				0,
-				&required_size);
-			if (required_size > 0)
+			for (DWORD i = 0;
+				::SetupDiEnumDeviceInfo(
+					m_UsbInfo,
+					i,
+					&m_UsbInfoData) == TRUE;
+				++i)
 			{
-				QVector<BYTE> property_data((int)required_size);
-
-				BOOL registry_result = ::SetupDiGetDeviceRegistryPropertyW(
-					m_DeviceInfo,
-					&m_DeviceInfoData,
-					flags[flag_index],
-					NULL,
-					&property_data[0],
-					property_data.size(),
-					NULL);
-				if (registry_result == TRUE)
+				QString usb_container = getRegistryProperty<QString>(SPDRP_BASE_CONTAINERID, DeviceClass::USB);
+				if (usb_container == hid_container)
 				{
-					BYTE* property_data_ptr = &property_data[0];
+					container_found = true;
 
-					QString registry_string = QString::fromUtf16((const ushort*)&property_data[0]);
-
-					flag_output[flag_index] = registry_string;
-
-					int i = 0;
+					break;
 				}
 			}
 		}
 
-		// Match HID ContainerID to USB ContainerID
+		if (container_found)
+		{
+			QString usb_location = getRegistryProperty<QString>(SPDRP_LOCATION_INFORMATION, DeviceClass::USB);
+
+			// Check if the device is a virtual controller
+
+			QRegExp match_virtual("SCP Virtual.+\\#([0-9]+)");
+			if (match_virtual.indexIn(usb_location) >= 0)
+			{
+				m_Type = Type::Virtual;
+
+				m_VirtualIndex = (uint8_t)match_path.cap(1).toUInt();
+			}
+		}
+		else
+		{
+			m_UsbInfo = NULL;
+
+			memset(&m_UsbInfoData, 0, sizeof(SP_DEVINFO_DATA));
+			m_UsbInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
+		}
 
 		// Get thumbnail
 
@@ -318,7 +305,7 @@ namespace Pitstop {
 		// Setup device
 
 		m_Device.dwFlags = RIDEV_DEVNOTIFY;
-		if (m_Type == Type::Raw)
+		if (m_Type == Type::RawInput)
 		{
 			// Ensure input is received even when the window loses focus
 
@@ -375,6 +362,61 @@ namespace Pitstop {
 		return true;
 	}
 
+	bool RawInputJoystick::getRegistryProperty(DeviceClass deviceClass, DWORD key, QVector<BYTE>& output, DWORD& keyType)
+	{
+		HDEVINFO info = NULL;
+		SP_DEVINFO_DATA* info_data = nullptr;
+
+		switch (deviceClass)
+		{
+
+		case DeviceClass::USB:
+			info = m_UsbInfo;
+			info_data = &m_UsbInfoData;
+			break;
+
+		case DeviceClass::HID:
+		default:
+			info = m_DeviceInfo;
+			info_data = &m_DeviceInfoData;
+			break;
+
+		}
+
+		if (info == NULL)
+		{
+			return false;
+		}
+
+		DWORD required_size = 0;
+
+		::SetupDiGetDeviceRegistryPropertyW(
+			info,
+			info_data,
+			key,
+			&keyType,
+			NULL,
+			0,
+			&required_size);
+		if (required_size == 0)
+		{
+			return false;
+		}
+
+		output.resize((int)required_size);
+
+		BOOL registry_result = ::SetupDiGetDeviceRegistryPropertyW(
+			info,
+			info_data,
+			key,
+			NULL,
+			&output[0],
+			output.size(),
+			NULL);
+
+		return (registry_result == TRUE);
+	}
+
 	bool RawInputJoystick::retrieveFromRegistry(QString& target, const QString& path, const QString& keyName)
 	{
 		HKEY key = NULL;
@@ -412,37 +454,6 @@ namespace Pitstop {
 		target = QString::fromUtf16(&data[0]);
 
 		return true;
-	}
-
-	bool RawInputJoystick::getRegistryProperty(DWORD key, QVector<BYTE>& output, DWORD& keyType)
-	{
-		DWORD required_size = 0;
-
-		::SetupDiGetDeviceRegistryPropertyW(
-			m_DeviceInfo,
-			&m_DeviceInfoData,
-			key,
-			&keyType,
-			NULL,
-			0,
-			&required_size);
-		if (required_size == 0)
-		{
-			return false;
-		}
-
-		output.resize((int)required_size);
-
-		BOOL registry_result = ::SetupDiGetDeviceRegistryPropertyW(
-			m_DeviceInfo,
-			&m_DeviceInfoData,
-			key,
-			NULL,
-			&output[0],
-			output.size(),
-			NULL);
-
-		return (registry_result == TRUE);
 	}
 
 }; // namespace Pitstop

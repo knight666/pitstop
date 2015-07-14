@@ -1,5 +1,7 @@
 #include "Application/Widgets/WidgetJoystick.h"
 
+#include "Application/Dialogs/DialogJoystickDetails.h"
+
 namespace Pitstop {
 
 	WidgetJoystick::WidgetJoystick(RawInputJoystickPtr joystick, QWidget* parent /*= nullptr*/)
@@ -75,5 +77,10 @@ namespace Pitstop {
 		m_Form.icoConnected->setPixmap(QPixmap(icon_resource));
 	}
 
+	void WidgetJoystick::on_btnDetails_pressed()
+	{
+		DialogJoystickDetails details(*this);
+		details.exec();
+	}
 
 }; // namespace Pitstop
