@@ -64,6 +64,18 @@
     <ClCompile Include="GeneratedFiles\Release\moc_BindingsList.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ContainerDevice.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ContainerDevice.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ContainerManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ContainerManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ConfigurationBase.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
@@ -227,6 +239,8 @@
     <ClCompile Include="Source\Application\TabDevices.cpp" />
     <ClCompile Include="Source\Application\TabJoysticks.cpp" />
     <ClCompile Include="Source\Base\Utils.cpp" />
+    <ClCompile Include="Source\Input\Container\ContainerDevice.cpp" />
+    <ClCompile Include="Source\Input\Container\ContainerManager.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorBase.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorDualShock4.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorFFBWheel.cpp" />
@@ -298,6 +312,18 @@
     </CustomBuild>
     <ClInclude Include="Source\Base\Main.h" />
     <ClInclude Include="Source\Base\Utils.h" />
+    <CustomBuild Include="Source\Input\Container\ContainerDevice.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\Container\ContainerManager.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
     <ClInclude Include="Source\Input\Process\InputProcessorBase.h" />
     <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h" />
     <ClInclude Include="Source\Input\Process\InputProcessorFFBWheel.h" />

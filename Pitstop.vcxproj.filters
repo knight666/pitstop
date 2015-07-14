@@ -197,6 +197,24 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_DialogJoystickDetails.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\Container\ContainerDevice.cpp">
+      <Filter>Input\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Container\ContainerManager.cpp">
+      <Filter>Input\Container</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ContainerDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ContainerManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ContainerDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ContainerManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -234,6 +252,9 @@
     </Filter>
     <Filter Include="Application\Dialogs">
       <UniqueIdentifier>{c7347cb5-9603-4d71-9137-7462475fc151}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input\Container">
+      <UniqueIdentifier>{7cc1fee0-eb87-49fb-bc81-53bff484457d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -371,6 +392,12 @@
     </CustomBuild>
     <CustomBuild Include="Source\Application\Dialogs\DialogJoystickDetails.ui">
       <Filter>Application\Dialogs</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\Container\ContainerDevice.h">
+      <Filter>Input\Container</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\Container\ContainerManager.h">
+      <Filter>Input\Container</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
