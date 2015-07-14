@@ -224,6 +224,12 @@
     <ClCompile Include="Source\Application\Widgets\WidgetControllerList.cpp">
       <Filter>Application\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Application.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Application.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -269,9 +275,6 @@
   <ItemGroup>
     <ClInclude Include="Source\Base\Main.h">
       <Filter>Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Application\Application.h">
-      <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h">
       <Filter>GeneratedFiles</Filter>
@@ -416,6 +419,9 @@
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetControllerList.ui">
       <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Application.h">
+      <Filter>Application</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

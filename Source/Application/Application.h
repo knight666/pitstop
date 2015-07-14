@@ -19,6 +19,8 @@ namespace Pitstop {
 		, public QAbstractNativeEventFilter
 	{
 
+		Q_OBJECT
+
 	public:
 
 		Application(int& argc, char** argv, int flags = ApplicationFlags);
@@ -35,6 +37,7 @@ namespace Pitstop {
 	private:
 
 		static Application* s_Instance;
+		bool m_Quit;
 		QSharedPointer<ConfigurationManager> m_Configuration;
 		QSharedPointer<ContainerManager> m_Containers;
 		RawInputManager* m_RawInput;
