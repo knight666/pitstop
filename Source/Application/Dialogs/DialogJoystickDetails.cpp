@@ -24,7 +24,20 @@ namespace Pitstop {
 
 		addRow("Controller", QString::number(m_Joystick->getXinputIndex()));
 
-		addRow("Category", m_Joystick->getCategory());
+		addRow("Enumerator name", m_Joystick->getRegistryProperty<QString>(SPDRP_ENUMERATOR_NAME));
+
+		QString hardware_identifiers_string;
+		QStringList hardware_identifiers = m_Joystick->getRegistryProperty<QStringList>(SPDRP_HARDWAREID);
+		for (int i = 0; i < hardware_identifiers.length(); ++i)
+		{
+			if (i > 0)
+			{
+				hardware_identifiers_string += "\n";
+			}
+			hardware_identifiers_string += hardware_identifiers[i];
+		}
+
+		addRow("Hardware identifiers", hardware_identifiers_string);
 
 		QString vendor_string;
 		vendor_string.sprintf("0x%04X", m_Joystick->getInfo().dwVendorId);
@@ -45,6 +58,14 @@ namespace Pitstop {
 		QString usage_string;
 		usage_string.sprintf("%d", m_Joystick->getInfo().usUsage);
 		addRow("Usage page", usage_string);
+
+		addRow("Class", m_Joystick->getRegistryProperty<QString>(SPDRP_CLASS));
+
+		addRow("Class GUID", m_Joystick->getRegistryProperty<QString>(SPDRP_CLASSGUID));
+
+		addRow("Driver", m_Joystick->getRegistryProperty<QString>(SPDRP_DRIVER));
+
+		addRow("Container identifier", m_Joystick->getRegistryProperty<QString>(SPDRP_BASE_CONTAINERID));
 
 		QString handle_string;
 		handle_string.sprintf("0x%08X", m_Joystick->getHandle());
