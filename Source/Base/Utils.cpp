@@ -56,4 +56,40 @@ namespace Pitstop {
 		return result;
 	}
 
+	bool deviceGetRegistryProperty(HDEVINFO& deviceInfo, SP_DEVINFO_DATA& deviceInfoData, DWORD key, QVector<BYTE>& output, DWORD& keyType)
+	{
+		if (deviceInfo == NULL)
+		{
+			return false;
+		}
+
+		DWORD required_size = 0;
+
+		::SetupDiGetDeviceRegistryPropertyW(
+			deviceInfo,
+			&deviceInfoData,
+			key,
+			&keyType,
+			NULL,
+			0,
+			&required_size);
+		if (required_size == 0)
+		{
+			return false;
+		}
+
+		output.resize((int)required_size);
+
+		BOOL registry_result = ::SetupDiGetDeviceRegistryPropertyW(
+			deviceInfo,
+			&deviceInfoData,
+			key,
+			NULL,
+			&output[0],
+			output.size(),
+			NULL);
+
+		return (registry_result == TRUE);
+	}
+
 }; // namespace Pitstop

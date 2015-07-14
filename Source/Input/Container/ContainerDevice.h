@@ -4,6 +4,8 @@
 
 namespace Pitstop {
 
+	class ContainerManager;
+
 	class ContainerDevice
 		: public QObject
 	{
@@ -12,8 +14,21 @@ namespace Pitstop {
 
 	public:
 
-		ContainerDevice();
+		ContainerDevice(
+			ContainerManager& manager,
+			const QString& identifier,
+			HDEVINFO info,
+			const SP_DEVINFO_DATA& infoData);
 		~ContainerDevice();
+
+		const QString& getIdentifier() const { return m_Identifier; }
+
+	private:
+
+		ContainerManager& m_Manager;
+		QString m_Identifier;
+		HDEVINFO m_Info;
+		SP_DEVINFO_DATA m_InfoData;
 
 	}; // class ContainerDevice
 
