@@ -98,6 +98,8 @@ namespace Pitstop {
 		HANDLE m_FileHandle;
 		HDEVINFO m_DeviceInfo;
 		SP_DEVINFO_DATA m_DeviceInfoData;
+		HDEVINFO m_UsbInfo;
+		SP_DEVINFO_DATA m_UsbInfoData;
 		RAWINPUTDEVICE m_Device;
 		RID_DEVICE_INFO m_Info;
 		QString m_DevicePath;

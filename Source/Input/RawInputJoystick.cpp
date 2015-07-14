@@ -17,6 +17,7 @@ namespace Pitstop {
 		, m_Handle(NULL)
 		, m_FileHandle(NULL)
 		, m_DeviceInfo(NULL)
+		, m_UsbInfo(NULL)
 		, m_InputProcessor(nullptr)
 	{
 		memset(&m_Info, 0, sizeof(m_Info));
@@ -25,6 +26,8 @@ namespace Pitstop {
 		m_Device.hwndTarget = window;
 
 		memset(&m_DeviceInfoData, 0, sizeof(SP_DEVINFO_DATA));
+
+		memset(&m_UsbInfoData, 0, sizeof(SP_DEVINFO_DATA));
 	}
 
 	RawInputJoystick::~RawInputJoystick()
@@ -232,6 +235,95 @@ namespace Pitstop {
 			// Fallback, get device description from driver information
 
 			m_Description = getRegistryProperty<QString>(SPDRP_DEVICEDESC);
+		}
+
+		// Find matching USB device
+
+		QString container_identifier = getRegistryProperty<QString>(SPDRP_BASE_CONTAINERID);
+		bool container_found = false;
+
+		memset(&m_UsbInfoData, 0, sizeof(SP_DEVINFO_DATA));
+		m_UsbInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
+
+		m_UsbInfo = ::SetupDiGetClassDevsW(
+			NULL,
+			L"USB",
+			NULL,
+			DIGCF_ALLCLASSES | DIGCF_PRESENT);
+		if (m_UsbInfo != INVALID_HANDLE_VALUE)
+		{
+			for (DWORD i = 0;
+				::SetupDiEnumDeviceInfo(
+					m_UsbInfo,
+					i,
+					&m_UsbInfoData) == TRUE;
+				++i)
+			{
+				DWORD flags[] = {
+					SPDRP_DEVICEDESC, SPDRP_HARDWAREID, SPDRP_COMPATIBLEIDS,
+					SPDRP_UNUSED0, SPDRP_SERVICE, SPDRP_UNUSED1,
+					SPDRP_UNUSED2, SPDRP_CLASS, SPDRP_CLASSGUID,
+					SPDRP_DRIVER, SPDRP_CONFIGFLAGS, SPDRP_MFG,
+					SPDRP_FRIENDLYNAME, SPDRP_LOCATION_INFORMATION, SPDRP_PHYSICAL_DEVICE_OBJECT_NAME,
+					SPDRP_CAPABILITIES, SPDRP_UI_NUMBER, SPDRP_UPPERFILTERS,
+					SPDRP_LOWERFILTERS, SPDRP_BUSTYPEGUID, SPDRP_LEGACYBUSTYPE,
+					SPDRP_BUSNUMBER, SPDRP_ENUMERATOR_NAME, SPDRP_SECURITY,
+					SPDRP_SECURITY_SDS, SPDRP_DEVTYPE, SPDRP_EXCLUSIVE,
+					SPDRP_CHARACTERISTICS, SPDRP_ADDRESS, SPDRP_UI_NUMBER_DESC_FORMAT,
+					SPDRP_DEVICE_POWER_DATA, SPDRP_REMOVAL_POLICY, SPDRP_REMOVAL_POLICY_HW_DEFAULT,
+					SPDRP_REMOVAL_POLICY_OVERRIDE, SPDRP_INSTALL_STATE, SPDRP_LOCATION_PATHS,
+					SPDRP_BASE_CONTAINERID
+				};
+				QString flag_string_output[sizeof(flags) / sizeof(DWORD)] = { 0 };
+				DWORD flag_type[sizeof(flags) / sizeof(DWORD)] = { 0 };
+
+				for (DWORD flag_index = 0; flag_index < sizeof(flags) / sizeof(DWORD); ++flag_index)
+				{
+					DWORD registry_type = 0;
+					DWORD required_size = 0;
+
+					::SetupDiGetDeviceRegistryPropertyW(
+						m_UsbInfo,
+						&m_UsbInfoData,
+						flags[flag_index],
+						&flag_type[flag_index],
+						NULL,
+						0,
+						&required_size);
+					if (required_size > 0)
+					{
+						QVector<BYTE> property_data((int)required_size);
+
+						BOOL registry_result = ::SetupDiGetDeviceRegistryPropertyW(
+							m_UsbInfo,
+							&m_UsbInfoData,
+							flags[flag_index],
+							NULL,
+							&property_data[0],
+							property_data.size(),
+							NULL);
+						if (registry_result == TRUE)
+						{
+							flag_string_output[flag_index] = QString::fromUtf16((const ushort*)&property_data[0]);
+						}
+					}
+				}
+
+				if (flag_string_output[SPDRP_BASE_CONTAINERID] == container_identifier)
+				{
+					container_found = true;
+
+					break;
+				}
+			}
+		}
+
+		if (!container_found)
+		{
+			m_UsbInfo = NULL;
+
+			memset(&m_UsbInfoData, 0, sizeof(SP_DEVINFO_DATA));
+			m_UsbInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
 		}
 
 		// Get thumbnail
