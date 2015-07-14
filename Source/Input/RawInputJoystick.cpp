@@ -16,10 +16,13 @@ namespace Pitstop {
 		, m_Connected(false)
 		, m_Handle(NULL)
 		, m_FileHandle(NULL)
+		, m_DeviceInfo(NULL)
 		, m_InputProcessor(nullptr)
 	{
 		memset(&m_Device, 0, sizeof(m_Device));
 		m_Device.hwndTarget = window;
+
+		memset(&m_DeviceInfoData, 0, sizeof(SP_DEVINFO_DATA));
 	}
 
 	RawInputJoystick::~RawInputJoystick()
@@ -134,37 +137,37 @@ namespace Pitstop {
 
 		// Retrieve device information
 
-		HDEVINFO device_info = ::SetupDiGetClassDevsW(
+		m_DeviceInfo = ::SetupDiGetClassDevsW(
 			&m_Guid,
 			NULL,
 			NULL,
 			DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
-		if (device_info == NULL)
+		if (m_DeviceInfo == NULL)
 		{
 			PS_LOG_ERROR(RawInputJoystick) << "Failed to retrieve device info. (GUID: \"" << guidToString(m_Guid) << "\")";
 
 			return false;
 		}
 
+		memset(&m_DeviceInfoData, 0, sizeof(SP_DEVINFO_DATA));
+		m_DeviceInfoData.cbSize = sizeof(SP_DEVINFO_DATA);
+
 		// Find instance of class
 
 		bool instance_found = false;
 
-		SP_DEVINFO_DATA device_info_data = { 0 };
-		device_info_data.cbSize = sizeof(SP_DEVINFO_DATA);
-
 		DWORD member_index = 0;
 
 		while (::SetupDiEnumDeviceInfo(
-			device_info,
+			m_DeviceInfo,
 			member_index,
-			&device_info_data) == TRUE)
+			&m_DeviceInfoData) == TRUE)
 		{
 			DWORD device_instance_size = 0;
 
 			if (::SetupDiGetDeviceInstanceIdW(
-				device_info,
-				&device_info_data,
+				m_DeviceInfo,
+				&m_DeviceInfoData,
 				nullptr,
 				0,
 				&device_instance_size) == FALSE &&
@@ -173,8 +176,8 @@ namespace Pitstop {
 				QVector<WCHAR> device_instance_data(device_instance_size);
 
 				if (::SetupDiGetDeviceInstanceIdW(
-					device_info,
-					&device_info_data,
+					m_DeviceInfo,
+					&m_DeviceInfoData,
 					&device_instance_data[0],
 					device_instance_data.size(),
 					&device_instance_size) == TRUE)
@@ -226,24 +229,18 @@ namespace Pitstop {
 		{
 			// Fallback, get device description from driver information
 
-			QString path = m_DevicePath;
-			path.replace(0, 4, "SYSTEM\\CurrentControlSet\\Enum\\");
-			path.replace('#', '\\');
-			path.replace(QRegExp("\\{.+\\}"), "");
-
-			if (retrieveFromRegistry(m_Description, path, "DeviceDesc"))
-			{
-				// Save only the name from the device description
-
-				int last_semicolon = m_Description.lastIndexOf(';');
-				if (last_semicolon >= 0)
-				{
-					m_Description = m_Description.mid(
-						last_semicolon + 1,
-						m_Description.length() - last_semicolon);
-				}
-			}
+			m_Description = getRegistryProperty<QString>(SPDRP_DEVICEDESC);
 		}
+
+		QString tests[] = {
+			getRegistryProperty<QString>(SPDRP_CLASS),
+			getRegistryProperty<QString>(SPDRP_CLASSGUID),
+			getRegistryProperty<QString>(SPDRP_BASE_CONTAINERID),
+			getRegistryProperty<QString>(SPDRP_DEVICEDESC),
+			getRegistryProperty<QString>(SPDRP_DRIVER),
+		};
+
+		QStringList hardware_ids = getRegistryProperty<QStringList>(SPDRP_HARDWAREID);
 
 		DWORD flags[] = {
 			SPDRP_DEVICEDESC, SPDRP_HARDWAREID, SPDRP_COMPATIBLEIDS,
@@ -268,8 +265,8 @@ namespace Pitstop {
 			DWORD required_size = 0;
 
 			::SetupDiGetDeviceRegistryPropertyW(
-				device_info,
-				&device_info_data,
+				m_DeviceInfo,
+				&m_DeviceInfoData,
 				flags[flag_index],
 				&registry_type,
 				NULL,
@@ -280,8 +277,8 @@ namespace Pitstop {
 				QVector<BYTE> property_data((int)required_size);
 
 				BOOL registry_result = ::SetupDiGetDeviceRegistryPropertyW(
-					device_info,
-					&device_info_data,
+					m_DeviceInfo,
+					&m_DeviceInfoData,
 					flags[flag_index],
 					NULL,
 					&property_data[0],
@@ -415,6 +412,37 @@ namespace Pitstop {
 		target = QString::fromUtf16(&data[0]);
 
 		return true;
+	}
+
+	bool RawInputJoystick::getRegistryProperty(DWORD key, QVector<BYTE>& output, DWORD& keyType)
+	{
+		DWORD required_size = 0;
+
+		::SetupDiGetDeviceRegistryPropertyW(
+			m_DeviceInfo,
+			&m_DeviceInfoData,
+			key,
+			&keyType,
+			NULL,
+			0,
+			&required_size);
+		if (required_size == 0)
+		{
+			return false;
+		}
+
+		output.resize((int)required_size);
+
+		BOOL registry_result = ::SetupDiGetDeviceRegistryPropertyW(
+			m_DeviceInfo,
+			&m_DeviceInfoData,
+			key,
+			NULL,
+			&output[0],
+			output.size(),
+			NULL);
+
+		return (registry_result == TRUE);
 	}
 
 }; // namespace Pitstop
