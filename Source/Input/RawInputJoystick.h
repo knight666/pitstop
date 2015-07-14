@@ -5,6 +5,7 @@
 
 namespace Pitstop {
 
+	class ContainerDevice;
 	class InputProcessorBase;
 	class RawInputManager;
 
@@ -53,6 +54,8 @@ namespace Pitstop {
 
 		HANDLE getHandle() const { return m_Handle; }
 
+		QSharedPointer<ContainerDevice> getContainer() const { return m_Container; }
+
 		const RAWINPUTDEVICE& getDevice() const { return m_Device; }
 
 		const RID_DEVICE_INFO_HID& getInfo() const { return m_Info.hid; }
@@ -72,7 +75,7 @@ namespace Pitstop {
 		template <typename ValueType>
 		ValueType getRegistryProperty(DWORD key, DeviceClass deviceClass = DeviceClass::HID);
 
-		bool setup(const QString& devicePath);
+		bool setup(QSharedPointer<ContainerDevice> container, const QString& devicePath);
 		bool initialize(HANDLE handle, const RID_DEVICE_INFO& info);
 
 		bool process(const RAWINPUT& message);
@@ -104,6 +107,7 @@ namespace Pitstop {
 		HANDLE m_FileHandle;
 		HDEVINFO m_DeviceInfo;
 		SP_DEVINFO_DATA m_DeviceInfoData;
+		QSharedPointer<ContainerDevice> m_Container;
 		HDEVINFO m_UsbInfo;
 		SP_DEVINFO_DATA m_UsbInfoData;
 		RAWINPUTDEVICE m_Device;

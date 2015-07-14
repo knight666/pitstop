@@ -300,6 +300,12 @@ namespace Pitstop {
 
 		if (joystick == nullptr)
 		{
+			// Ensure container is available
+
+			m_Containers->updateContainers();
+
+			// Create joystick
+
 			joystick = RawInputJoystickPtr(
 				new RawInputJoystick(
 					*this,
@@ -308,9 +314,18 @@ namespace Pitstop {
 			created = true;
 		}
 
-		if (!joystick->setup(devicePath))
+		QSharedPointer<ContainerDevice> container = m_Containers->findContainerByDevicePath(devicePath);
+		if (container == nullptr)
 		{
-			PS_LOG_ERROR(RawInputManager) << "Failed to setup joystick. (path: \"" << devicePath << "\")";
+			PS_LOG_ERROR(RawInputManager) << "Failed to get container for device path. (path \"" << devicePath << "\")";
+			joystick.clear();
+
+			return joystick;
+		}
+
+		if (!joystick->setup(container, devicePath))
+		{
+			PS_LOG_ERROR(RawInputManager) << "Failed to setup joystick. (path \"" << devicePath << "\")";
 			joystick.clear();
 
 			return joystick;
@@ -368,10 +383,6 @@ namespace Pitstop {
 
 			return RawInputJoystickPtr();
 		}
-
-		// Ensure container is available
-
-		m_Containers->updateContainers();
 
 		// Create joystick
 

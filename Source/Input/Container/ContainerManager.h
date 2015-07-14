@@ -17,6 +17,7 @@ namespace Pitstop {
 		~ContainerManager();
 
 		QSharedPointer<ContainerDevice> findContainer(const QString& identifier) const;
+		QSharedPointer<ContainerDevice> findContainerByDevicePath(const QString& devicePath) const;
 
 		bool initialize();
 		bool updateContainers();
