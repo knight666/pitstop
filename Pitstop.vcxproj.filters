@@ -188,6 +188,15 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_UsbController.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Application\Dialogs\DialogJoystickDetails.cpp">
+      <Filter>Application\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DialogJoystickDetails.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DialogJoystickDetails.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -222,6 +231,9 @@
     </Filter>
     <Filter Include="Serialization">
       <UniqueIdentifier>{b6e2eb6f-8f7a-4236-8937-5aa55ad614cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Dialogs">
+      <UniqueIdentifier>{c7347cb5-9603-4d71-9137-7462475fc151}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -281,6 +293,9 @@
     </ClInclude>
     <ClInclude Include="Source\Serialization\ISerializable.h">
       <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_DialogJoystickDetails.h">
+      <Filter>GeneratedFiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -350,6 +365,12 @@
     </CustomBuild>
     <CustomBuild Include="Source\Input\Usb\UsbController.h">
       <Filter>Input\Usb</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Dialogs\DialogJoystickDetails.h">
+      <Filter>Application\Dialogs</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Dialogs\DialogJoystickDetails.ui">
+      <Filter>Application\Dialogs</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
