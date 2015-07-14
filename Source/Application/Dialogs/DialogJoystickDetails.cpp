@@ -12,6 +12,8 @@ namespace Pitstop {
 
 		setWindowTitle(m_Joystick->getDescription());
 
+		addRow("Unique identifier", m_Joystick->getRegistryProperty<QString>(SPDRP_BASE_CONTAINERID));
+
 		QString connected_string;
 		QTextStream connected_stream(&connected_string);
 		connected_stream << m_Joystick->isConnected();
@@ -26,7 +28,19 @@ namespace Pitstop {
 
 		addRow("Virtual index", QString::number(m_Joystick->getVirtualIndex()));
 
-		addRow("Enumerator name", m_Joystick->getRegistryProperty<QString>(SPDRP_ENUMERATOR_NAME));
+		QString vendor_string;
+		vendor_string.sprintf("0x%04X", m_Joystick->getInfo().dwVendorId);
+		addRow("Vendor identifier", vendor_string);
+
+		QString product_string;
+		product_string.sprintf("0x%04X", m_Joystick->getInfo().dwProductId);
+		addRow("Product identifier", product_string);
+
+		addRow("Class", m_Joystick->getRegistryProperty<QString>(SPDRP_CLASS));
+
+		addRow("USB class", m_Joystick->getRegistryProperty<QString>(SPDRP_CLASS, RawInputJoystick::DeviceClass::USB));
+
+		addRow("USB location information", m_Joystick->getRegistryProperty<QString>(SPDRP_LOCATION_INFORMATION, RawInputJoystick::DeviceClass::USB));
 
 		QString hardware_identifiers_string;
 		QStringList hardware_identifiers = m_Joystick->getRegistryProperty<QStringList>(SPDRP_HARDWAREID);
@@ -41,45 +55,23 @@ namespace Pitstop {
 
 		addRow("Hardware identifiers", hardware_identifiers_string);
 
-		QString vendor_string;
-		vendor_string.sprintf("0x%04X", m_Joystick->getInfo().dwVendorId);
-		addRow("Vendor identifier", vendor_string);
-
-		QString product_string;
-		product_string.sprintf("0x%04X", m_Joystick->getInfo().dwProductId);
-		addRow("Product identifier", product_string);
+		addRow("Path", m_Joystick->getDevicePath());
 
 		QString version_string;
-		version_string.sprintf("%d", m_Joystick->getInfo().dwVersionNumber);
+		version_string.sprintf("0x%04X", m_Joystick->getInfo().dwVersionNumber);
 		addRow("Version number", version_string);
 
 		QString usage_page_string;
-		usage_page_string.sprintf("%d", m_Joystick->getInfo().usUsagePage);
+		usage_page_string.sprintf("0x%04X", m_Joystick->getInfo().usUsagePage);
 		addRow("Usage page", usage_page_string);
 
 		QString usage_string;
-		usage_string.sprintf("%d", m_Joystick->getInfo().usUsage);
-		addRow("Usage page", usage_string);
-
-		addRow("Class", m_Joystick->getRegistryProperty<QString>(SPDRP_CLASS));
+		usage_string.sprintf("0x%04X", m_Joystick->getInfo().usUsage);
+		addRow("Usage", usage_string);
 
 		addRow("Class GUID", m_Joystick->getRegistryProperty<QString>(SPDRP_CLASSGUID));
 
 		addRow("Driver", m_Joystick->getRegistryProperty<QString>(SPDRP_DRIVER));
-
-		addRow("USB class", m_Joystick->getRegistryProperty<QString>(SPDRP_CLASS, RawInputJoystick::DeviceClass::USB));
-
-		addRow("USB location information", m_Joystick->getRegistryProperty<QString>(SPDRP_LOCATION_INFORMATION, RawInputJoystick::DeviceClass::USB));
-
-		addRow("Container identifier", m_Joystick->getRegistryProperty<QString>(SPDRP_BASE_CONTAINERID));
-
-		QString handle_string;
-		handle_string.sprintf("0x%08X", m_Joystick->getHandle());
-		addRow("Handle", handle_string);
-
-		addRow("GUID", guidToString(m_Joystick->getGuid()));
-
-		addRow("Path", m_Joystick->getDevicePath());
 	}
 
 	DialogJoystickDetails::~DialogJoystickDetails()
