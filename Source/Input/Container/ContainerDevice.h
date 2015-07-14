@@ -23,6 +23,9 @@ namespace Pitstop {
 
 		const QString& getIdentifier() const { return m_Identifier; }
 
+		template <typename ValueType>
+		ValueType getRegistryProperty(DWORD key);
+
 	private:
 
 		ContainerManager& m_Manager;
@@ -31,5 +34,11 @@ namespace Pitstop {
 		SP_DEVINFO_DATA m_InfoData;
 
 	}; // class ContainerDevice
+
+	template <typename ValueType>
+	inline ValueType ContainerDevice::getRegistryProperty(DWORD key)
+	{
+		return deviceGetRegistryProperty<ValueType>(m_Info, m_InfoData, key);
+	}
 
 }; // namespace Pitstop
