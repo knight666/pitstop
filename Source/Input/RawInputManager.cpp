@@ -2,13 +2,15 @@
 
 #include <QtGui/QImage>
 
+#include "Input/Container/ContainerManager.h"
 #include "Input/Process/InputProcessorBase.h"
 #include "Input/RawInputJoystick.h"
 
 namespace Pitstop {
 
-	RawInputManager::RawInputManager()
-		: m_Initialized(false)
+	RawInputManager::RawInputManager(QSharedPointer<ContainerManager> containers)
+		: m_Containers(containers)
+		, m_Initialized(false)
 		, m_Window(NULL)
 	{
 		addThumbnailImage(0x045E, 0x028E, "/media/images/xbox-360-controller.png");
@@ -17,7 +19,7 @@ namespace Pitstop {
 
 	RawInputManager::~RawInputManager()
 	{
-		PS_LOG_INFO(RawInput) << "Destroying raw input.";
+		PS_LOG_INFO(RawInputManager) << "Destroying raw input.";
 
 		m_JoysticksByHandle.clear();
 		m_JoysticksByPath.clear();
@@ -26,7 +28,7 @@ namespace Pitstop {
 
 	bool RawInputManager::initialize(HWND window)
 	{
-		PS_LOG_INFO(RawInput) << "Initializing raw input.";
+		PS_LOG_INFO(RawInputManager) << "Initializing raw input.";
 
 		m_Window = window;
 
@@ -42,6 +44,13 @@ namespace Pitstop {
 
 	bool RawInputManager::updateRegisteredDevices()
 	{
+		if (m_Initialized)
+		{
+			m_Containers->updateContainers();
+		}
+
+		PS_LOG_INFO(RawInputManager) << "Updating registered devices.";
+
 		QVector<RAWINPUTDEVICELIST> device_info_list;
 
 		UINT device_count = 0;
@@ -51,7 +60,7 @@ namespace Pitstop {
 			sizeof(RAWINPUTDEVICELIST)) == (UINT)-1)
 		{
 			DWORD errorCode = GetLastError();
-			PS_LOG_ERROR(RawInput) << "Failed to retrieve raw input device list. (error: \"" << windowsErrorToString(errorCode) << "\" code: " << errorCode << ")";
+			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve raw input device list. (error: \"" << windowsErrorToString(errorCode) << "\" code: " << errorCode << ")";
 
 			return false;
 		}
@@ -62,7 +71,7 @@ namespace Pitstop {
 			&device_count,
 			sizeof(RAWINPUTDEVICELIST));
 
-		PS_LOG_INFO(RawInput) << "Check " << device_count << " device(s).";
+		PS_LOG_INFO(RawInputManager) << "Check " << device_count << " device(s).";
 
 		// Create devices
 
@@ -80,7 +89,7 @@ namespace Pitstop {
 			}
 		}
 
-		PS_LOG_INFO(RawInput) << "Found " << device_list.size() << " joystick(s).";
+		PS_LOG_INFO(RawInputManager) << "Found " << device_list.size() << " joystick(s).";
 
 		// Register devices
 
@@ -92,7 +101,7 @@ namespace Pitstop {
 				sizeof(RAWINPUTDEVICE)) == FALSE)
 			{
 				DWORD errorCode = GetLastError();
-				PS_LOG_ERROR(RawInput) << "Failed to register raw input devices. (error: \"" << windowsErrorToString(errorCode) << "\" code: " << errorCode << ")";
+				PS_LOG_ERROR(RawInputManager) << "Failed to register raw input devices. (error: \"" << windowsErrorToString(errorCode) << "\" code: " << errorCode << ")";
 
 				return false;
 			}
@@ -154,6 +163,10 @@ namespace Pitstop {
 		HANDLE device = (HANDLE)lParam;
 		bool connected = wParam == GIDC_ARRIVAL;
 
+		QString device_string;
+		device_string.sprintf("0x%08X", device);
+		PS_LOG_TRACE(RawInputManager) << "processConnectionChanged device " << device_string << " connected " << (connected ? "yes" : "no") << ".";
+
 		// Find and update joystick
 
 		RawInputJoystickPtr joystick = createJoystick(device);
@@ -165,7 +178,7 @@ namespace Pitstop {
 		}
 		else
 		{
-			PS_LOG_INFO(RawInput) << "Device " << device << " was " << (connected ? "connected" : "disconnected") << ".";
+			PS_LOG_INFO(RawInputManager) << "Device " << device << " was " << (connected ? "connected" : "disconnected") << ".";
 		}
 	}
 
@@ -303,12 +316,12 @@ namespace Pitstop {
 			return joystick;
 		}
 
-		PS_LOG_INFO(RawInput) << "Setup joystick:";
-		PS_LOG_INFO(RawInput) << "- Path: \"" << joystick->getDevicePath() << "\"";
-		PS_LOG_INFO(RawInput) << "- Instance: \"" << joystick->getInstancePath() << "\"";
-		PS_LOG_INFO(RawInput) << "- Description: \"" << joystick->getDescription() << "\"";
-		PS_LOG_INFO(RawInput) << "- Type: \"" << joystick->getType() << "\"";
-		PS_LOG_INFO(RawInput) << "- Handle: " << joystick->getHandle() << "";
+		PS_LOG_INFO(RawInputManager) << "Setup joystick:";
+		PS_LOG_INFO(RawInputManager) << "- Path: \"" << joystick->getDevicePath() << "\"";
+		PS_LOG_INFO(RawInputManager) << "- Instance: \"" << joystick->getInstancePath() << "\"";
+		PS_LOG_INFO(RawInputManager) << "- Description: \"" << joystick->getDescription() << "\"";
+		PS_LOG_INFO(RawInputManager) << "- Type: \"" << joystick->getType() << "\"";
+		PS_LOG_INFO(RawInputManager) << "- Handle: " << joystick->getHandle() << "";
 
 		if (created)
 		{
@@ -341,7 +354,7 @@ namespace Pitstop {
 			(PUINT)&info.cbSize) == (UINT)-1 ||
 			info.dwType != RIM_TYPEHID)
 		{
-			PS_LOG_ERROR(RawInput) << "Failed to retrieve properties from device " << device << ".";
+			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve properties from device " << device << ".";
 
 			return RawInputJoystickPtr();
 		}
@@ -351,10 +364,16 @@ namespace Pitstop {
 		QString device_path = getDevicePath(device);
 		if (device_path.isEmpty())
 		{
-			PS_LOG_ERROR(RawInput) << "Failed to retrieve path from device " << device << ".";
+			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve path from device " << device << ".";
 
 			return RawInputJoystickPtr();
 		}
+
+		// Ensure container is available
+
+		m_Containers->updateContainers();
+
+		// Create joystick
 
 		RawInputJoystickPtr joystick = createJoystick(device_path);
 

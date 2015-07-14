@@ -36,6 +36,8 @@ namespace Pitstop {
 
 	bool ContainerManager::updateContainers()
 	{
+		PS_LOG_INFO(ContainerManager) << "Updating containers.";
+
 		HDEVINFO info = ::SetupDiGetClassDevsW(
 			NULL,
 			L"USB",
