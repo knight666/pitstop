@@ -19,6 +19,8 @@ namespace Pitstop {
 		, m_DeviceInfo(NULL)
 		, m_InputProcessor(nullptr)
 	{
+		memset(&m_Info, 0, sizeof(m_Info));
+
 		memset(&m_Device, 0, sizeof(m_Device));
 		m_Device.hwndTarget = window;
 

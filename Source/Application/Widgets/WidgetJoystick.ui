@@ -83,16 +83,7 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>0</number>
       </property>
       <item row="1" column="2">
@@ -153,7 +144,7 @@
        </widget>
       </item>
       <item row="3" column="0" colspan="3">
-       <widget class="QPushButton" name="btnInfo">
+       <widget class="QPushButton" name="btnDetails">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
           <horstretch>0</horstretch>
