@@ -179,7 +179,7 @@ namespace Pitstop {
 		QVector<RawInputJoystickPtr> joysticks = m_RawInput.getJoysticks();
 		for (RawInputJoystickPtr& joystick : joysticks)
 		{
-			if (joystick->getType() != RawInputJoystick::Type::Raw)
+			if (joystick->getType() != RawInputJoystick::Type::RawInput)
 			{
 				continue;
 			}
