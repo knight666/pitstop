@@ -62,6 +62,11 @@ namespace Pitstop {
 
 		QSharedPointer<QImage> getThumbnail() const { return m_Thumbnail; }
 
+		bool getRegistryProperty(DWORD key, QVector<BYTE>& output, DWORD& keyType);
+
+		template <typename ValueType>
+		ValueType getRegistryProperty(DWORD key);
+
 		bool setup(const QString& devicePath);
 		bool initialize(HANDLE handle, const RID_DEVICE_INFO& info);
 
@@ -91,6 +96,8 @@ namespace Pitstop {
 		uint16_t m_ProductIdentifier;
 		HANDLE m_Handle;
 		HANDLE m_FileHandle;
+		HDEVINFO m_DeviceInfo;
+		SP_DEVINFO_DATA m_DeviceInfoData;
 		RAWINPUTDEVICE m_Device;
 		RID_DEVICE_INFO m_Info;
 		QString m_DevicePath;
@@ -101,6 +108,65 @@ namespace Pitstop {
 		QSharedPointer<QImage> m_Thumbnail;
 
 	}; // class RawInputJoystick
+
+	template <>
+	inline DWORD RawInputJoystick::getRegistryProperty(DWORD key)
+	{
+		QVector<BYTE> output;
+		DWORD key_type = 0;
+
+		if (!getRegistryProperty(key, output, key_type) ||
+			key_type != REG_DWORD)
+		{
+			return 0;
+		}
+
+		return *(DWORD*)&output[0];
+	}
+
+	template <>
+	inline QString RawInputJoystick::getRegistryProperty(DWORD key)
+	{
+		QVector<BYTE> output;
+		DWORD key_type = 0;
+		
+		if (!getRegistryProperty(key, output, key_type) ||
+			key_type != REG_SZ)
+		{
+			return QString();
+		}
+
+		return QString::fromUtf16((const ushort*)&output[0]);
+	}
+
+	template <>
+	inline QStringList RawInputJoystick::getRegistryProperty(DWORD key)
+	{
+		QVector<BYTE> output;
+		DWORD key_type = 0;
+
+		if (!getRegistryProperty(key, output, key_type) ||
+			key_type != REG_MULTI_SZ)
+		{
+			return QStringList();
+		}
+
+		QStringList result;
+
+		const wchar_t* input = (const wchar_t*)&output[0];
+		size_t input_length = wcslen(input);
+
+		while (input_length > 0)
+		{
+			QString entry = QString::fromUtf16(input, input_length * sizeof(wchar_t));
+			result.push_back(entry);
+
+			input += input_length + 1;
+			input_length = wcslen(input);
+		}
+
+		return result;
+	}
 
 	typedef QSharedPointer<RawInputJoystick> RawInputJoystickPtr;
 
