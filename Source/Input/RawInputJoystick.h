@@ -24,6 +24,12 @@ namespace Pitstop {
 			XInput,
 		};
 
+		enum class DeviceClass
+		{
+			HID,
+			USB,
+		};
+
 		RawInputJoystick(RawInputManager& manager, HWND window);
 		~RawInputJoystick();
 
@@ -62,10 +68,8 @@ namespace Pitstop {
 
 		QSharedPointer<QImage> getThumbnail() const { return m_Thumbnail; }
 
-		bool getRegistryProperty(DWORD key, QVector<BYTE>& output, DWORD& keyType);
-
 		template <typename ValueType>
-		ValueType getRegistryProperty(DWORD key);
+		ValueType getRegistryProperty(DWORD key, DeviceClass deviceClass = DeviceClass::HID);
 
 		bool setup(const QString& devicePath);
 		bool initialize(HANDLE handle, const RID_DEVICE_INFO& info);
@@ -82,6 +86,7 @@ namespace Pitstop {
 
 	private:
 
+		bool getRegistryProperty(DeviceClass deviceClass, DWORD key, QVector<BYTE>& output, DWORD& keyType);
 		bool retrieveFromRegistry(QString& target, const QString& path, const QString& keyName);
 
 	private:
@@ -112,12 +117,13 @@ namespace Pitstop {
 	}; // class RawInputJoystick
 
 	template <>
-	inline DWORD RawInputJoystick::getRegistryProperty(DWORD key)
+	inline DWORD RawInputJoystick::getRegistryProperty(DWORD key, DeviceClass deviceClass /*= DeviceClass::HID*/)
 	{
 		QVector<BYTE> output;
 		DWORD key_type = 0;
+		bool found = false;
 
-		if (!getRegistryProperty(key, output, key_type) ||
+		if (!getRegistryProperty(deviceClass, key, output, key_type) ||
 			key_type != REG_DWORD)
 		{
 			return 0;
@@ -127,12 +133,12 @@ namespace Pitstop {
 	}
 
 	template <>
-	inline QString RawInputJoystick::getRegistryProperty(DWORD key)
+	inline QString RawInputJoystick::getRegistryProperty(DWORD key, DeviceClass deviceClass /*= DeviceClass::HID*/)
 	{
 		QVector<BYTE> output;
 		DWORD key_type = 0;
 		
-		if (!getRegistryProperty(key, output, key_type) ||
+		if (!getRegistryProperty(deviceClass, key, output, key_type) ||
 			key_type != REG_SZ)
 		{
 			return QString();
@@ -142,12 +148,12 @@ namespace Pitstop {
 	}
 
 	template <>
-	inline QStringList RawInputJoystick::getRegistryProperty(DWORD key)
+	inline QStringList RawInputJoystick::getRegistryProperty(DWORD key, DeviceClass deviceClass /*= DeviceClass::HID*/)
 	{
 		QVector<BYTE> output;
 		DWORD key_type = 0;
 
-		if (!getRegistryProperty(key, output, key_type) ||
+		if (!getRegistryProperty(deviceClass, key, output, key_type) ||
 			key_type != REG_MULTI_SZ)
 		{
 			return QStringList();
@@ -155,16 +161,25 @@ namespace Pitstop {
 
 		QStringList result;
 
-		const wchar_t* input = (const wchar_t*)&output[0];
-		size_t input_length = wcslen(input);
+		const BYTE* src = &output[0];
+		size_t src_length = (size_t)output.length() - sizeof(wchar_t);
 
-		while (input_length > 0)
+		while (src_length > 0)
 		{
-			QString entry = QString::fromUtf16(input, input_length * sizeof(wchar_t));
+			const wchar_t* entry_text = (const wchar_t*)src;
+			size_t entry_text_length = wcslen(entry_text);
+			size_t entry_text_offset = (entry_text_length + 1) * sizeof(wchar_t);
+
+			QString entry = QString::fromUtf16(entry_text, entry_text_length);
 			result.push_back(entry);
 
-			input += input_length + 1;
-			input_length = wcslen(input);
+			if (entry_text_offset >= src_length)
+			{
+				break;
+			}
+
+			src += entry_text_offset;
+			src_length -= entry_text_offset;
 		}
 
 		return result;

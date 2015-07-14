@@ -65,6 +65,10 @@ namespace Pitstop {
 
 		addRow("Driver", m_Joystick->getRegistryProperty<QString>(SPDRP_DRIVER));
 
+		addRow("USB class", m_Joystick->getRegistryProperty<QString>(SPDRP_CLASS, RawInputJoystick::DeviceClass::USB));
+
+		addRow("USB location information", m_Joystick->getRegistryProperty<QString>(SPDRP_LOCATION_INFORMATION, RawInputJoystick::DeviceClass::USB));
+
 		addRow("Container identifier", m_Joystick->getRegistryProperty<QString>(SPDRP_BASE_CONTAINERID));
 
 		QString handle_string;
