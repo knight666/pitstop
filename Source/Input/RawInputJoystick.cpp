@@ -9,7 +9,7 @@ namespace Pitstop {
 
 	RawInputJoystick::RawInputJoystick(RawInputManager& manager, HWND window)
 		: m_Manager(manager)
-		, m_Type(Type::Raw)
+		, m_Type(Type::RawInput)
 		, m_VendorIdentifier(0)
 		, m_ProductIdentifier(0)
 		, m_XinputIndex((uint8_t)-1)
@@ -93,8 +93,9 @@ namespace Pitstop {
 		m_DevicePath = devicePath;
 		m_UniquePath = devicePath;
 		m_InstancePath.clear();
-		m_Type = Type::Raw;
+		m_Type = Type::RawInput;
 		m_XinputIndex = (uint8_t)-1;
+		m_VirtualIndex = (uint8_t)-1;
 
 		if (match_path.cap(3).size() > 0)
 		{
@@ -207,13 +208,6 @@ namespace Pitstop {
 			return false;
 		}
 
-		// Category
-
-		retrieveFromRegistry(
-			m_Category,
-			QString("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DeviceDisplayObjects\\InterfaceInformation\\") + guidToString(m_Guid),
-			"Category");
-
 		// Description
 
 		QVector<wchar_t> device_name_data(128);
@@ -270,7 +264,21 @@ namespace Pitstop {
 			}
 		}
 
-		if (!container_found)
+		if (container_found)
+		{
+			QString usb_location = getRegistryProperty<QString>(SPDRP_LOCATION_INFORMATION, DeviceClass::USB);
+
+			// Check if the device is a virtual controller
+
+			QRegExp match_virtual("SCP Virtual.+\\#([0-9]+)");
+			if (match_virtual.indexIn(usb_location) >= 0)
+			{
+				m_Type = Type::Virtual;
+
+				m_VirtualIndex = (uint8_t)match_path.cap(1).toUInt();
+			}
+		}
+		else
 		{
 			m_UsbInfo = NULL;
 
@@ -297,7 +305,7 @@ namespace Pitstop {
 		// Setup device
 
 		m_Device.dwFlags = RIDEV_DEVNOTIFY;
-		if (m_Type == Type::Raw)
+		if (m_Type == Type::RawInput)
 		{
 			// Ensure input is received even when the window loses focus
 
