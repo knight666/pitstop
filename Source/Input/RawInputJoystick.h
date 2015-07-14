@@ -6,6 +6,7 @@
 namespace Pitstop {
 
 	class ContainerDevice;
+	class ContainerManager;
 	class InputProcessorBase;
 	class RawInputManager;
 
@@ -62,7 +63,7 @@ namespace Pitstop {
 
 		const QString& getDevicePath() const { return m_DevicePath; }
 
-		const QString& getUniquePath() const { return m_UniquePath; }
+		const QString& getIdentifier() const;
 
 		const QString& getInstancePath() const { return m_InstancePath; }
 
@@ -75,7 +76,7 @@ namespace Pitstop {
 		template <typename ValueType>
 		ValueType getRegistryProperty(DWORD key, DeviceClass deviceClass = DeviceClass::HID);
 
-		bool setup(QSharedPointer<ContainerDevice> container, const QString& devicePath);
+		bool setup(ContainerManager& containers, const QString& devicePath);
 		bool initialize(HANDLE handle, const RID_DEVICE_INFO& info);
 
 		bool process(const RAWINPUT& message);

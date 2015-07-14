@@ -33,7 +33,8 @@ namespace Pitstop {
 		// TEMP
 		RawInputJoystickPtr getJoystick() const;
 
-		RawInputJoystickPtr getJoystickByPath(const QString& devicePath) const;
+		RawInputJoystickPtr getJoystickByIdentifier(const QString& identifier) const;
+		RawInputJoystickPtr getJoystickByDevicePath(const QString& devicePath) const;
 		RawInputJoystickPtr getJoystickByHandle(HANDLE device) const;
 
 		QVector<RawInputJoystickPtr> getJoysticks() const;
@@ -69,7 +70,7 @@ namespace Pitstop {
 		bool m_Initialized;
 		HWND m_Window;
 		QHash<HANDLE, RawInputJoystickPtr> m_JoysticksByHandle;
-		QHash<QString, RawInputJoystickPtr> m_JoysticksByPath;
+		QHash<QString, RawInputJoystickPtr> m_JoysticksByIdentifier;
 		QHash<uint32_t, QSharedPointer<QImage>> m_JoystickThumbnails;
 		QHash<uint32_t, std::function<InputProcessorBase::FactoryMethod>> m_InputProcessorFactories;
 

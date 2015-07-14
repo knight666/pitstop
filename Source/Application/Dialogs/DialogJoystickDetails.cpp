@@ -12,7 +12,7 @@ namespace Pitstop {
 
 		setWindowTitle(m_Joystick->getDescription());
 
-		addRow("Unique identifier", m_Joystick->getRegistryProperty<QString>(SPDRP_BASE_CONTAINERID));
+		addRow("Unique identifier", m_Joystick->getIdentifier());
 
 		QString connected_string;
 		QTextStream connected_stream(&connected_string);

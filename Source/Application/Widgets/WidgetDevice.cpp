@@ -82,7 +82,7 @@ namespace Pitstop {
 		QString joystick_path;
 		if (m_Device->getJoystick() != nullptr)
 		{
-			joystick_path = m_Device->getJoystick()->getUniquePath();
+			joystick_path = m_Device->getJoystick()->getIdentifier();
 		}
 
 		for (int i = 0; i < m_Form.cmbJoystick->count(); ++i)
@@ -138,7 +138,7 @@ namespace Pitstop {
 				index < m_Form.cmbJoystick->count())
 			{
 				QString joystick_path = m_Form.cmbJoystick->currentData().toString();
-				joystick = m_RawInput.getJoystickByPath(joystick_path);
+				joystick = m_RawInput.getJoystickByIdentifier(joystick_path);
 			}
 
 			m_Device->setJoystick(joystick);
@@ -192,7 +192,7 @@ namespace Pitstop {
 
 			m_Form.cmbJoystick->addItem(
 				joystick->getDescription(),
-				QVariant(joystick->getUniquePath()));
+				QVariant(joystick->getIdentifier()));
 
 			current++;
 		}
