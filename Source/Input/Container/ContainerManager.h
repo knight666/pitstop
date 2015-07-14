@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/Main.h"
+#include "Input/Container/ContainerDevice.h"
 
 namespace Pitstop {
 
@@ -14,6 +15,15 @@ namespace Pitstop {
 
 		ContainerManager();
 		~ContainerManager();
+
+		QSharedPointer<ContainerDevice> findContainer(const QString& identifier) const;
+
+		bool initialize();
+		bool updateContainers();
+
+	private:
+
+		QHash<QString, QSharedPointer<ContainerDevice>> m_Containers;
 
 	}; // class ContainerManager
 

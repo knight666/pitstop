@@ -7,6 +7,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "Application/MainWindow.h"
+#include "Input/Container/ContainerManager.h"
 #include "Input/Process/InputProcessorDualShock4.h"
 #include "Input/Process/InputProcessorFFBWheel.h"
 #include "Input/Usb/UsbController.h"
@@ -37,6 +38,7 @@ namespace Pitstop {
 		Logger::initialize();
 
 		m_Configuration = QSharedPointer<ConfigurationManager>(new ConfigurationManager());
+		m_Containers = QSharedPointer<ContainerManager>(new ContainerManager());
 		m_RawInput = new RawInputManager();
 		m_UsbController = new UsbController(m_Configuration, *m_RawInput);
 		m_VirtualInput = new VirtualInputManager(m_Configuration, *m_RawInput, *m_UsbController);
@@ -58,6 +60,7 @@ namespace Pitstop {
 		delete m_VirtualInput;
 		delete m_UsbController;
 		delete m_RawInput;
+		m_Containers.clear();
 		m_Configuration.clear();
 
 		Logger::destroy();
@@ -67,9 +70,16 @@ namespace Pitstop {
 
 	int Application::run()
 	{
+		if (!m_Containers->initialize())
+		{
+			PS_LOG_ERROR(ContainerManager) << "Failed to initialize containers.";
+
+			return false;
+		}
+
 		if (!m_RawInput->initialize((HWND)m_MainWindow->winId()))
 		{
-			PS_LOG_ERROR(RawInput) << "Failed to initialize raw input.";
+			PS_LOG_ERROR(RawInputManager) << "Failed to initialize raw input.";
 
 			return false;
 		}

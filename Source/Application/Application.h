@@ -8,6 +8,7 @@
 namespace Pitstop {
 
 	class ConfigurationManager;
+	class ContainerManager;
 	class MainWindow;
 	class RawInputManager;
 	class UsbController;
@@ -35,6 +36,7 @@ namespace Pitstop {
 
 		static Application* s_Instance;
 		QSharedPointer<ConfigurationManager> m_Configuration;
+		QSharedPointer<ContainerManager> m_Containers;
 		RawInputManager* m_RawInput;
 		UsbController* m_UsbController;
 		VirtualInputManager* m_VirtualInput;
