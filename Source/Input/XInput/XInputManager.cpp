@@ -7,11 +7,19 @@ namespace Pitstop {
 	XInputManager::XInputManager()
 		: m_Library(NULL)
 	{
-		memset(&m_Gamepads, 0, sizeof(m_Gamepads));
+		for (DWORD user = 0; user < XUSER_MAX_COUNT; ++user)
+		{
+			QSharedPointer<XInputDevice> device(
+				new XInputDevice(user));
+
+			m_Devices.push_back(device);
+		}
 	}
 
 	XInputManager::~XInputManager()
 	{
+		m_Devices.clear();
+
 		if (m_Library != NULL)
 		{
 			::FreeLibrary(m_Library);
@@ -72,27 +80,24 @@ namespace Pitstop {
 
 		for (DWORD user = 0; user < XUSER_MAX_COUNT; ++user)
 		{
-			GamepadState& gamepad = m_Gamepads[user];
+			QSharedPointer<XInputDevice>& device = m_Devices[user];
 
 			if (forceUpdate ||
-				gamepad.connected ||
-				(current - gamepad.last_check) > s_RetryTime)
+				device->isConnected() ||
+				(current - device->getLastCheck()) > s_RetryTime)
 			{
 				bool connected = (m_LibraryXInputGetState(user, &xinput_state) == ERROR_SUCCESS);
-				bool activated = gamepad.packet != xinput_state.dwPacketNumber;
+				bool activated = device->getLastPacket() != xinput_state.dwPacketNumber;
 
-				if (connected != gamepad.connected ||
+				if (connected != device->isConnected() ||
 					activated)
 				{
 					PS_LOG_TRACE(XInputManager) << "Gamepad " << user << " connected " << connected << " activated " << activated << ".";
 
-					emit signalGamepadChanged(user, connected, activated);
-
-					gamepad.connected = connected;
-					gamepad.packet = xinput_state.dwPacketNumber;
+					device->updateState(xinput_state, connected);
 				}
 
-				gamepad.last_check = current;
+				device->setLastCheck(current);
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base/Main.h"
+#include "Input/XInput/XInputDevice.h"
 
 namespace Pitstop {
 
@@ -19,10 +20,6 @@ namespace Pitstop {
 
 		void updateGamepadState(bool forceUpdate = false);
 
-	signals:
-
-		void signalGamepadChanged(DWORD index, bool connected, bool activated);
-
 	private:
 
 		virtual void run() override;
@@ -35,13 +32,7 @@ namespace Pitstop {
 		typedef DWORD (WINAPI* XInputGetStateFunc)(DWORD, XINPUT_STATE*);
 		XInputGetStateFunc m_LibraryXInputGetState;
 
-		struct GamepadState
-		{
-			bool connected;
-			qint64 last_check;
-			DWORD packet;
-		};
-		GamepadState m_Gamepads[XUSER_MAX_COUNT];
+		QVector<QSharedPointer<XInputDevice>> m_Devices;
 
 	};
 
