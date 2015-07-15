@@ -27,6 +27,16 @@ namespace Pitstop {
 		}
 	}
 
+	QSharedPointer<XInputDevice> XInputManager::getDeviceByIndex(size_t index) const
+	{
+		if (index >= (size_t)m_Devices.size())
+		{
+			return QSharedPointer<XInputDevice>();
+		}
+
+		return m_Devices[index];
+	}
+
 	bool XInputManager::initialize()
 	{
 		PS_LOG_INFO(XInputManager) << "Initializing XInput.";
