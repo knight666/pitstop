@@ -11,9 +11,6 @@
     <ClCompile Include="Source\Input\RawInputJoystick.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input\XInputDevice.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Input\Usb\UsbController.cpp">
       <Filter>Input\Usb</Filter>
     </ClCompile>
@@ -239,6 +236,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_XInputManager.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\XInput\XInputDevice.cpp">
+      <Filter>Input\XInput</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_XInputDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_XInputDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -290,9 +296,6 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h">
       <Filter>GeneratedFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\XInputDevice.h">
-      <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\XInputState.h">
       <Filter>Input</Filter>
@@ -436,6 +439,9 @@
       <Filter>Application</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Input\XInput\XInputManager.h">
+      <Filter>Input\XInput</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\XInput\XInputDevice.h">
       <Filter>Input\XInput</Filter>
     </CustomBuild>
   </ItemGroup>
