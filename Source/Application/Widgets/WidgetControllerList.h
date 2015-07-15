@@ -8,6 +8,8 @@
 
 namespace Pitstop {
 
+	class XInputManager;
+
 	class WidgetControllerList
 		: public QWidget
 	{
@@ -19,9 +21,7 @@ namespace Pitstop {
 		WidgetControllerList(QWidget* parent = nullptr);
 		~WidgetControllerList();
 
-	private:
-
-		void setControllerColor(size_t index, QRgb color);
+		void initialize(QSharedPointer<XInputManager> xinput);
 
 	private:
 

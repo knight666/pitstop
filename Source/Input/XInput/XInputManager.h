@@ -16,6 +16,8 @@ namespace Pitstop {
 		XInputManager();
 		~XInputManager();
 
+		QSharedPointer<XInputDevice> getDeviceByIndex(size_t index) const;
+
 		bool initialize();
 
 		void updateGamepadState(bool forceUpdate = false);

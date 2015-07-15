@@ -245,6 +245,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_XInputDevice.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetController.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetController.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetController.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -443,6 +452,9 @@
     </CustomBuild>
     <CustomBuild Include="Source\Input\XInput\XInputDevice.h">
       <Filter>Input\XInput</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetController.h">
+      <Filter>Application\Widgets</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
