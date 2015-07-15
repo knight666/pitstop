@@ -21,6 +21,10 @@ namespace Pitstop {
 
 		void setDevice(QSharedPointer<XInputDevice> device);
 
+	private slots:
+
+		void slotDeviceChanged();
+
 	private:
 
 		virtual void paintEvent(QPaintEvent* event) override;
@@ -29,6 +33,7 @@ namespace Pitstop {
 
 		QSharedPointer<XInputDevice> m_Device;
 		QPixmap m_Icon;
+		bool m_IconDirty;
 
 	}; // class WidgetController
 
