@@ -11,6 +11,7 @@
 #include "Input/Process/InputProcessorDualShock4.h"
 #include "Input/Process/InputProcessorFFBWheel.h"
 #include "Input/Usb/UsbController.h"
+#include "Input/XInput/XInputManager.h"
 #include "Input/RawInputManager.h"
 #include "Input/VirtualInputManager.h"
 #include "Serialization/ConfigurationManager.h"
@@ -43,6 +44,7 @@ namespace Pitstop {
 		m_RawInput = new RawInputManager(m_Containers);
 		m_UsbController = new UsbController(m_Configuration, *m_RawInput);
 		m_VirtualInput = new VirtualInputManager(m_Configuration, *m_RawInput, *m_UsbController);
+		m_XInput = QSharedPointer<XInputManager>(new XInputManager());
 		m_MainWindow = new MainWindow(*m_RawInput, *m_UsbController, *m_VirtualInput);
 
 		PS_LOG_INFO(Application) << "Initializing application.";
@@ -58,6 +60,7 @@ namespace Pitstop {
 		PS_LOG_INFO(Application) << "Closing application.";
 
 		delete m_MainWindow;
+		m_XInput.clear();
 		delete m_VirtualInput;
 		delete m_UsbController;
 		delete m_RawInput;
@@ -88,6 +91,13 @@ namespace Pitstop {
 		if (!m_UsbController->initialize())
 		{
 			PS_LOG_ERROR(UsbController) << "Failed to initialize virtual USB hub.";
+
+			return false;
+		}
+
+		if (!m_XInput->initialize())
+		{
+			PS_LOG_ERROR(XInputManager) << "Failed to initialize XInput.";
 
 			return false;
 		}

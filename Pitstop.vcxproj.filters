@@ -230,6 +230,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_Application.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\XInput\XInputManager.cpp">
+      <Filter>Input\XInput</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_XInputManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_XInputManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -270,6 +279,9 @@
     </Filter>
     <Filter Include="Input\Container">
       <UniqueIdentifier>{7cc1fee0-eb87-49fb-bc81-53bff484457d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input\XInput">
+      <UniqueIdentifier>{ab3f75f6-6793-4be0-a738-e1ee178e5525}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -422,6 +434,9 @@
     </CustomBuild>
     <CustomBuild Include="Source\Application\Application.h">
       <Filter>Application</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\XInput\XInputManager.h">
+      <Filter>Input\XInput</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

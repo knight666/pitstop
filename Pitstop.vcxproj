@@ -184,6 +184,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_WidgetJoystick.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_XInputManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_XInputManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\qrc_Pitstop.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
@@ -265,6 +271,7 @@
     <ClCompile Include="Source\Input\Process\InputProcessorFFBWheel.cpp" />
     <ClCompile Include="Source\Input\Usb\UsbController.cpp" />
     <ClCompile Include="Source\Input\Usb\UsbDevice.cpp" />
+    <ClCompile Include="Source\Input\XInput\XInputManager.cpp" />
     <ClCompile Include="Source\Input\RawInputJoystick.cpp" />
     <ClCompile Include="Source\Input\RawInputManager.cpp" />
     <ClCompile Include="Source\Input\VirtualInputDevice.cpp" />
@@ -365,6 +372,12 @@
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <CustomBuild Include="Source\Input\Usb\UsbDevice.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\XInput\XInputManager.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
