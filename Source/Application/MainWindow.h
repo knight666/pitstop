@@ -12,6 +12,7 @@ namespace Pitstop {
 	class RawInputManager;
 	class UsbController;
 	class VirtualInputManager;
+	class XInputManager;
 
 	class MainWindow
 		: public QMainWindow
@@ -24,7 +25,8 @@ namespace Pitstop {
 		MainWindow(
 			RawInputManager& rawInput,
 			UsbController& usb,
-			VirtualInputManager& virtualInput);
+			VirtualInputManager& virtualInput,
+			QSharedPointer<XInputManager> xinput);
 		~MainWindow();
 
 		void bindJoystick(RawInputJoystick& joystick);
