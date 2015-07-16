@@ -10,6 +10,8 @@
 #define PS_LOG_ERROR(_module)  Pitstop::Context(Pitstop::Levels::Error, #_module, __FILE__, __LINE__)
 #define PS_LOG_FATAL(_module)  Pitstop::Context(Pitstop::Levels::Fatal, #_module, __FILE__, __LINE__)
 
+#define PS_LOG_WINDOWS_ERROR " (error \"" << windowsErrorToString(GetLastError()) << "\" code 0x" << QString::number(GetLastError(), 16) << ")";
+
 namespace Pitstop {
 
 	class Logger

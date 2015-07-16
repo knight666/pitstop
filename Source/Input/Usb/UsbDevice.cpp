@@ -68,8 +68,7 @@ namespace Pitstop {
 			&written,
 			nullptr) == FALSE)
 		{
-			DWORD last_error = GetLastError();
-			PS_LOG_ERROR(UsbDevice) << "Failed to execute command " << command << " on device " << m_Identifier << ". (error: \"" << windowsErrorToString(last_error) << "\" code: " << last_error << ")";
+			PS_LOG_ERROR(UsbDevice) << "Failed to execute command " << command << " on device " << m_Identifier << "." << PS_LOG_WINDOWS_ERROR;
 
 			return false;
 		}
