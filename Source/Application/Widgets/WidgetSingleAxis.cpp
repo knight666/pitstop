@@ -1,11 +1,11 @@
-#include "Application/Widgets/WidgetNeedleIndicator.h"
+#include "Application/Widgets/WidgetSingleAxis.h"
 
 #include <QtGui/QPainter>
 #include <QtGui/QPaintEvent>
 
 namespace Pitstop {
 
-	WidgetNeedleIndicator::WidgetNeedleIndicator(QWidget* parent /*= nullptr*/)
+	WidgetSingleAxis::WidgetSingleAxis(QWidget* parent /*= nullptr*/)
 		: QWidget(parent)
 		, m_Minimum(0.0f)
 		, m_Maximum(1.0f)
@@ -14,11 +14,11 @@ namespace Pitstop {
 	{
 	}
 
-	WidgetNeedleIndicator::~WidgetNeedleIndicator()
+	WidgetSingleAxis::~WidgetSingleAxis()
 	{
 	}
 
-	void WidgetNeedleIndicator::setValue(float value)
+	void WidgetSingleAxis::setValue(float value)
 	{
 		value = qMax(qMin(value, m_Maximum), m_Minimum);
 		if (value != m_Value)
@@ -29,7 +29,7 @@ namespace Pitstop {
 		}
 	}
 
-	void WidgetNeedleIndicator::setProperties(float minimum, float maximum, float stepSize /*= 0.1f*/)
+	void WidgetSingleAxis::setProperties(float minimum, float maximum, float stepSize /*= 0.1f*/)
 	{
 		m_Minimum = minimum;
 		m_Maximum = maximum;
@@ -38,7 +38,7 @@ namespace Pitstop {
 		update();
 	}
 
-	void WidgetNeedleIndicator::paintEvent(QPaintEvent* event)
+	void WidgetSingleAxis::paintEvent(QPaintEvent* event)
 	{
 		QPoint area_top_left = event->rect().topLeft();
 		QPoint area_top_right = event->rect().bottomRight();

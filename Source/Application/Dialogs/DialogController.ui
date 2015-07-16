@@ -45,7 +45,7 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="Pitstop::WidgetNeedleIndicator" name="wdgAxisLeftTrigger" native="true">
+          <widget class="Pitstop::WidgetSingleAxis" name="wdgAxisLeftTrigger" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -121,7 +121,7 @@
           <number>0</number>
          </property>
          <item row="0" column="0">
-          <widget class="Pitstop::WidgetNeedleIndicator" name="wdgAxisRightTrigger" native="true">
+          <widget class="Pitstop::WidgetSingleAxis" name="wdgAxisRightTrigger" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
              <horstretch>0</horstretch>
@@ -191,9 +191,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Pitstop::WidgetNeedleIndicator</class>
+   <class>Pitstop::WidgetSingleAxis</class>
    <extends>QWidget</extends>
-   <header>Application/Widgets/WidgetNeedleIndicator.h</header>
+   <header>Application/Widgets/WidgetSingleAxis.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

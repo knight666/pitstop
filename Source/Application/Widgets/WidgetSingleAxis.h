@@ -6,7 +6,7 @@
 
 namespace Pitstop {
 
-	class WidgetNeedleIndicator
+	class WidgetSingleAxis
 		: public QWidget
 	{
 
@@ -14,8 +14,8 @@ namespace Pitstop {
 
 	public:
 
-		WidgetNeedleIndicator(QWidget* parent = nullptr);
-		~WidgetNeedleIndicator();
+		WidgetSingleAxis(QWidget* parent = nullptr);
+		~WidgetSingleAxis();
 
 		void setValue(float value);
 
@@ -32,6 +32,6 @@ namespace Pitstop {
 		float m_StepSize;
 		float m_Value;
 
-	}; // class WidgetNeedleIndicator
+	}; // class WidgetSingleAxis
 
 }; // namespace Pitstop
