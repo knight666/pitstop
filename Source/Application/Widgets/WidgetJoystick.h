@@ -5,7 +5,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QWidget>
 
-#include "Input/RawInputJoystick.h"
+#include "Input/RawInput/RawInputJoystick.h"
 
 #include "ui_WidgetJoystick.h"
 
@@ -19,10 +19,10 @@ namespace Pitstop {
 
 	public:
 
-		WidgetJoystick(RawInputJoystickPtr joystick, QWidget* parent = nullptr);
+		WidgetJoystick(QSharedPointer<RawInputJoystick> joystick, QWidget* parent = nullptr);
 		~WidgetJoystick();
 
-		RawInputJoystickPtr getJoystick() const { return m_Joystick; }
+		QSharedPointer<RawInputJoystick> getJoystick() const { return m_Joystick; }
 
 	public slots:
 
@@ -34,7 +34,7 @@ namespace Pitstop {
 	private:
 
 		Ui_JoystickForm m_Form;
-		RawInputJoystickPtr m_Joystick;
+		QSharedPointer<RawInputJoystick> m_Joystick;
 
 	}; // class WidgetJoystick
 

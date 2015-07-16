@@ -112,8 +112,6 @@ namespace Pitstop {
 
 	}; // class RawInputJoystick
 
-	typedef QSharedPointer<RawInputJoystick> RawInputJoystickPtr;
-
 	template <typename ValueType>
 	inline ValueType RawInputJoystick::getRegistryProperty(DWORD key)
 	{

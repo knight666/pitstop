@@ -5,12 +5,6 @@
     <ClCompile Include="Source\Application\Application.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input\RawInputManager.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\RawInputJoystick.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Input\Usb\UsbController.cpp">
       <Filter>Input\Usb</Filter>
     </ClCompile>
@@ -254,6 +248,12 @@
     <ClCompile Include="Source\Application\Widgets\WidgetController.cpp">
       <Filter>Application\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\RawInput\RawInputJoystick.cpp">
+      <Filter>Input\RawInput</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\RawInput\RawInputManager.cpp">
+      <Filter>Input\RawInput</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -297,6 +297,9 @@
     </Filter>
     <Filter Include="Input\XInput">
       <UniqueIdentifier>{ab3f75f6-6793-4be0-a738-e1ee178e5525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input\RawInput">
+      <UniqueIdentifier>{c80e8185-248f-4487-b34c-1caf1ba06164}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -368,16 +371,10 @@
     <CustomBuild Include="Source\Application\Widgets\BindingsList.ui">
       <Filter>Application\Widgets</Filter>
     </CustomBuild>
-    <CustomBuild Include="Source\Input\RawInputManager.h">
-      <Filter>Input</Filter>
-    </CustomBuild>
     <CustomBuild Include="Source\Application\MainWindow.h">
       <Filter>Application</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Input\VirtualInputManager.h">
-      <Filter>Input</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Source\Input\RawInputJoystick.h">
       <Filter>Input</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Input\VirtualInputDevice.h">
@@ -455,6 +452,12 @@
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetController.h">
       <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\RawInput\RawInputJoystick.h">
+      <Filter>Input\RawInput</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\RawInput\RawInputManager.h">
+      <Filter>Input\RawInput</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

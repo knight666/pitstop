@@ -1,10 +1,10 @@
-#include "Input/RawInputJoystick.h"
+#include "Input/RawInput/RawInputJoystick.h"
 
 #include <QtCore/QRegularExpression>
 
 #include "Input/Container/ContainerManager.h"
 #include "Input/Process/InputProcessorBase.h"
-#include "Input/RawInputManager.h"
+#include "Input/RawInput/RawInputManager.h"
 
 namespace Pitstop {
 

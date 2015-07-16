@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Base/Main.h"
-#include "Input/RawInputJoystick.h"
+#include "Input/RawInput/RawInputJoystick.h"
 
 namespace Pitstop {
 

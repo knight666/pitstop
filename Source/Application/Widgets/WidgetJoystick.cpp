@@ -4,7 +4,7 @@
 
 namespace Pitstop {
 
-	WidgetJoystick::WidgetJoystick(RawInputJoystickPtr joystick, QWidget* parent /*= nullptr*/)
+	WidgetJoystick::WidgetJoystick(QSharedPointer<RawInputJoystick> joystick, QWidget* parent /*= nullptr*/)
 		: QWidget(parent)
 		, m_Joystick(joystick)
 	{

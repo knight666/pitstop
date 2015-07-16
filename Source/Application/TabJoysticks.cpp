@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QVBoxLayout>
 
-#include "Input/RawInputManager.h"
+#include "Input/RawInput/RawInputManager.h"
 
 namespace Pitstop {
 
@@ -17,17 +17,17 @@ namespace Pitstop {
 	TabJoysticks::~TabJoysticks()
 	{
 		disconnect(
-			this, SLOT(slotJoystickCreated(RawInputJoystickPtr, bool)));
+			this, SLOT(slotJoystickCreated(QSharedPointer<RawInputJoystick>, bool)));
 	}
 
 	void TabJoysticks::setup(RawInputManager& rawInput)
 	{
 		connect(
-			&rawInput, SIGNAL(signalJoystickCreated(RawInputJoystickPtr)),
-			this, SLOT(slotJoystickCreated(RawInputJoystickPtr)));
+			&rawInput, SIGNAL(signalJoystickCreated(QSharedPointer<RawInputJoystick>)),
+			this, SLOT(slotJoystickCreated(QSharedPointer<RawInputJoystick>)));
 	}
 
-	void TabJoysticks::slotJoystickCreated(RawInputJoystickPtr joystick)
+	void TabJoysticks::slotJoystickCreated(QSharedPointer<RawInputJoystick> joystick)
 	{
 		QHash<QString, WidgetJoystickPtr>::iterator found = m_Joysticks.find(joystick->getIdentifier());
 		if (found != m_Joysticks.end())

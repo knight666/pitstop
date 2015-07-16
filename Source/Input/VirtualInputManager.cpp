@@ -1,7 +1,7 @@
 #include "Input/VirtualInputManager.h"
 
-#include "Input/RawInputManager.h"
-#include "Usb/UsbController.h"
+#include "Input/RawInput/RawInputManager.h"
+#include "Input/Usb/UsbController.h"
 
 namespace Pitstop {
 

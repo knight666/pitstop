@@ -28,10 +28,10 @@ namespace Pitstop {
 
 	private slots:
 
-		void slotJoystickCreated(RawInputJoystickPtr joystick);
-		void slotJoystickConnected(RawInputJoystickPtr joystick, bool connected);
+		void slotJoystickCreated(QSharedPointer<RawInputJoystick> joystick);
+		void slotJoystickConnected(QSharedPointer<RawInputJoystick> joystick, bool connected);
 
-		void slotJoystickChanged(RawInputJoystickPtr joystick);
+		void slotJoystickChanged(QSharedPointer<RawInputJoystick> joystick);
 
 		void slotUsbDeviceChanged(UsbDevicePtr usb);
 		void slotUsbDeviceConnectionChanged(bool connected);

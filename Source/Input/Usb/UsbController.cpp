@@ -1,6 +1,6 @@
 #include "Input/Usb/UsbController.h"
 
-#include "Input/RawInputManager.h"
+#include "Input/RawInput/RawInputManager.h"
 
 #define MAX_USB_DEVICES 4
 
