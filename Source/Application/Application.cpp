@@ -63,6 +63,8 @@ namespace Pitstop {
 	{
 		PS_LOG_INFO(Application) << "Closing application.";
 
+		m_XInput->stop();
+
 		delete m_MainWindow;
 		m_XInput.clear();
 		delete m_VirtualInput;

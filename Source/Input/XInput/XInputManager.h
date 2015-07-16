@@ -22,6 +22,7 @@ namespace Pitstop {
 		QSharedPointer<XInputDevice> getDeviceByIndex(size_t index) const;
 
 		bool initialize();
+		void stop();
 
 		void updateGamepadState(bool forceUpdate = false);
 
@@ -31,12 +32,15 @@ namespace Pitstop {
 
 	private:
 
+		bool isRunning();
 		virtual void run() override;
 
 	private:
 
 		RawInputManager& m_RawInput;
 
+		bool m_Running;
+		QMutex m_RunningLock;
 		QElapsedTimer m_Elapsed;
 
 		HMODULE m_Library;

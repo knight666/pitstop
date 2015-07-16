@@ -8,6 +8,7 @@ namespace Pitstop {
 
 	XInputManager::XInputManager(RawInputManager& rawInput)
 		: m_RawInput(rawInput)
+		, m_Running(false)
 		, m_Library(NULL)
 	{
 		for (DWORD user = 0; user < XUSER_MAX_COUNT; ++user)
@@ -21,6 +22,8 @@ namespace Pitstop {
 
 	XInputManager::~XInputManager()
 	{
+		stop();
+
 		disconnect(
 			this, SLOT(slotJoystickConnected(QSharedPointer<RawInputJoystick>, bool)));
 
@@ -77,11 +80,21 @@ namespace Pitstop {
 			&m_RawInput, SIGNAL(signalJoystickConnected(QSharedPointer<RawInputJoystick>, bool)),
 			this, SLOT(slotJoystickConnected(QSharedPointer<RawInputJoystick>, bool)));
 
-		PS_LOG_INFO(XInputManager) << "Start XInput thread.";
+		PS_LOG_INFO(XInputManager) << "Starting thread.";
 
 		start();
 
 		return true;
+	}
+
+	void XInputManager::stop()
+	{
+		QMutexLocker lock(&m_RunningLock);
+		if (m_Running)
+		{
+			PS_LOG_INFO(XInputManager) << "Stopping thread.";
+			m_Running = false;
+		}
 	}
 
 	void XInputManager::slotJoystickConnected(QSharedPointer<RawInputJoystick> joystick, bool connected)
@@ -91,10 +104,25 @@ namespace Pitstop {
 
 	void XInputManager::run()
 	{
-		while (1)
+		{
+			QMutexLocker lock(&m_RunningLock);
+			m_Running = true;
+		}
+
+		PS_LOG_INFO(XInputManager) << "Thread is running.";
+
+		while (isRunning())
 		{
 			updateGamepadState();
 		}
+
+		PS_LOG_INFO(XInputManager) << "Thread was stopped.";
+	}
+
+	bool XInputManager::isRunning()
+	{
+		QMutexLocker lock(&m_RunningLock);
+		return m_Running;
 	}
 
 	void XInputManager::updateGamepadState(bool forceUpdate /*= false*/)
