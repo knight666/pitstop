@@ -19,7 +19,8 @@ namespace Pitstop {
 
 		void setValue(float value);
 
-		void setProperties(float minimum, float maximum, float stepSize = 0.1f);
+		void setLimits(float minimum, float maximum, float stepSize = 0.1f);
+		void setTreshold(float treshold);
 
 	private:
 
@@ -30,6 +31,7 @@ namespace Pitstop {
 		float m_Minimum;
 		float m_Maximum;
 		float m_StepSize;
+		float m_Treshold;
 		float m_Value;
 
 	}; // class WidgetSingleAxis
