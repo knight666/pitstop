@@ -11,9 +11,6 @@
     <ClCompile Include="Source\Input\RawInputJoystick.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input\XInputDevice.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Input\Usb\UsbController.cpp">
       <Filter>Input\Usb</Filter>
     </ClCompile>
@@ -215,6 +212,48 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_ContainerManager.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetControllerList.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetControllerList.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetControllerList.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Application.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Application.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\XInput\XInputManager.cpp">
+      <Filter>Input\XInput</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_XInputManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_XInputManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\XInput\XInputDevice.cpp">
+      <Filter>Input\XInput</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_XInputDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_XInputDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetController.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetController.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetController.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -256,19 +295,16 @@
     <Filter Include="Input\Container">
       <UniqueIdentifier>{7cc1fee0-eb87-49fb-bc81-53bff484457d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input\XInput">
+      <UniqueIdentifier>{ab3f75f6-6793-4be0-a738-e1ee178e5525}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Base\Main.h">
       <Filter>Base</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\Application.h">
-      <Filter>Application</Filter>
-    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h">
       <Filter>GeneratedFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\XInputDevice.h">
-      <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\XInputState.h">
       <Filter>Input</Filter>
@@ -316,6 +352,9 @@
       <Filter>Serialization</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_DialogJoystickDetails.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_WidgetControllerList.h">
       <Filter>GeneratedFiles</Filter>
     </ClInclude>
   </ItemGroup>
@@ -398,6 +437,24 @@
     </CustomBuild>
     <CustomBuild Include="Source\Input\Container\ContainerManager.h">
       <Filter>Input\Container</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetControllerList.h">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetControllerList.ui">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Application.h">
+      <Filter>Application</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\XInput\XInputManager.h">
+      <Filter>Input\XInput</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\XInput\XInputDevice.h">
+      <Filter>Input\XInput</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetController.h">
+      <Filter>Application\Widgets</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

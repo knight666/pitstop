@@ -20,6 +20,10 @@
 
 #include <Windows.h>
 
+// XInput
+
+#include <Xinput.h>
+
 // WinDDK
 
 extern "C" {
@@ -38,6 +42,7 @@ extern "C" {
 #include <QtCore/QCryptographicHash>
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
+#include <QtCore/QElapsedTimer>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QFileInfoList>

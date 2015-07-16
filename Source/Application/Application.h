@@ -13,11 +13,14 @@ namespace Pitstop {
 	class RawInputManager;
 	class UsbController;
 	class VirtualInputManager;
+	class XInputManager;
 
 	class Application
 		: public QApplication
 		, public QAbstractNativeEventFilter
 	{
+
+		Q_OBJECT
 
 	public:
 
@@ -35,11 +38,13 @@ namespace Pitstop {
 	private:
 
 		static Application* s_Instance;
+		bool m_Quit;
 		QSharedPointer<ConfigurationManager> m_Configuration;
 		QSharedPointer<ContainerManager> m_Containers;
 		RawInputManager* m_RawInput;
 		UsbController* m_UsbController;
 		VirtualInputManager* m_VirtualInput;
+		QSharedPointer<XInputManager> m_XInput;
 		MainWindow* m_MainWindow;
 
 	}; // class Application
