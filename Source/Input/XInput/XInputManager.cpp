@@ -1,5 +1,7 @@
 #include "Input/XInput/XInputManager.h"
 
+#include <QtWidgets/QApplication>
+
 #include "Input/RawInput/RawInputManager.h"
 
 namespace Pitstop {
@@ -114,6 +116,8 @@ namespace Pitstop {
 		while (isRunning())
 		{
 			updateGamepadState();
+
+			QApplication::processEvents();
 		}
 
 		PS_LOG_INFO(XInputManager) << "Thread was stopped.";

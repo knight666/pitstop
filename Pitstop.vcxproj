@@ -100,6 +100,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ConfigurationManager.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DialogController.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DialogController.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_DialogJoystickDetails.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
@@ -216,6 +222,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="Source\Application\Dialogs\DialogController.ui">
+      <Message>Uic%27ing %(Filename)%(Extension)...</Message>
+      <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+    </CustomBuild>
     <CustomBuild Include="Source\Application\Dialogs\DialogJoystickDetails.ui">
       <Message>Uic%27ing %(Filename)%(Extension)...</Message>
       <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
@@ -272,6 +284,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Application\Dialogs\DialogController.cpp" />
     <ClCompile Include="Source\Application\Dialogs\DialogJoystickDetails.cpp" />
     <ClCompile Include="Source\Application\Widgets\BindingsList.cpp" />
     <ClCompile Include="Source\Application\Widgets\WidgetController.cpp" />
@@ -307,6 +320,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_BindingsList.h" />
+    <ClInclude Include="GeneratedFiles\ui_DialogController.h" />
     <ClInclude Include="GeneratedFiles\ui_DialogJoystickDetails.h" />
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h" />
     <ClInclude Include="GeneratedFiles\ui_TabDevices.h" />
@@ -314,6 +328,12 @@
     <ClInclude Include="GeneratedFiles\ui_WidgetControllerList.h" />
     <ClInclude Include="GeneratedFiles\ui_WidgetDevice.h" />
     <ClInclude Include="GeneratedFiles\ui_WidgetJoystick.h" />
+    <CustomBuild Include="Source\Application\Dialogs\DialogController.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
     <CustomBuild Include="Source\Application\Dialogs\DialogJoystickDetails.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
