@@ -1,11 +1,14 @@
 #include "Input/XInput/XInputManager.h"
 
+#include "Input/RawInputManager.h"
+
 namespace Pitstop {
 
 	static const qint64 s_RetryTime = 30000;
 
-	XInputManager::XInputManager()
-		: m_Library(NULL)
+	XInputManager::XInputManager(RawInputManager& rawInput)
+		: m_RawInput(rawInput)
+		, m_Library(NULL)
 	{
 		for (DWORD user = 0; user < XUSER_MAX_COUNT; ++user)
 		{
@@ -18,6 +21,9 @@ namespace Pitstop {
 
 	XInputManager::~XInputManager()
 	{
+		disconnect(
+			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
+
 		m_Devices.clear();
 
 		if (m_Library != NULL)
@@ -67,11 +73,20 @@ namespace Pitstop {
 
 		updateGamepadState(true);
 
+		connect(
+			&m_RawInput, SIGNAL(signalJoystickConnected(RawInputJoystickPtr, bool)),
+			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
+
 		PS_LOG_INFO(XInputManager) << "Start XInput thread.";
 
 		start();
 
 		return true;
+	}
+
+	void XInputManager::slotJoystickConnected(RawInputJoystickPtr joystick, bool connected)
+	{
+		updateGamepadState(true);
 	}
 
 	void XInputManager::run()

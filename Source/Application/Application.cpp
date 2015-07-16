@@ -44,7 +44,7 @@ namespace Pitstop {
 		m_RawInput = new RawInputManager(m_Containers);
 		m_UsbController = new UsbController(m_Configuration, *m_RawInput);
 		m_VirtualInput = new VirtualInputManager(m_Configuration, *m_RawInput, *m_UsbController);
-		m_XInput = QSharedPointer<XInputManager>(new XInputManager());
+		m_XInput = QSharedPointer<XInputManager>(new XInputManager(*m_RawInput));
 		m_MainWindow = new MainWindow(
 			*m_RawInput,
 			*m_UsbController,
