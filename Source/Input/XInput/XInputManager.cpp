@@ -115,7 +115,8 @@ namespace Pitstop {
 				bool activated = device->getLastPacket() != xinput_state.dwPacketNumber;
 
 				if (connected != device->isConnected() ||
-					activated)
+					activated ||
+					device->isActivated())
 				{
 					PS_LOG_TRACE(XInputManager) << "Gamepad " << user << " connected " << connected << " activated " << activated << ".";
 

@@ -16,6 +16,7 @@ namespace Pitstop {
 	void XInputDevice::updateState(XINPUT_STATE& state, bool connected)
 	{
 		m_State = state.Gamepad;
+		m_Activated = state.dwPacketNumber != m_LastPacket;
 		m_LastPacket = state.dwPacketNumber;
 		m_Connected = connected;
 

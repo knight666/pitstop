@@ -66,6 +66,17 @@ namespace Pitstop {
 		icon_rect.moveTop((event->rect().height() - m_Icon.rect().height()) / 2);
 
 		QPainter painter(this);
+
+		if (m_Device->isActivated())
+		{
+			painter.setBrush(QBrush(qRgb(255, 255, 0)));
+
+			QPoint circle_center = event->rect().center();
+			circle_center.setY(circle_center.y() + 6);
+
+			painter.drawEllipse(circle_center, 24, 24);
+		}
+
 		painter.drawPixmap(icon_rect, m_Icon);
 	}
 
