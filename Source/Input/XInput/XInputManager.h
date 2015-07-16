@@ -2,8 +2,11 @@
 
 #include "Base/Main.h"
 #include "Input/XInput/XInputDevice.h"
+#include "Input/RawInputJoystick.h"
 
 namespace Pitstop {
+
+	class RawInputManager;
 
 	class XInputManager
 		: public QThread
@@ -13,7 +16,7 @@ namespace Pitstop {
 
 	public:
 
-		XInputManager();
+		XInputManager(RawInputManager& rawInput);
 		~XInputManager();
 
 		QSharedPointer<XInputDevice> getDeviceByIndex(size_t index) const;
@@ -22,11 +25,17 @@ namespace Pitstop {
 
 		void updateGamepadState(bool forceUpdate = false);
 
+	public slots:
+
+		void slotJoystickConnected(RawInputJoystickPtr joystick, bool connected);
+
 	private:
 
 		virtual void run() override;
 
 	private:
+
+		RawInputManager& m_RawInput;
 
 		QElapsedTimer m_Elapsed;
 
