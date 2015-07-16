@@ -1,6 +1,6 @@
 #include "Input/XInput/XInputManager.h"
 
-#include "Input/RawInputManager.h"
+#include "Input/RawInput/RawInputManager.h"
 
 namespace Pitstop {
 
@@ -22,7 +22,7 @@ namespace Pitstop {
 	XInputManager::~XInputManager()
 	{
 		disconnect(
-			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
+			this, SLOT(slotJoystickConnected(QSharedPointer<RawInputJoystick>, bool)));
 
 		m_Devices.clear();
 
@@ -74,8 +74,8 @@ namespace Pitstop {
 		updateGamepadState(true);
 
 		connect(
-			&m_RawInput, SIGNAL(signalJoystickConnected(RawInputJoystickPtr, bool)),
-			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
+			&m_RawInput, SIGNAL(signalJoystickConnected(QSharedPointer<RawInputJoystick>, bool)),
+			this, SLOT(slotJoystickConnected(QSharedPointer<RawInputJoystick>, bool)));
 
 		PS_LOG_INFO(XInputManager) << "Start XInput thread.";
 
@@ -84,7 +84,7 @@ namespace Pitstop {
 		return true;
 	}
 
-	void XInputManager::slotJoystickConnected(RawInputJoystickPtr joystick, bool connected)
+	void XInputManager::slotJoystickConnected(QSharedPointer<RawInputJoystick> joystick, bool connected)
 	{
 		updateGamepadState(true);
 	}

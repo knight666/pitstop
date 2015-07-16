@@ -10,9 +10,9 @@
 #include "Input/Container/ContainerManager.h"
 #include "Input/Process/InputProcessorDualShock4.h"
 #include "Input/Process/InputProcessorFFBWheel.h"
+#include "Input/RawInput/RawInputManager.h"
 #include "Input/Usb/UsbController.h"
 #include "Input/XInput/XInputManager.h"
-#include "Input/RawInputManager.h"
 #include "Input/VirtualInputManager.h"
 #include "Serialization/ConfigurationManager.h"
 

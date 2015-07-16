@@ -1,8 +1,8 @@
 #include "Application/Widgets/WidgetDevice.h"
 
 #include "Application/Application.h"
+#include "Input/RawInput/RawInputManager.h"
 #include "Input/Usb/UsbController.h"
-#include "Input/RawInputManager.h"
 
 namespace Pitstop {
 
@@ -18,16 +18,16 @@ namespace Pitstop {
 		, m_Device(device)
 	{
 		connect(
-			&m_RawInput, SIGNAL(signalJoystickCreated(RawInputJoystickPtr)),
-			this, SLOT(slotJoystickCreated(RawInputJoystickPtr)));
+			&m_RawInput, SIGNAL(signalJoystickCreated(QSharedPointer<RawInputJoystick>)),
+			this, SLOT(slotJoystickCreated(QSharedPointer<RawInputJoystick>)));
 
 		connect(
-			&m_RawInput, SIGNAL(signalJoystickConnected(RawInputJoystickPtr, bool)),
-			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
+			&m_RawInput, SIGNAL(signalJoystickConnected(QSharedPointer<RawInputJoystick>, bool)),
+			this, SLOT(slotJoystickConnected(QSharedPointer<RawInputJoystick>, bool)));
 
 		connect(
-			device.data(), SIGNAL(signalJoystickChanged(RawInputJoystickPtr)),
-			this, SLOT(slotJoystickChanged(RawInputJoystickPtr)));
+			device.data(), SIGNAL(signalJoystickChanged(QSharedPointer<RawInputJoystick>)),
+			this, SLOT(slotJoystickChanged(QSharedPointer<RawInputJoystick>)));
 
 		connect(
 			device.data(), SIGNAL(signalUsbDeviceChanged(UsbDevicePtr)),
@@ -56,26 +56,26 @@ namespace Pitstop {
 			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
 
 		disconnect(
-			this, SLOT(slotJoystickChanged(RawInputJoystickPtr)));
+			this, SLOT(slotJoystickChanged(QSharedPointer<RawInputJoystick>)));
 
 		disconnect(
-			this, SLOT(slotJoystickConnected(RawInputJoystickPtr, bool)));
+			this, SLOT(slotJoystickConnected(QSharedPointer<RawInputJoystick>, bool)));
 
 		disconnect(
-			this, SLOT(slotJoystickCreated(RawInputJoystickPtr)));
+			this, SLOT(slotJoystickCreated(QSharedPointer<RawInputJoystick>)));
 	}
 
-	void WidgetDevice::slotJoystickCreated(RawInputJoystickPtr joystick)
+	void WidgetDevice::slotJoystickCreated(QSharedPointer<RawInputJoystick> joystick)
 	{
 		updateJoysticks();
 	}
 
-	void WidgetDevice::slotJoystickConnected(RawInputJoystickPtr joystick, bool connected)
+	void WidgetDevice::slotJoystickConnected(QSharedPointer<RawInputJoystick> joystick, bool connected)
 	{
 		updateJoysticks();
 	}
 
-	void WidgetDevice::slotJoystickChanged(RawInputJoystickPtr joystick)
+	void WidgetDevice::slotJoystickChanged(QSharedPointer<RawInputJoystick> joystick)
 	{
 		int selected = 0;
 
@@ -132,7 +132,7 @@ namespace Pitstop {
 	{
 		if (m_Device != nullptr)
 		{
-			RawInputJoystickPtr joystick;
+			QSharedPointer<RawInputJoystick> joystick;
 
 			if (index >= 1 &&
 				index < m_Form.cmbJoystick->count())
@@ -176,8 +176,8 @@ namespace Pitstop {
 		m_Form.cmbJoystick->clear();
 		m_Form.cmbJoystick->addItem("<None>");
 
-		QVector<RawInputJoystickPtr> joysticks = m_RawInput.getJoysticks();
-		for (RawInputJoystickPtr& joystick : joysticks)
+		QVector<QSharedPointer<RawInputJoystick>> joysticks = m_RawInput.getJoysticks();
+		for (QSharedPointer<RawInputJoystick>& joystick : joysticks)
 		{
 			if (joystick->getType() != RawInputJoystick::Type::RawInput)
 			{

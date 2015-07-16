@@ -1,9 +1,9 @@
 #include "Input/VirtualInputDevice.h"
 
-#include "Input/RawInputManager.h"
+#include "Input/RawInput/RawInputManager.h"
+#include "Input/Usb/UsbController.h"
 #include "Input/VirtualInputManager.h"
 #include "Input/XInputState.h"
-#include "Usb/UsbController.h"
 
 namespace Pitstop {
 
@@ -29,7 +29,7 @@ namespace Pitstop {
 		return (m_Joystick != nullptr) ? m_Joystick->getHandle() : NULL;
 	}
 
-	void VirtualInputDevice::setJoystick(RawInputJoystickPtr joystick)
+	void VirtualInputDevice::setJoystick(QSharedPointer<RawInputJoystick> joystick)
 	{
 		if (m_Joystick == joystick)
 		{
@@ -111,7 +111,7 @@ namespace Pitstop {
 		QJsonObject joystick_object = source["joystick"].toObject();
 		if (!joystick_object.isEmpty())
 		{
-			RawInputJoystickPtr joystick = rawInput.createJoystick(joystick_object);
+			QSharedPointer<RawInputJoystick> joystick = rawInput.createJoystick(joystick_object);
 			if (joystick == nullptr)
 			{
 				PS_LOG_ERROR(VirtualInputDevice) << "Failed to load joystick.";

@@ -1,10 +1,9 @@
-#include "Input/RawInputManager.h"
+#include "Input/RawInput/RawInputManager.h"
 
 #include <QtGui/QImage>
 
 #include "Input/Container/ContainerManager.h"
 #include "Input/Process/InputProcessorBase.h"
-#include "Input/RawInputJoystick.h"
 
 namespace Pitstop {
 
@@ -79,7 +78,7 @@ namespace Pitstop {
 
 		for (RAWINPUTDEVICELIST& device_info : device_info_list)
 		{
-			RawInputJoystickPtr joystick = createJoystick(device_info.hDevice);
+			QSharedPointer<RawInputJoystick> joystick = createJoystick(device_info.hDevice);
 
 			if (joystick != nullptr)
 			{
@@ -144,7 +143,7 @@ namespace Pitstop {
 
 		// Update joystick
 
-		RawInputJoystickPtr joystick = getJoystickByHandle(raw_input->header.hDevice);
+		QSharedPointer<RawInputJoystick> joystick = getJoystickByHandle(raw_input->header.hDevice);
 		if (joystick != nullptr)
 		{
 			joystick->process(*raw_input);
@@ -169,7 +168,7 @@ namespace Pitstop {
 
 		// Find and update joystick
 
-		RawInputJoystickPtr joystick = createJoystick(device);
+		QSharedPointer<RawInputJoystick> joystick = createJoystick(device);
 		if (joystick != nullptr)
 		{
 			joystick->setConnected(device, connected);
@@ -182,9 +181,9 @@ namespace Pitstop {
 		}
 	}
 
-	RawInputJoystickPtr RawInputManager::getJoystick() const
+	QSharedPointer<RawInputJoystick> RawInputManager::getJoystick() const
 	{
-		for (const RawInputJoystickPtr& joystick : m_JoysticksByHandle)
+		for (const QSharedPointer<RawInputJoystick>& joystick : m_JoysticksByHandle)
 		{
 			if (joystick->getType() != RawInputJoystick::Type::XInput)
 			{
@@ -192,47 +191,47 @@ namespace Pitstop {
 			}
 		}
 
-		return RawInputJoystickPtr();
+		return QSharedPointer<RawInputJoystick>();
 	}
 
-	RawInputJoystickPtr RawInputManager::getJoystickByIdentifier(const QString& identifier) const
+	QSharedPointer<RawInputJoystick> RawInputManager::getJoystickByIdentifier(const QString& identifier) const
 	{
-		QHash<QString, RawInputJoystickPtr>::const_iterator found = m_JoysticksByIdentifier.find(identifier);
+		QHash<QString, QSharedPointer<RawInputJoystick>>::const_iterator found = m_JoysticksByIdentifier.find(identifier);
 		if (found != m_JoysticksByIdentifier.end())
 		{
 			return found.value();
 		}
 
-		return RawInputJoystickPtr();
+		return QSharedPointer<RawInputJoystick>();
 	}
 
-	RawInputJoystickPtr RawInputManager::getJoystickByDevicePath(const QString& devicePath) const
+	QSharedPointer<RawInputJoystick> RawInputManager::getJoystickByDevicePath(const QString& devicePath) const
 	{
 		QSharedPointer<ContainerDevice> container = m_Containers->findContainerByDevicePath(devicePath);
 		if (container == nullptr)
 		{
-			return RawInputJoystickPtr();
+			return QSharedPointer<RawInputJoystick>();
 		}
 
 		return getJoystickByIdentifier(container->getIdentifier());
 	}
 
-	RawInputJoystickPtr RawInputManager::getJoystickByHandle(HANDLE device) const
+	QSharedPointer<RawInputJoystick> RawInputManager::getJoystickByHandle(HANDLE device) const
 	{
-		QHash<HANDLE, RawInputJoystickPtr>::const_iterator found = m_JoysticksByHandle.find(device);
+		QHash<HANDLE, QSharedPointer<RawInputJoystick>>::const_iterator found = m_JoysticksByHandle.find(device);
 		if (found != m_JoysticksByHandle.end())
 		{
 			return found.value();
 		}
 
-		return RawInputJoystickPtr();
+		return QSharedPointer<RawInputJoystick>();
 	}
 
-	QVector<RawInputJoystickPtr> RawInputManager::getJoysticks() const
+	QVector<QSharedPointer<RawInputJoystick>> RawInputManager::getJoysticks() const
 	{
-		QVector<RawInputJoystickPtr> joysticks;
+		QVector<QSharedPointer<RawInputJoystick>> joysticks;
 
-		for (const RawInputJoystickPtr& joystick : m_JoysticksByIdentifier)
+		for (const QSharedPointer<RawInputJoystick>& joystick : m_JoysticksByIdentifier)
 		{
 			joysticks.push_back(joystick);
 		}
@@ -291,11 +290,11 @@ namespace Pitstop {
 			wcslen(&device_path_data[0]));
 	}
 
-	RawInputJoystickPtr RawInputManager::createJoystick(const QString& devicePath)
+	QSharedPointer<RawInputJoystick> RawInputManager::createJoystick(const QString& devicePath)
 	{
 		bool created = false;
 
-		RawInputJoystickPtr joystick = getJoystickByDevicePath(devicePath);
+		QSharedPointer<RawInputJoystick> joystick = getJoystickByDevicePath(devicePath);
 
 		if (joystick == nullptr)
 		{
@@ -305,7 +304,7 @@ namespace Pitstop {
 
 			// Create joystick
 
-			joystick = RawInputJoystickPtr(
+			joystick = QSharedPointer<RawInputJoystick>(
 				new RawInputJoystick(
 					*this,
 					m_Window));
@@ -338,11 +337,11 @@ namespace Pitstop {
 		return joystick;
 	}
 
-	RawInputJoystickPtr RawInputManager::createJoystick(HANDLE device)
+	QSharedPointer<RawInputJoystick> RawInputManager::createJoystick(HANDLE device)
 	{
 		// Check if handle is already known
 
-		QHash<HANDLE, RawInputJoystickPtr>::iterator found_handle = m_JoysticksByHandle.find(device);
+		QHash<HANDLE, QSharedPointer<RawInputJoystick>>::iterator found_handle = m_JoysticksByHandle.find(device);
 		if (found_handle != m_JoysticksByHandle.end())
 		{
 			return found_handle.value();
@@ -361,7 +360,7 @@ namespace Pitstop {
 		{
 			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve properties from device " << device << ".";
 
-			return RawInputJoystickPtr();
+			return QSharedPointer<RawInputJoystick>();
 		}
 
 		// Get device path
@@ -371,12 +370,12 @@ namespace Pitstop {
 		{
 			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve path from device " << device << ".";
 
-			return RawInputJoystickPtr();
+			return QSharedPointer<RawInputJoystick>();
 		}
 
 		// Create joystick
 
-		RawInputJoystickPtr joystick = createJoystick(device_path);
+		QSharedPointer<RawInputJoystick> joystick = createJoystick(device_path);
 
 		if (joystick != nullptr &&
 			joystick->initialize(device, info))
@@ -391,7 +390,7 @@ namespace Pitstop {
 		return joystick;
 	}
 
-	RawInputJoystickPtr RawInputManager::createJoystick(const QJsonObject& serialized)
+	QSharedPointer<RawInputJoystick> RawInputManager::createJoystick(const QJsonObject& serialized)
 	{
 		// Joystick from path
 
@@ -400,16 +399,16 @@ namespace Pitstop {
 		{
 			PS_LOG_ERROR(RawInputManager) << "Missing required field \"path\"";
 
-			return RawInputJoystickPtr();
+			return QSharedPointer<RawInputJoystick>();
 		}
 
-		RawInputJoystickPtr joystick = createJoystick(serialized["path"].toString());
+		QSharedPointer<RawInputJoystick> joystick = createJoystick(serialized["path"].toString());
 
 		if (joystick == nullptr)
 		{
 			PS_LOG_ERROR(RawInputManager) << "Failed to create joystick.";
 
-			return RawInputJoystickPtr();
+			return QSharedPointer<RawInputJoystick>();
 		}
 
 		// Description

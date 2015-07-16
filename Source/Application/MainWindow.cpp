@@ -1,7 +1,7 @@
 #include "Application/MainWindow.h"
 
+#include "Input/RawInput/RawInputManager.h"
 #include "Input/XInput/XInputManager.h"
-#include "Input/RawInputManager.h"
 
 namespace Pitstop {
 

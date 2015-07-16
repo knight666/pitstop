@@ -3,13 +3,13 @@
 #include "Base/Main.h"
 #include "Input/Process/InputProcessorBase.h"
 #include "Input/Usb/UsbDevice.h"
-#include "Input/RawInputJoystick.h"
 #include "Serialization/ConfigurationEventDispatcher.h"
 #include "Serialization/ISerializable.h"
 
 namespace Pitstop {
 
 	class ConfigurationManager;
+	class RawInputJoystick;
 	class VirtualInputManager;
 	struct XInputState;
 
@@ -32,8 +32,8 @@ namespace Pitstop {
 
 		HANDLE getJoystickHandle() const;
 
-		const RawInputJoystickPtr& getJoystick() const { return m_Joystick; }
-		void setJoystick(RawInputJoystickPtr joystick);
+		const QSharedPointer<RawInputJoystick>& getJoystick() const { return m_Joystick; }
+		void setJoystick(QSharedPointer<RawInputJoystick> joystick);
 
 		const UsbDevicePtr& getUsbDevice() const { return m_Usb; }
 		void setUsbDevice(UsbDevicePtr usb);
@@ -43,7 +43,7 @@ namespace Pitstop {
 
 	signals:
 
-		void signalJoystickChanged(RawInputJoystickPtr joystick);
+		void signalJoystickChanged(QSharedPointer<RawInputJoystick> joystick);
 		void signalUsbDeviceChanged(UsbDevicePtr usb);
 
 	public slots:
@@ -58,7 +58,7 @@ namespace Pitstop {
 
 		VirtualInputManager& m_VirtualInput;
 		uint8_t m_Index;
-		RawInputJoystickPtr m_Joystick;
+		QSharedPointer<RawInputJoystick> m_Joystick;
 		UsbDevicePtr m_Usb;
 
 	}; // class VirtualInputDevice

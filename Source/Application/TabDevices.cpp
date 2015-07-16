@@ -1,8 +1,8 @@
 #include "Application/TabDevices.h"
 
 #include "Application/Application.h"
+#include "Input/RawInput/RawInputManager.h"
 #include "Input/Usb/UsbController.h"
-#include "Input/RawInputManager.h"
 #include "Input/VirtualInputManager.h"
 
 namespace Pitstop {

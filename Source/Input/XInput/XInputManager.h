@@ -2,10 +2,10 @@
 
 #include "Base/Main.h"
 #include "Input/XInput/XInputDevice.h"
-#include "Input/RawInputJoystick.h"
 
 namespace Pitstop {
 
+	class RawInputJoystick;
 	class RawInputManager;
 
 	class XInputManager
@@ -27,7 +27,7 @@ namespace Pitstop {
 
 	public slots:
 
-		void slotJoystickConnected(RawInputJoystickPtr joystick, bool connected);
+		void slotJoystickConnected(QSharedPointer<RawInputJoystick> joystick, bool connected);
 
 	private:
 

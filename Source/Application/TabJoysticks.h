@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Base/Main.h"
-#include "Input/RawInputJoystick.h"
 #include "Application/Widgets/WidgetJoystick.h"
 
 #include <QtWidgets/QWidget>
@@ -9,6 +8,8 @@
 #include "ui_TabJoysticks.h"
 
 namespace Pitstop {
+
+	class RawInputJoystick;
 
 	class TabJoysticks
 		: public QWidget
@@ -25,7 +26,7 @@ namespace Pitstop {
 
 	public slots:
 
-		void slotJoystickCreated(RawInputJoystickPtr joystick);
+		void slotJoystickCreated(QSharedPointer<RawInputJoystick> joystick);
 
 	private:
 

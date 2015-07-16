@@ -2,6 +2,7 @@
 
 #include "Base/Main.h"
 #include "Input/Process/InputProcessorBase.h"
+#include "Input/RawInput/RawInputJoystick.h"
 
 namespace Pitstop {
 
@@ -26,18 +27,18 @@ namespace Pitstop {
 		void processInput(LPARAM lParam, WPARAM wParam);
 		void processConnectionChanged(LPARAM lParam, WPARAM wParam);
 
-		RawInputJoystickPtr createJoystick(const QString& devicePath);
-		RawInputJoystickPtr createJoystick(HANDLE device);
-		RawInputJoystickPtr createJoystick(const QJsonObject& serialized);
+		QSharedPointer<RawInputJoystick> createJoystick(const QString& devicePath);
+		QSharedPointer<RawInputJoystick> createJoystick(HANDLE device);
+		QSharedPointer<RawInputJoystick> createJoystick(const QJsonObject& serialized);
 
 		// TEMP
-		RawInputJoystickPtr getJoystick() const;
+		QSharedPointer<RawInputJoystick> getJoystick() const;
 
-		RawInputJoystickPtr getJoystickByIdentifier(const QString& identifier) const;
-		RawInputJoystickPtr getJoystickByDevicePath(const QString& devicePath) const;
-		RawInputJoystickPtr getJoystickByHandle(HANDLE device) const;
+		QSharedPointer<RawInputJoystick> getJoystickByIdentifier(const QString& identifier) const;
+		QSharedPointer<RawInputJoystick> getJoystickByDevicePath(const QString& devicePath) const;
+		QSharedPointer<RawInputJoystick> getJoystickByHandle(HANDLE device) const;
 
-		QVector<RawInputJoystickPtr> getJoysticks() const;
+		QVector<QSharedPointer<RawInputJoystick>> getJoysticks() const;
 
 		QSharedPointer<QImage> getJoystickThumbnail(uint16_t vendor, uint16_t product) const;
 
@@ -54,9 +55,9 @@ namespace Pitstop {
 
 	signals:
 
-		void signalJoystickCreated(RawInputJoystickPtr joystick);
-		void signalJoystickConnected(RawInputJoystickPtr joystick, bool connected);
-		void signalJoystickInput(RawInputJoystickPtr joystick);
+		void signalJoystickCreated(QSharedPointer<RawInputJoystick> joystick);
+		void signalJoystickConnected(QSharedPointer<RawInputJoystick> joystick, bool connected);
+		void signalJoystickInput(QSharedPointer<RawInputJoystick> joystick);
 
 	private:
 
@@ -69,8 +70,8 @@ namespace Pitstop {
 		QSharedPointer<ContainerManager> m_Containers;
 		bool m_Initialized;
 		HWND m_Window;
-		QHash<HANDLE, RawInputJoystickPtr> m_JoysticksByHandle;
-		QHash<QString, RawInputJoystickPtr> m_JoysticksByIdentifier;
+		QHash<HANDLE, QSharedPointer<RawInputJoystick>> m_JoysticksByHandle;
+		QHash<QString, QSharedPointer<RawInputJoystick>> m_JoysticksByIdentifier;
 		QHash<uint32_t, QSharedPointer<QImage>> m_JoystickThumbnails;
 		QHash<uint32_t, std::function<InputProcessorBase::FactoryMethod>> m_InputProcessorFactories;
 
