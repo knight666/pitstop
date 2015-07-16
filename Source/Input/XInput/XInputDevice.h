@@ -26,6 +26,8 @@ namespace Pitstop {
 		bool isConnected() const { return m_Connected; }
 		void setConnected(bool value) { m_Connected = value; }
 
+		bool isActivated() const { return m_Activated; }
+
 		DWORD getLastPacket() const { return m_LastPacket; }
 
 		qint64 getLastCheck() const { return m_LastCheck; }
@@ -42,6 +44,7 @@ namespace Pitstop {
 		DWORD m_UserIndex;
 		XINPUT_GAMEPAD m_State;
 		bool m_Connected;
+		bool m_Activated;
 		DWORD m_LastPacket;
 		qint64 m_LastCheck;
 
