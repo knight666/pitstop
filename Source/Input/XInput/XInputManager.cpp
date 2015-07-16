@@ -146,7 +146,10 @@ namespace Pitstop {
 					activated ||
 					device->isActivated())
 				{
-					PS_LOG_TRACE(XInputManager) << "Gamepad " << user << " connected " << connected << " activated " << activated << ".";
+					if (connected != device->isConnected())
+					{
+						PS_LOG_TRACE(XInputManager) << "Gamepad " << user << " connected " << connected << ".";
+					}
 
 					device->updateState(xinput_state, connected);
 				}
