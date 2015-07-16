@@ -58,8 +58,7 @@ namespace Pitstop {
 			&device_count,
 			sizeof(RAWINPUTDEVICELIST)) == (UINT)-1)
 		{
-			DWORD errorCode = GetLastError();
-			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve raw input device list. (error: \"" << windowsErrorToString(errorCode) << "\" code: " << errorCode << ")";
+			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve raw input device list." << PS_LOG_WINDOWS_ERROR;
 
 			return false;
 		}
@@ -99,8 +98,7 @@ namespace Pitstop {
 				(UINT)device_list.size(),
 				sizeof(RAWINPUTDEVICE)) == FALSE)
 			{
-				DWORD errorCode = GetLastError();
-				PS_LOG_ERROR(RawInputManager) << "Failed to register raw input devices. (error: \"" << windowsErrorToString(errorCode) << "\" code: " << errorCode << ")";
+				PS_LOG_ERROR(RawInputManager) << "Failed to register raw input devices." << PS_LOG_WINDOWS_ERROR;
 
 				return false;
 			}
@@ -111,7 +109,7 @@ namespace Pitstop {
 
 	void RawInputManager::processInput(LPARAM lParam, WPARAM wParam)
 	{
-		// Get raw input message
+		// Retrieve raw input data
 
 		UINT raw_size = 0;
 		if (::GetRawInputData(
@@ -121,6 +119,8 @@ namespace Pitstop {
 			&raw_size,
 			sizeof(RAWINPUTHEADER)) == (UINT)-1)
 		{
+			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve raw input data." << PS_LOG_WINDOWS_ERROR;
+
 			return;
 		}
 
@@ -128,15 +128,21 @@ namespace Pitstop {
 		raw_data.resize(raw_size);
 		RAWINPUT* raw_input = (RAWINPUT*)&raw_data[0];
 
-		// Check if input was for a Human Interface device
-
 		if (::GetRawInputData(
 			(HRAWINPUT)lParam,
 			RID_INPUT,
 			raw_input,
 			&raw_size,
-			sizeof(RAWINPUTHEADER)) == (UINT)-1 ||
-			raw_input->header.dwType != RIM_TYPEHID)
+			sizeof(RAWINPUTHEADER)) == (UINT)-1)
+		{
+			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve raw input data." << PS_LOG_WINDOWS_ERROR;
+
+			return;
+		}
+
+		// Check if input was for a Human Interface device
+		
+		if (raw_input->header.dwType != RIM_TYPEHID)
 		{
 			return;
 		}
@@ -279,15 +285,14 @@ namespace Pitstop {
 
 		QVector<ushort> device_path_data;
 		device_path_data.resize((int)device_path_size);
+
 		::GetRawInputDeviceInfoW(
 			device,
 			RIDI_DEVICENAME,
 			&device_path_data[0],
 			&device_path_size);
 
-		return QString::fromUtf16(
-			&device_path_data[0],
-			wcslen(&device_path_data[0]));
+		return QString::fromUtf16(&device_path_data[0]);
 	}
 
 	QSharedPointer<RawInputJoystick> RawInputManager::createJoystick(const QString& devicePath)
@@ -358,7 +363,7 @@ namespace Pitstop {
 			(PUINT)&info.cbSize) == (UINT)-1 ||
 			info.dwType != RIM_TYPEHID)
 		{
-			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve properties from device " << device << ".";
+			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve properties from device " << device << "." << PS_LOG_WINDOWS_ERROR;
 
 			return QSharedPointer<RawInputJoystick>();
 		}
@@ -368,7 +373,7 @@ namespace Pitstop {
 		QString device_path = getDevicePath(device);
 		if (device_path.isEmpty())
 		{
-			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve path from device " << device << ".";
+			PS_LOG_ERROR(RawInputManager) << "Failed to retrieve path from device " << device << "." << PS_LOG_WINDOWS_ERROR;
 
 			return QSharedPointer<RawInputJoystick>();
 		}

@@ -22,19 +22,20 @@ namespace Pitstop {
 			nullptr,
 			&preparsed_size) != 0)
 		{
-			DWORD errorCode = GetLastError();
+			PS_LOG_ERROR(InputProcessor) << "Failed to retrieve preparsed data from joystick." << PS_LOG_WINDOWS_ERROR;
 
 			return false;
 		}
 
 		m_PreparsedData.resize(preparsed_size);
+
 		if (::GetRawInputDeviceInfoW(
 			m_Joystick.getHandle(),
 			RIDI_PREPARSEDDATA,
 			&m_PreparsedData[0],
 			&preparsed_size) == (UINT)-1)
 		{
-			DWORD errorCode = GetLastError();
+			PS_LOG_ERROR(InputProcessor) << "Failed to retrieve preparsed data from joystick." << PS_LOG_WINDOWS_ERROR;
 
 			return false;
 		}
@@ -45,7 +46,7 @@ namespace Pitstop {
 			m_Preparsed,
 			&m_Capabilities) != HIDP_STATUS_SUCCESS)
 		{
-			DWORD errorCode = GetLastError();
+			PS_LOG_ERROR(InputProcessor) << "Failed to get joystick capabilities." << PS_LOG_WINDOWS_ERROR;
 
 			return false;
 		}
@@ -60,7 +61,7 @@ namespace Pitstop {
 			&button_caps_count,
 			m_Preparsed) != HIDP_STATUS_SUCCESS)
 		{
-			DWORD errorCode = GetLastError();
+			PS_LOG_ERROR(InputProcessor) << "Failed to retrieve get joystick button capabilities." << PS_LOG_WINDOWS_ERROR;
 
 			return false;
 		}
@@ -84,7 +85,7 @@ namespace Pitstop {
 			&value_caps_count,
 			m_Preparsed) != HIDP_STATUS_SUCCESS)
 		{
-			DWORD errorCode = GetLastError();
+			PS_LOG_ERROR(InputProcessor) << "Failed to retrieve joystick axis capabilities." << PS_LOG_WINDOWS_ERROR;
 
 			return false;
 		}

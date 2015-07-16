@@ -142,8 +142,7 @@ namespace Pitstop {
 
 		if (info == INVALID_HANDLE_VALUE)
 		{
-			DWORD last_error = GetLastError();
-			PS_LOG_ERROR(ContainerManager) << "Failed to initialize device info. (error \"" << windowsErrorToString(last_error) << "\" code " << QString::number(last_error, 16) << ")";
+			PS_LOG_ERROR(ContainerManager) << "Failed to initialize device info." << PS_LOG_WINDOWS_ERROR;
 
 			return false;
 		}
