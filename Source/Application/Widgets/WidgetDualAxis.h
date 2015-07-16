@@ -21,6 +21,8 @@ namespace Pitstop {
 
 		void setRange(float range, float treshold);
 
+		void setTitle(const QString& title);
+
 	private:
 
 		virtual void paintEvent(QPaintEvent* event) override;
@@ -31,6 +33,7 @@ namespace Pitstop {
 		float m_VerticalValue;
 		float m_Range;
 		float m_Treshold;
+		QString m_Title;
 
 	}; // class WidgetDualAxis
 

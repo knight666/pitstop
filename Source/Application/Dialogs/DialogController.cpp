@@ -18,8 +18,10 @@ namespace Pitstop {
 		m_Form.wdgAxisRightTrigger->setLimits(0.0f, UINT8_MAX, 32.0f);
 		m_Form.wdgAxisRightTrigger->setTreshold(XINPUT_GAMEPAD_TRIGGER_THRESHOLD);
 
+		m_Form.wdgLeftStick->setTitle("Left Stick");
 		m_Form.wdgLeftStick->setRange(INT16_MAX, XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
 
+		m_Form.wdgRightStick->setTitle("Right Stick");
 		m_Form.wdgRightStick->setRange(INT16_MAX, XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);
 
 		connect(
