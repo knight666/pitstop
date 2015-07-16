@@ -1,6 +1,6 @@
 #include "Application/Dialogs/DialogController.h"
 
-#include "Application/Widgets/WidgetNeedleIndicator.h"
+#include "Application/Widgets/WidgetSingleAxis.h"
 #include "Input/XInput/XInputDevice.h"
 
 namespace Pitstop {

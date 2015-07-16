@@ -254,15 +254,6 @@
     <ClCompile Include="Source\Input\RawInput\RawInputManager.cpp">
       <Filter>Input\RawInput</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\Widgets\WidgetNeedleIndicator.cpp">
-      <Filter>Application\Widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetNeedleIndicator.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_WidgetNeedleIndicator.cpp">
-      <Filter>GeneratedFiles\Release</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_DialogController.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
@@ -271,6 +262,15 @@
     </ClCompile>
     <ClCompile Include="Source\Application\Dialogs\DialogController.cpp">
       <Filter>Application\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetSingleAxis.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetSingleAxis.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetSingleAxis.cpp">
+      <Filter>Application\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -480,14 +480,14 @@
     <CustomBuild Include="Source\Input\RawInput\RawInputManager.h">
       <Filter>Input\RawInput</Filter>
     </CustomBuild>
-    <CustomBuild Include="Source\Application\Widgets\WidgetNeedleIndicator.h">
-      <Filter>Application\Widgets</Filter>
-    </CustomBuild>
     <CustomBuild Include="Source\Application\Dialogs\DialogController.h">
       <Filter>Application\Dialogs</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Dialogs\DialogController.ui">
       <Filter>Application\Dialogs</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetSingleAxis.h">
+      <Filter>Application\Widgets</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
