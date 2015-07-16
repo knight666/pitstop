@@ -21,7 +21,7 @@ namespace Pitstop {
 
 	void WidgetSingleAxis::setValue(float value)
 	{
-		value = qMax(qMin(value, m_Maximum), m_Minimum);
+		value = qMax(m_Minimum, qMin(value, m_Maximum));
 		if (value != m_Value)
 		{
 			m_Value = value;
