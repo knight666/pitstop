@@ -48,38 +48,48 @@ namespace Pitstop {
 
 	void WidgetSingleAxis::paintEvent(QPaintEvent* event)
 	{
-		QPoint area_top_left = event->rect().topLeft();
-		QPoint area_top_right = event->rect().bottomRight();
+		int text_width = 50;
+
+		QRectF text_rect(
+				QPointF(
+					event->rect().right() - text_width,
+					event->rect().top()),
+				QPointF(
+					event->rect().right(),
+					event->rect().bottom()));
+
+		QRect paint_rect = event->rect();
+		paint_rect.setRight(event->rect().right() - text_width);
 
 		int step_count = (int)((m_Maximum - m_Minimum) / m_StepSize);
-		int step_length = (event->rect().right() - event->rect().left()) / step_count;
+		int step_length = (paint_rect.right() - paint_rect.left()) / step_count;
 
-		int step_center_y = event->rect().center().y();
-		int step_half_height = event->rect().height() / 4;
+		int step_center_y = paint_rect.center().y();
+		int step_half_height = paint_rect.height() / 4;
 
-		int threshold_offset = (int)(((qMin(m_Value, m_Treshold) - m_Minimum) / (m_Maximum - m_Minimum)) * event->rect().width());
-		int treshold_x = (int)(((m_Treshold - m_Minimum) / (m_Maximum - m_Minimum)) * event->rect().width());
+		int threshold_offset = (int)(((qMin(m_Value, m_Treshold) - m_Minimum) / (m_Maximum - m_Minimum)) * paint_rect.width());
+		int treshold_x = (int)(((m_Treshold - m_Minimum) / (m_Maximum - m_Minimum)) * paint_rect.width());
 
-		int value_offset = (int)(((qMax(m_Value - m_Treshold, m_Minimum) - m_Minimum) / (m_Maximum - m_Minimum)) * event->rect().width());
-		int value_half_height = event->rect().height() / 3;
+		int value_offset = (int)(((qMax(m_Value - m_Treshold, m_Minimum) - m_Minimum) / (m_Maximum - m_Minimum)) * paint_rect.width());
+		int value_half_height = paint_rect.height() / 3;
 
 		QPainter painter(this);
 
 		// Background
 
-		painter.fillRect(event->rect(), QColor(255, 255, 255));
+		painter.fillRect(paint_rect, QColor(255, 255, 255));
 
 		// Treshold
 
 		QRect treshold_rect;
 		treshold_rect.setTopLeft(
 			QPoint(
-				event->rect().left(),
-				event->rect().center().y() - value_half_height));
+				paint_rect.left(),
+				paint_rect.center().y() - value_half_height));
 		treshold_rect.setBottomRight(
 			QPoint(
-				event->rect().left() + threshold_offset,
-				event->rect().center().y() + value_half_height));
+				paint_rect.left() + threshold_offset,
+				paint_rect.center().y() + value_half_height));
 
 		painter.fillRect(treshold_rect, QColor(196, 33, 33));
 
@@ -88,34 +98,34 @@ namespace Pitstop {
 		QRect value_rect;
 		value_rect.setTopLeft(
 			QPoint(
-				event->rect().left() + threshold_offset,
-				event->rect().center().y() - value_half_height));
+				paint_rect.left() + threshold_offset,
+				paint_rect.center().y() - value_half_height));
 		value_rect.setBottomRight(
 			QPoint(
-				event->rect().left() + threshold_offset + value_offset,
-				event->rect().center().y() + value_half_height));
+				paint_rect.left() + threshold_offset + value_offset,
+				paint_rect.center().y() + value_half_height));
 
 		painter.fillRect(value_rect, QColor(128, 128, 255));
 
 		// Center
 
 		painter.drawLine(
-			QPoint(event->rect().left(), event->rect().center().y()),
-			QPoint(event->rect().right(), event->rect().center().y()));
+			QPoint(paint_rect.left(), paint_rect.center().y()),
+			QPoint(paint_rect.right(), paint_rect.center().y()));
 
 		// Outline
 
 		painter.drawLine(
-			event->rect().topLeft(),
-			event->rect().bottomLeft());
+			paint_rect.topLeft(),
+			paint_rect.bottomLeft());
 
 		painter.drawLine(
-			event->rect().topRight(),
-			event->rect().bottomRight());
+			paint_rect.topRight(),
+			paint_rect.bottomRight());
 
 		// Steps
 
-		int step_x = event->rect().left() + step_length;
+		int step_x = paint_rect.left() + step_length;
 
 		for (int i = 1; i < step_count; ++i)
 		{
@@ -131,8 +141,15 @@ namespace Pitstop {
 		// Treshold line
 
 		painter.drawLine(
-			QPoint(treshold_x, event->rect().top()),
-			QPoint(treshold_x, event->rect().bottom()));
+			QPoint(treshold_x, paint_rect.top()),
+			QPoint(treshold_x, paint_rect.bottom()));
+
+		// Value text
+
+		painter.drawText(
+			text_rect,
+			QString::number((int)m_Value),
+			QTextOption(Qt::AlignHCenter | Qt::AlignCenter));
 	}
 
 }; // namespace Pitstop

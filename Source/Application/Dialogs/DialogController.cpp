@@ -37,10 +37,8 @@ namespace Pitstop {
 			return;
 		}
 
-		m_Form.lblAxisLeftTrigger->setText(QString::number(device->getState().bLeftTrigger));
 		m_Form.wdgAxisLeftTrigger->setValue((float)device->getState().bLeftTrigger);
 
-		m_Form.lblAxisRightTrigger->setText(QString::number(device->getState().bRightTrigger));
 		m_Form.wdgAxisRightTrigger->setValue((float)device->getState().bRightTrigger);
 	}
 
