@@ -272,6 +272,15 @@
     <ClCompile Include="Source\Application\Widgets\WidgetSingleAxis.cpp">
       <Filter>Application\Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetDualAxis.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetDualAxis.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetDualAxis.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -487,6 +496,9 @@
       <Filter>Application\Dialogs</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetSingleAxis.h">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetDualAxis.h">
       <Filter>Application\Widgets</Filter>
     </CustomBuild>
   </ItemGroup>

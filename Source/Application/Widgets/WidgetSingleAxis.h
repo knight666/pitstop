@@ -31,8 +31,8 @@ namespace Pitstop {
 		float m_Minimum;
 		float m_Maximum;
 		float m_StepSize;
-		float m_Treshold;
 		float m_Value;
+		float m_Treshold;
 
 	}; // class WidgetSingleAxis
 
