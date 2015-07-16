@@ -263,6 +263,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_WidgetNeedleIndicator.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DialogController.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DialogController.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Dialogs\DialogController.cpp">
+      <Filter>Application\Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -369,6 +378,9 @@
     <ClInclude Include="GeneratedFiles\ui_WidgetControllerList.h">
       <Filter>GeneratedFiles</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_DialogController.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Source\Application\MainWindow.ui">
@@ -470,6 +482,12 @@
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetNeedleIndicator.h">
       <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Dialogs\DialogController.h">
+      <Filter>Application\Dialogs</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Dialogs\DialogController.ui">
+      <Filter>Application\Dialogs</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
