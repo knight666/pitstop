@@ -3,13 +3,14 @@
 #include "Base/Main.h"
 
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QPushButton>
 
 namespace Pitstop {
 
 	class XInputDevice;
 
 	class WidgetController
-		: public QWidget
+		: public QPushButton
 	{
 
 		Q_OBJECT

@@ -248,6 +248,42 @@
     <ClCompile Include="Source\Input\RawInput\RawInputManager.cpp">
       <Filter>Input\RawInput</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DialogController.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DialogController.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Dialogs\DialogController.cpp">
+      <Filter>Application\Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetSingleAxis.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetSingleAxis.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetSingleAxis.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetDualAxis.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetDualAxis.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetDualAxis.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetDigital.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetDigital.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetDigital.cpp">
+      <Filter>Application\Widgets</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Input\Virtual\VirtualInputDevice.cpp">
       <Filter>Input\Virtual</Filter>
     </ClCompile>
@@ -360,6 +396,9 @@
     <ClInclude Include="GeneratedFiles\ui_WidgetControllerList.h">
       <Filter>GeneratedFiles</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_DialogController.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Input\XInput\XInputState.h">
       <Filter>Input\XInput</Filter>
     </ClInclude>
@@ -455,6 +494,21 @@
     </CustomBuild>
     <CustomBuild Include="Source\Input\RawInput\RawInputManager.h">
       <Filter>Input\RawInput</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Dialogs\DialogController.h">
+      <Filter>Application\Dialogs</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Dialogs\DialogController.ui">
+      <Filter>Application\Dialogs</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetSingleAxis.h">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetDualAxis.h">
+      <Filter>Application\Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetDigital.h">
+      <Filter>Application\Widgets</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Input\Virtual\VirtualInputDevice.h">
       <Filter>Input\Virtual</Filter>
