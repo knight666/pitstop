@@ -190,6 +190,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_WidgetDevice.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetDigital.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetDigital.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_WidgetDualAxis.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
@@ -296,6 +302,7 @@
     <ClCompile Include="Source\Application\Widgets\WidgetController.cpp" />
     <ClCompile Include="Source\Application\Widgets\WidgetControllerList.cpp" />
     <ClCompile Include="Source\Application\Widgets\WidgetDevice.cpp" />
+    <ClCompile Include="Source\Application\Widgets\WidgetDigital.cpp" />
     <ClCompile Include="Source\Application\Widgets\WidgetDualAxis.cpp" />
     <ClCompile Include="Source\Application\Widgets\WidgetJoystick.cpp" />
     <ClCompile Include="Source\Application\Widgets\WidgetSingleAxis.cpp" />
@@ -366,6 +373,12 @@
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetDevice.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetDigital.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
