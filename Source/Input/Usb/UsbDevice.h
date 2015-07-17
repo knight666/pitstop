@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Base/Main.h"
-#include "Input/XInputState.h"
 #include "Serialization/ConfigurationEventDispatcher.h"
 #include "Serialization/ISerializable.h"
 
 namespace Pitstop {
 
 	class UsbController;
+	struct XInputState;
 
 	class UsbDevice
 		: public ConfigurationEventDispatcher
@@ -30,6 +30,7 @@ namespace Pitstop {
 		void setConnected(bool value);
 
 		bool write(DWORD command, QVector<uint8_t>& input, QVector<uint8_t>& output);
+		bool writeXinputState(const XInputState& state);
 
 		virtual bool serialize(QJsonObject& target, size_t version) override;
 
@@ -44,7 +45,5 @@ namespace Pitstop {
 		bool m_Connected;
 
 	}; // class UsbDevice
-
-	typedef QSharedPointer<UsbDevice> UsbDevicePtr;
 
 }; // namespace Pitstop

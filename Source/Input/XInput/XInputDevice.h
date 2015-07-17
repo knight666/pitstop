@@ -2,8 +2,6 @@
 
 #include "Base/Main.h"
 
-#include "Input/XInputState.h"
-
 namespace Pitstop {
 
 	class RawInputJoystick;

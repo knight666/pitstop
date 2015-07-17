@@ -33,9 +33,9 @@ namespace Pitstop {
 		}
 	}
 
-	UsbDevicePtr UsbController::createDevice(uint8_t index /*= (uint8_t)-1*/)
+	QSharedPointer<UsbDevice> UsbController::createDevice(uint8_t index /*= (uint8_t)-1*/)
 	{
-		UsbDevicePtr device;
+		QSharedPointer<UsbDevice> device;
 
 		uint8_t identifier = (index >= MAX_USB_DEVICES)
 			? m_Devices.size()
@@ -47,7 +47,7 @@ namespace Pitstop {
 
 			PS_LOG_INFO(UsbController) << "Creating device " << identifier << ".";
 
-			device = UsbDevicePtr(
+			device = QSharedPointer<UsbDevice>(
 				new UsbDevice(
 					m_Configuration,
 					*this,
@@ -63,7 +63,7 @@ namespace Pitstop {
 		return device;
 	}
 
-	UsbDevicePtr UsbController::createDevice(const QJsonObject& serialized)
+	QSharedPointer<UsbDevice> UsbController::createDevice(const QJsonObject& serialized)
 	{
 		// Device
 
@@ -72,7 +72,7 @@ namespace Pitstop {
 		{
 			PS_LOG_ERROR(UsbController) << "Missing required field \"identifier\".";
 
-			return UsbDevicePtr();
+			return QSharedPointer<UsbDevice>();
 		}
 
 		uint8_t identifier = (uint8_t)serialized["identifier"].toDouble();
@@ -81,10 +81,10 @@ namespace Pitstop {
 		{
 			PS_LOG_ERROR(UsbController) << "Identifier " << identifier << " is out of range.";
 
-			return UsbDevicePtr();
+			return QSharedPointer<UsbDevice>();
 		}
 
-		UsbDevicePtr device = createDevice(identifier - 1);
+		QSharedPointer<UsbDevice> device = createDevice(identifier - 1);
 		if (device == nullptr)
 		{
 			PS_LOG_ERROR(UsbController) << "Failed to create device. (identifier " << identifier << ")";
@@ -103,12 +103,12 @@ namespace Pitstop {
 		return device;
 	}
 
-	UsbDevicePtr UsbController::getDeviceByIndex(uint8_t index)
+	QSharedPointer<UsbDevice> UsbController::getDeviceByIndex(uint8_t index)
 	{
 		return
 			(index < m_Devices.size())
 				? m_Devices[index]
-				: UsbDevicePtr();
+				: QSharedPointer<UsbDevice>();
 	}
 
 	bool UsbController::initialize()

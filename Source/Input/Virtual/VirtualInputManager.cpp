@@ -1,4 +1,4 @@
-#include "Input/VirtualInputManager.h"
+#include "Input/Virtual/VirtualInputManager.h"
 
 #include "Input/RawInput/RawInputManager.h"
 #include "Input/Usb/UsbController.h"
@@ -20,11 +20,11 @@ namespace Pitstop {
 		m_Devices.clear();
 	}
 
-	VirtualInputDevicePtr VirtualInputManager::createDevice()
+	QSharedPointer<VirtualInputDevice> VirtualInputManager::createDevice()
 	{
 		PS_LOG_INFO(VirtualInput) << "Creating device " << m_Devices.size() << ".";
 
-		VirtualInputDevicePtr device(
+		QSharedPointer<VirtualInputDevice> device(
 			new VirtualInputDevice(
 				m_Configuration,
 				*this,
@@ -38,15 +38,15 @@ namespace Pitstop {
 		return device;
 	}
 
-	VirtualInputDevicePtr VirtualInputManager::getDeviceByIndex(uint8_t index) const
+	QSharedPointer<VirtualInputDevice> VirtualInputManager::getDeviceByIndex(uint8_t index) const
 	{
-		return (index < m_Devices.size()) ? m_Devices[index] : VirtualInputDevicePtr();
+		return (index < m_Devices.size()) ? m_Devices[index] : QSharedPointer<VirtualInputDevice>();
 	}
 
 	bool VirtualInputManager::serialize(QJsonObject& target, size_t version)
 	{
 		QJsonArray devices_array;
-		for (VirtualInputDevicePtr& device : m_Devices)
+		for (QSharedPointer<VirtualInputDevice>& device : m_Devices)
 		{
 			QJsonObject device_object;
 			if (device->serialize(device_object, version))
@@ -85,7 +85,7 @@ namespace Pitstop {
 				return false;
 			}
 
-			VirtualInputDevicePtr device;
+			QSharedPointer<VirtualInputDevice> device;
 
 			if (i < m_Devices.size())
 			{

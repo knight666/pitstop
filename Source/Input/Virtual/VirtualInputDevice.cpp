@@ -1,9 +1,9 @@
-#include "Input/VirtualInputDevice.h"
+#include "Input/Virtual/VirtualInputDevice.h"
 
 #include "Input/RawInput/RawInputManager.h"
 #include "Input/Usb/UsbController.h"
-#include "Input/VirtualInputManager.h"
-#include "Input/XInputState.h"
+#include "Input/Virtual/VirtualInputManager.h"
+#include "Input/XInput/XInputState.h"
 
 namespace Pitstop {
 
@@ -56,7 +56,7 @@ namespace Pitstop {
 		emit signalSaveConfiguration();
 	}
 
-	void VirtualInputDevice::setUsbDevice(UsbDevicePtr usb)
+	void VirtualInputDevice::setUsbDevice(QSharedPointer<UsbDevice> usb)
 	{
 		if (m_Usb == usb)
 		{
@@ -127,7 +127,7 @@ namespace Pitstop {
 		QJsonObject usb_object = source["usb"].toObject();
 		if (!usb_object.isEmpty())
 		{
-			UsbDevicePtr usb = usbController.createDevice(usb_object);
+			QSharedPointer<UsbDevice> usb = usbController.createDevice(usb_object);
 			if (usb == nullptr)
 			{
 				PS_LOG_ERROR(VirtualInputDevice) << "Failed to load USB device.";
@@ -166,38 +166,10 @@ namespace Pitstop {
 
 		// Write to USB device
 
-		if (m_Usb == nullptr ||
-			!m_Usb->isConnected())
+		if (m_Usb != nullptr)
 		{
-			return;
+			m_Usb->writeXinputState(state);
 		}
-
-		QVector<uint8_t> input(28);
-
-		input[0] = 0x1C;
-		input[4] = m_Index + 1;
-		input[9] = 0x14;
-
-		for (size_t i = 0; i < (size_t)XInputState::Button::_COUNT; ++i)
-		{
-			if (state.buttonState[i])
-			{
-				input[10 + (i / 8)] = (uint8_t)(1 << (i % 8));
-			}
-		}
-
-		input[12] = (uint8_t)(state.axisState[(size_t)XInputState::Axis::LeftTrigger] * 255.0f);
-		input[13] = (uint8_t)(state.axisState[(size_t)XInputState::Axis::RightTrigger] * 255.0f);
-
-		int16_t* input_stick = (int16_t*)&input[14];
-		input_stick[0] = state.axisState[(size_t)XInputState::Axis::LeftStickHorizontal] * (float)INT16_MAX;
-		input_stick[1] = state.axisState[(size_t)XInputState::Axis::LeftStickVertical] * (float)INT16_MAX;
-		input_stick[2] = state.axisState[(size_t)XInputState::Axis::RightStickHorizontal] * (float)INT16_MAX;
-		input_stick[3] = state.axisState[(size_t)XInputState::Axis::RightStickVertical] * (float)INT16_MAX;
-
-		QVector<uint8_t> output(8);
-
-		m_Usb->write(0x2A400C, input, output);
 	}
 
 	bool VirtualInputDevice::mapToXinput(XInputState& state, const QHash<QString, InputProcessorBase::InputBinding>& bindings)

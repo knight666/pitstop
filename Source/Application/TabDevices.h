@@ -31,7 +31,7 @@ namespace Pitstop {
 
 		void on_btnAdd_pressed();
 
-		void slotVirtualDeviceCreated(VirtualInputDevicePtr device);
+		void slotVirtualDeviceCreated(QSharedPointer<VirtualInputDevice> device);
 
 	private:
 
