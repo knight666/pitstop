@@ -2,7 +2,9 @@
 
 #include "Base/Main.h"
 
-#include "Input/VirtualInputDevice.h"
+#include "Input/RawInput/RawInputManager.h"
+#include "Input/Usb/UsbController.h"
+#include "Input/Virtual/VirtualInputDevice.h"
 #include "Serialization/ConfigurationBase.h"
 
 namespace Pitstop {
@@ -23,22 +25,22 @@ namespace Pitstop {
 			UsbController& usbController);
 		~VirtualInputManager();
 
-		VirtualInputDevicePtr createDevice();
+		QSharedPointer<VirtualInputDevice> createDevice();
 
-		VirtualInputDevicePtr getDeviceByIndex(uint8_t index) const;
+		QSharedPointer<VirtualInputDevice> getDeviceByIndex(uint8_t index) const;
 
 		virtual bool serialize(QJsonObject& target, size_t version) override;
 		virtual bool deserialize(const QJsonObject& source, size_t version) override;
 
 	signals:
 
-		void signalVirtualDeviceCreated(VirtualInputDevicePtr device);
+		void signalVirtualDeviceCreated(QSharedPointer<VirtualInputDevice> device);
 
 	private:
 
 		RawInputManager& m_RawInput;
 		UsbController& m_UsbController;
-		QVector<VirtualInputDevicePtr> m_Devices;
+		QVector<QSharedPointer<VirtualInputDevice>> m_Devices;
 
 	}; // class VirtualInputManager
 

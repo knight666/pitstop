@@ -12,8 +12,8 @@
 #include "Input/Process/InputProcessorFFBWheel.h"
 #include "Input/RawInput/RawInputManager.h"
 #include "Input/Usb/UsbController.h"
+#include "Input/Virtual/VirtualInputManager.h"
 #include "Input/XInput/XInputManager.h"
-#include "Input/VirtualInputManager.h"
 #include "Serialization/ConfigurationManager.h"
 
 namespace Pitstop {

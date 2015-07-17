@@ -3,13 +3,14 @@
 #include "Application/Application.h"
 #include "Input/RawInput/RawInputManager.h"
 #include "Input/Usb/UsbController.h"
+#include "Input/Virtual/VirtualInputDevice.h"
 
 namespace Pitstop {
 
 	WidgetDevice::WidgetDevice(
 			RawInputManager& rawInput,
 			UsbController& usbController,
-			VirtualInputDevicePtr device,
+			QSharedPointer<VirtualInputDevice> device,
 			QWidget* parent /*= nullptr*/,
 			Qt::WindowFlags flags /*= 0*/)
 		: QWidget(parent, flags)

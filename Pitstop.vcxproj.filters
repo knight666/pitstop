@@ -29,12 +29,6 @@
     <ClCompile Include="Source\Application\MainWindow.cpp">
       <Filter>Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input\VirtualInputDevice.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Input\VirtualInputManager.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Input\Process\InputProcessorFFBWheel.cpp">
       <Filter>Input\Process</Filter>
     </ClCompile>
@@ -254,6 +248,12 @@
     <ClCompile Include="Source\Input\RawInput\RawInputManager.cpp">
       <Filter>Input\RawInput</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\Virtual\VirtualInputDevice.cpp">
+      <Filter>Input\Virtual</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\Virtual\VirtualInputManager.cpp">
+      <Filter>Input\Virtual</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -300,6 +300,9 @@
     </Filter>
     <Filter Include="Input\RawInput">
       <UniqueIdentifier>{c80e8185-248f-4487-b34c-1caf1ba06164}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input\Virtual">
+      <UniqueIdentifier>{22923895-364a-4e22-af75-76875cb5be25}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -373,12 +376,6 @@
     </CustomBuild>
     <CustomBuild Include="Source\Application\MainWindow.h">
       <Filter>Application</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Source\Input\VirtualInputManager.h">
-      <Filter>Input</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Source\Input\VirtualInputDevice.h">
-      <Filter>Input</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.ui">
       <Filter>Application\Widgets</Filter>
@@ -458,6 +455,12 @@
     </CustomBuild>
     <CustomBuild Include="Source\Input\RawInput\RawInputManager.h">
       <Filter>Input\RawInput</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\Virtual\VirtualInputDevice.h">
+      <Filter>Input\Virtual</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\Virtual\VirtualInputManager.h">
+      <Filter>Input\Virtual</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

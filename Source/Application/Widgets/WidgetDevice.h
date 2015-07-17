@@ -1,14 +1,16 @@
 #pragma once
 
 #include "Base/Main.h"
-#include "Input/VirtualInputDevice.h"
+#include "Input/Usb/UsbDevice.h"
 
 #include "ui_WidgetDevice.h"
 
 namespace Pitstop {
 
+	class RawInputJoystick;
 	class RawInputManager;
 	class UsbController;
+	class VirtualInputDevice;
 
 	class WidgetDevice
 		: public QWidget
@@ -21,7 +23,7 @@ namespace Pitstop {
 		WidgetDevice(
 			RawInputManager& rawInput,
 			UsbController& usbController,
-			VirtualInputDevicePtr device,
+			QSharedPointer<VirtualInputDevice> device,
 			QWidget* parent = nullptr,
 			Qt::WindowFlags flags = 0);
 		~WidgetDevice();
@@ -41,7 +43,7 @@ namespace Pitstop {
 
 	private:
 
-		void setupDevice(VirtualInputDevicePtr device);
+		void setupDevice(QSharedPointer<VirtualInputDevice> device);
 		void updateJoysticks();
 		void updateThumbnail();
 		void updateConnection();
@@ -50,7 +52,7 @@ namespace Pitstop {
 
 		RawInputManager& m_RawInput;
 		UsbController& m_UsbController;
-		VirtualInputDevicePtr m_Device;
+		QSharedPointer<VirtualInputDevice> m_Device;
 
 		Ui_DeviceForm m_Form;
 
