@@ -12,40 +12,40 @@ namespace Pitstop {
 		setWindowTitle(QString("Controller %1").arg(device->getUserIndex() + 1));
 
 		m_Form.wdgButtonA->setTitle("A");
-		m_Form.wdgButtonA->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
+		m_Form.wdgButtonA->setImage(QPixmap(":/Controller/Resources/Xbox One/XboxOne_A.png"));
 
 		m_Form.wdgButtonB->setTitle("B");
-		m_Form.wdgButtonB->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
+		m_Form.wdgButtonB->setImage(QPixmap(":/Controller/Resources/Xbox One/XboxOne_B.png"));
 
 		m_Form.wdgButtonX->setTitle("X");
-		m_Form.wdgButtonX->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
+		m_Form.wdgButtonX->setImage(QPixmap(":/Controller/Resources/Xbox One/XboxOne_X.png"));
 
 		m_Form.wdgButtonY->setTitle("Y");
-		m_Form.wdgButtonY->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
+		m_Form.wdgButtonY->setImage(QPixmap(":/Controller/Resources/Xbox One/XboxOne_Y.png"));
 
 		m_Form.wdgButtonDpadLeft->setTitle("Left");
-		m_Form.wdgButtonDpadLeft->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
+		m_Form.wdgButtonDpadLeft->setImage(QPixmap(":/Controller/Resources/Xbox One/XboxOne_Dpad_Left.png"));
 
 		m_Form.wdgButtonDpadRight->setTitle("Right");
-		m_Form.wdgButtonDpadRight->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
+		m_Form.wdgButtonDpadRight->setImage(QPixmap(":/Controller/Resources/Xbox One/XboxOne_Dpad_Right.png"));
 
 		m_Form.wdgButtonDpadUp->setTitle("Up");
-		m_Form.wdgButtonDpadUp->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
+		m_Form.wdgButtonDpadUp->setImage(QPixmap(":/Controller/Resources/Xbox One/XboxOne_Dpad_Up.png"));
 
 		m_Form.wdgButtonDpadDown->setTitle("Down");
-		m_Form.wdgButtonDpadDown->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
+		m_Form.wdgButtonDpadDown->setImage(QPixmap(":/Controller/Resources/Xbox One/XboxOne_Dpad_Down.png"));
 
 		m_Form.wdgButtonBack->setTitle("Back");
-		m_Form.wdgButtonBack->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
+		m_Form.wdgButtonBack->setImage(QPixmap(":/Controller/Resources/Xbox One/XboxOne_Windows.png"));
 
 		m_Form.wdgButtonStart->setTitle("Start");
-		m_Form.wdgButtonStart->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
+		m_Form.wdgButtonStart->setImage(QPixmap(":/Controller/Resources/Xbox One/XboxOne_Menu.png"));
 
 		m_Form.wdgButtonBumperLeft->setTitle("Left Bumper");
-		m_Form.wdgButtonBumperLeft->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
+		m_Form.wdgButtonBumperLeft->setImage(QPixmap(":/Controller/Resources/Xbox One/XboxOne_LB.png"));
 
 		m_Form.wdgButtonBumperRight->setTitle("Right Bumper");
-		m_Form.wdgButtonBumperRight->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
+		m_Form.wdgButtonBumperRight->setImage(QPixmap(":/Controller/Resources/Xbox One/XboxOne_RB.png"));
 
 		m_Form.wdgTriggerLeft->setTitle("Left Trigger");
 		m_Form.wdgTriggerLeft->setRange(
