@@ -239,12 +239,6 @@
         </size>
        </property>
       </widget>
-      <zorder>wdgButtonBack</zorder>
-      <zorder>wdgButtonStart</zorder>
-      <zorder>wdgButtonBumperRight</zorder>
-      <zorder>wdgButtonBumperLeft</zorder>
-      <zorder>wdgButtonBumperRight</zorder>
-      <zorder>wdgButtonBumperLeft</zorder>
      </widget>
      <widget class="QFrame" name="frame_4">
       <property name="geometry">
@@ -349,14 +343,6 @@
         </size>
        </property>
       </widget>
-      <zorder>wdgButtonDpadDown</zorder>
-      <zorder>wdgButtonDpadRight</zorder>
-      <zorder>wdgButtonDpadLeft</zorder>
-      <zorder>wdgButtonDpadUp</zorder>
-      <zorder>wdgButtonDpadDown</zorder>
-      <zorder>wdgButtonDpadRight</zorder>
-      <zorder>wdgButtonDpadLeft</zorder>
-      <zorder>wdgButtonDpadUp</zorder>
      </widget>
      <widget class="Pitstop::WidgetSingleAxis" name="wdgTriggerLeft" native="true">
       <property name="geometry">
@@ -379,7 +365,6 @@
         <height>40</height>
        </size>
       </property>
-      <zorder>wdgTriggerRight</zorder>
      </widget>
      <widget class="Pitstop::WidgetDigital" name="wdgButtonBumperLeft" native="true">
       <property name="geometry">
