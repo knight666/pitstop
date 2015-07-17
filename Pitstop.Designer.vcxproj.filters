@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Base">
+      <UniqueIdentifier>{10c542ac-f6ef-4ce5-bd49-76a9c2d697b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Widgets">
+      <UniqueIdentifier>{9c453910-fa64-4ba2-a004-d40b1087e991}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneratedFiles">
+      <UniqueIdentifier>{213ceae2-cbc8-42e8-9643-84a6934bca8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneratedFiles\Debug">
+      <UniqueIdentifier>{5447aa81-a30f-4dff-a82e-627793ec8bac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneratedFiles\Release">
+      <UniqueIdentifier>{9b188ff5-b100-4baa-8cd9-ad07210d4bea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{80b532c2-10f1-4eff-ae86-49d69a8fc825}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Base\Main.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Base\Utils.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_BindingsList.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_WidgetControllerList.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_WidgetDevice.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_WidgetJoystick.h">
+      <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Base\Utils.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\BindingsList.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetController.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetControllerList.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetDevice.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application\Widgets\WidgetJoystick.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetJoystick.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetControllerList.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WidgetController.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BindingsList.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BindingsList.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetController.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetControllerList.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetJoystick.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\VirtualInputDevice.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input\VirtualInputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Source\Application\Widgets\BindingsList.h">
+      <Filter>Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\BindingsList.ui">
+      <Filter>Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetController.h">
+      <Filter>Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetControllerList.h">
+      <Filter>Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetControllerList.ui">
+      <Filter>Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetDevice.h">
+      <Filter>Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetDevice.ui">
+      <Filter>Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.h">
+      <Filter>Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.ui">
+      <Filter>Widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\VirtualInputManager.h">
+      <Filter>Input</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
