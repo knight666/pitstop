@@ -56,7 +56,7 @@ namespace Pitstop {
 		emit signalSaveConfiguration();
 	}
 
-	void VirtualInputDevice::setUsbDevice(UsbDevicePtr usb)
+	void VirtualInputDevice::setUsbDevice(QSharedPointer<UsbDevice> usb)
 	{
 		if (m_Usb == usb)
 		{
@@ -127,7 +127,7 @@ namespace Pitstop {
 		QJsonObject usb_object = source["usb"].toObject();
 		if (!usb_object.isEmpty())
 		{
-			UsbDevicePtr usb = usbController.createDevice(usb_object);
+			QSharedPointer<UsbDevice> usb = usbController.createDevice(usb_object);
 			if (usb == nullptr)
 			{
 				PS_LOG_ERROR(VirtualInputDevice) << "Failed to load USB device.";

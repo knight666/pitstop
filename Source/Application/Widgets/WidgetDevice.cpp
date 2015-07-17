@@ -31,8 +31,8 @@ namespace Pitstop {
 			this, SLOT(slotJoystickChanged(QSharedPointer<RawInputJoystick>)));
 
 		connect(
-			device.data(), SIGNAL(signalUsbDeviceChanged(UsbDevicePtr)),
-			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+			device.data(), SIGNAL(signalUsbDeviceChanged(QSharedPointer<UsbDevice>)),
+			this, SLOT(slotUsbDeviceChanged(QSharedPointer<UsbDevice>)));
 
 		if (device->getUsbDevice() != nullptr)
 		{
@@ -51,10 +51,10 @@ namespace Pitstop {
 	WidgetDevice::~WidgetDevice()
 	{
 		disconnect(
-			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+			this, SLOT(slotUsbDeviceChanged(QSharedPointer<UsbDevice>)));
 
 		disconnect(
-			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+			this, SLOT(slotUsbDeviceChanged(QSharedPointer<UsbDevice>)));
 
 		disconnect(
 			this, SLOT(slotJoystickChanged(QSharedPointer<RawInputJoystick>)));
@@ -103,16 +103,16 @@ namespace Pitstop {
 		m_Form.cmbJoystick->setCurrentIndex(selected);
 	}
 
-	void WidgetDevice::slotUsbDeviceChanged(UsbDevicePtr usb)
+	void WidgetDevice::slotUsbDeviceChanged(QSharedPointer<UsbDevice> usb)
 	{
 		UsbDevice* device = qobject_cast<UsbDevice*>(sender());
 
 		disconnect(
-			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+			this, SLOT(slotUsbDeviceChanged(QSharedPointer<UsbDevice>)));
 
 		connect(
-			device, SIGNAL(signalUsbDeviceChanged(UsbDevicePtr)),
-			this, SLOT(slotUsbDeviceChanged(UsbDevicePtr)));
+			device, SIGNAL(signalUsbDeviceChanged(QSharedPointer<UsbDevice>)),
+			this, SLOT(slotUsbDeviceChanged(QSharedPointer<UsbDevice>)));
 
 		disconnect(
 			this, SLOT(slotUsbDeviceConnectionChanged(bool)));
@@ -155,7 +155,7 @@ namespace Pitstop {
 			return;
 		}
 
-		UsbDevicePtr usb = m_Device->getUsbDevice();
+		QSharedPointer<UsbDevice> usb = m_Device->getUsbDevice();
 		if (usb == nullptr)
 		{
 			usb = m_UsbController.createDevice();
@@ -225,7 +225,7 @@ namespace Pitstop {
 
 	void WidgetDevice::updateConnection()
 	{
-		UsbDevicePtr usb;
+		QSharedPointer<UsbDevice> usb;
 
 		if (m_Device != nullptr)
 		{
