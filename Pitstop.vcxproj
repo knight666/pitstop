@@ -420,6 +420,7 @@
       <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
+    <ClInclude Include="Source\Input\XInput\XInputState.h" />
     <CustomBuild Include="Source\Input\VirtualInputManager.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -432,7 +433,6 @@
       <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
-    <ClInclude Include="Source\Input\XInputState.h" />
     <ClInclude Include="Source\Logging\Context.h" />
     <ClInclude Include="Source\Logging\Levels.h" />
     <CustomBuild Include="Source\Logging\Logger.h">
