@@ -8,7 +8,7 @@
 namespace Pitstop {
 
 	WidgetController::WidgetController(QWidget* parent /*= nullptr*/)
-		: QWidget(parent)
+		: QPushButton(parent)
 		, m_Icon(":/Icons/Resources/ControllerInverted.png")
 		, m_IconDirty(true)
 	{
@@ -42,17 +42,19 @@ namespace Pitstop {
 
 	void WidgetController::paintEvent(QPaintEvent* event)
 	{
+		QPushButton::paintEvent(event);
+
 		if (m_IconDirty)
 		{
 			QPainter painter_icon(&m_Icon);
 			painter_icon.setCompositionMode(QPainter::CompositionMode_SourceIn);
 
-			QRgb color = qRgb(90, 90, 90);
+			QRgb color = qRgb(80, 80, 80);
 
 			if (m_Device != nullptr &&
 				m_Device->isConnected())
 			{
-				color = qRgb(0, 255, 0);
+				color = qRgb(35, 176, 33);
 			}
 
 			painter_icon.fillRect(m_Icon.rect(), color);
@@ -69,12 +71,12 @@ namespace Pitstop {
 
 		if (m_Device->isActivated())
 		{
-			painter.setBrush(QBrush(qRgb(255, 255, 0)));
+			painter.setPen(Qt::NoPen);
+			painter.setBrush(QBrush(qRgb(255, 173, 12)));
 
-			QPoint circle_center = event->rect().center();
-			circle_center.setY(circle_center.y() + 6);
-
-			painter.drawEllipse(circle_center, 24, 24);
+			painter.drawEllipse(
+				event->rect().center(),
+				28, 28);
 		}
 
 		painter.drawPixmap(icon_rect, m_Icon);

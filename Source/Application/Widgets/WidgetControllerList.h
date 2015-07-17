@@ -23,9 +23,21 @@ namespace Pitstop {
 
 		void initialize(QSharedPointer<XInputManager> xinput);
 
+	public slots:
+
+		void on_wdgController1_pressed();
+		void on_wdgController2_pressed();
+		void on_wdgController3_pressed();
+		void on_wdgController4_pressed();
+
+	private:
+
+		void openControllerDialog(size_t index);
+
 	private:
 
 		Ui_ControllerListForm m_Form;
+		QSharedPointer<XInputManager> m_Xinput;
 
 	}; // class WidgetControllerList
 

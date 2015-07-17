@@ -6,4 +6,23 @@
     <file>Resources/Controller-50.png</file>
     <file>Resources/Disconnected-50.png</file>
   </qresource>
+  <qresource prefix="Controller">
+    <file>Resources/Xbox One/XboxOne_A.png</file>
+    <file>Resources/Xbox One/XboxOne_B.png</file>
+    <file>Resources/Xbox One/XboxOne_Dpad.png</file>
+    <file>Resources/Xbox One/XboxOne_Dpad_Down.png</file>
+    <file>Resources/Xbox One/XboxOne_Dpad_Left.png</file>
+    <file>Resources/Xbox One/XboxOne_Dpad_Right.png</file>
+    <file>Resources/Xbox One/XboxOne_Dpad_Up.png</file>
+    <file>Resources/Xbox One/XboxOne_LB.png</file>
+    <file>Resources/Xbox One/XboxOne_Left_Stick.png</file>
+    <file>Resources/Xbox One/XboxOne_LT.png</file>
+    <file>Resources/Xbox One/XboxOne_Menu.png</file>
+    <file>Resources/Xbox One/XboxOne_RB.png</file>
+    <file>Resources/Xbox One/XboxOne_Right_Stick.png</file>
+    <file>Resources/Xbox One/XboxOne_RT.png</file>
+    <file>Resources/Xbox One/XboxOne_Windows.png</file>
+    <file>Resources/Xbox One/XboxOne_X.png</file>
+    <file>Resources/Xbox One/XboxOne_Y.png</file>
+  </qresource>
 </RCC>
