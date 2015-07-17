@@ -47,12 +47,6 @@ namespace Pitstop {
 		m_Form.wdgButtonBumperRight->setTitle("Right Bumper");
 		m_Form.wdgButtonBumperRight->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
 
-		m_Form.wdgButtonThumbLeft->setTitle("Left Thumb");
-		m_Form.wdgButtonThumbLeft->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
-
-		m_Form.wdgButtonThumbRight->setTitle("Right Thumb");
-		m_Form.wdgButtonThumbRight->setImage(QPixmap(":/Icons/Resources/Controller-50.png"));
-
 		m_Form.wdgTriggerLeft->setTitle("Left Trigger");
 		m_Form.wdgTriggerLeft->setRange(
 			0.0f,
@@ -108,20 +102,19 @@ namespace Pitstop {
 		m_Form.wdgButtonBumperLeft->setValue((device->getState().wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) != 0);
 		m_Form.wdgButtonBumperRight->setValue((device->getState().wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) != 0);
 
-		m_Form.wdgButtonThumbLeft->setValue((device->getState().wButtons & XINPUT_GAMEPAD_LEFT_THUMB) != 0);
-		m_Form.wdgButtonThumbRight->setValue((device->getState().wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) != 0);
-
 		m_Form.wdgTriggerLeft->setValue((float)device->getState().bLeftTrigger);
 
 		m_Form.wdgTriggerRight->setValue((float)device->getState().bRightTrigger);
 
-		m_Form.wdgStickLeft->setValue(
+		m_Form.wdgStickLeft->setAxisValues(
 			(float)device->getState().sThumbLX,
 			(float)device->getState().sThumbLY);
+		m_Form.wdgStickLeft->setPressed((device->getState().wButtons & XINPUT_GAMEPAD_LEFT_THUMB) != 0);
 
-		m_Form.wdgStickRight->setValue(
+		m_Form.wdgStickRight->setAxisValues(
 			(float)device->getState().sThumbRX,
 			(float)device->getState().sThumbRY);
+		m_Form.wdgStickRight->setPressed((device->getState().wButtons & XINPUT_GAMEPAD_RIGHT_THUMB) != 0);
 	}
 
 }; // namespace Pitstop
