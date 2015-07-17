@@ -1,5 +1,6 @@
 #include "Application/Widgets/WidgetDualAxis.h"
 
+#include <QtCore/QtMath>
 #include <QtGui/QPainter>
 #include <QtGui/QPaintEvent>
 
@@ -10,7 +11,6 @@ namespace Pitstop {
 		, m_VerticalValue(0.0f)
 		, m_Range(1.0f)
 		, m_Treshold(0.0f)
-		
 	{
 	}
 
@@ -50,6 +50,9 @@ namespace Pitstop {
 
 	void WidgetDualAxis::paintEvent(QPaintEvent* event)
 	{
+		static const QColor ColorValue(128, 128, 255);
+		static const QColor ColorDeadZone(196, 33, 33);
+
 		int text_height = 20;
 
 		QRect paint_rect = event->rect();
@@ -76,14 +79,32 @@ namespace Pitstop {
 		int half_width = (paint_rect.width() / 2) - 2;
 		int half_height = (paint_rect.height() / 2) - 2;
 
+		float stick_normalized_x = 0.0f;
+		float stick_normalized_y = 0.0f;
+
+		float stick_magnitude = sqrtf(m_HorizontalValue * m_HorizontalValue + m_VerticalValue * m_VerticalValue);
+		if (stick_magnitude > 0.0f)
+		{
+			stick_normalized_x = m_HorizontalValue / stick_magnitude;
+			stick_normalized_y = m_VerticalValue / stick_magnitude;
+		}
+
 		float stick_x = m_HorizontalValue / m_Range;
 		float stick_y = m_VerticalValue / m_Range;
+
+		float stick_deadzone_magnitude = qMin(stick_magnitude, m_Treshold);
+		float stick_deadzone_x = (stick_normalized_x * stick_deadzone_magnitude) / m_Range;
+		float stick_deadzone_y = (stick_normalized_y * stick_deadzone_magnitude) / m_Range;
+
+		QColor stick_color = (stick_magnitude > m_Treshold) ? ColorValue : ColorDeadZone;
 
 		QPainter painter(this);
 
 		// Outline
 
 		painter.setPen(QPen(QColor(0, 0, 0)));
+		painter.setBrush(Qt::NoBrush);
+
 		painter.drawEllipse(
 			paint_rect.center(),
 			half_width,
@@ -91,24 +112,42 @@ namespace Pitstop {
 
 		// Stick
 
-		painter.setPen(QPen(QColor(128, 128, 255)));
+		painter.setPen(QPen(stick_color));
+		painter.setBrush(Qt::NoBrush);
+
 		painter.drawLine(
 			paint_rect.center(),
 			QPoint(
 				paint_rect.center().x() + (int)(stick_x * half_width),
 				paint_rect.center().y() - (int)(stick_y * half_height)));
 
+		painter.setPen(QPen(ColorDeadZone));
+		painter.setBrush(Qt::NoBrush);
+
 		// Treshold
 
-		painter.setPen(QPen(QColor(196, 33, 33)));
+		painter.setPen(QPen(QColor(0, 0, 0)));
+		painter.setBrush(Qt::NoBrush);
+
 		painter.drawEllipse(
 			paint_rect.center(),
 			(int)((m_Treshold / m_Range) * half_width),
 			(int)((m_Treshold / m_Range) * half_height));
 
+		// Magnitude circle
+
+		painter.setPen(QPen(stick_color));
+		painter.setBrush(Qt::NoBrush);
+
+		painter.drawEllipse(
+			paint_rect.center(),
+			(int)(stick_magnitude / m_Range * half_width),
+			(int)(stick_magnitude / m_Range * half_height));
+
 		// Text
 
 		painter.setPen(QPen(QColor(0, 0, 0)));
+		painter.setBrush(Qt::NoBrush);
 		
 		painter.drawText(
 			title_text_rect,
