@@ -19,8 +19,9 @@ namespace Pitstop {
 
 		void setValue(float value);
 
-		void setLimits(float minimum, float maximum, float stepSize = 0.1f);
-		void setTreshold(float treshold);
+		void setRange(float minimum, float maximum, float stepSize, float treshold);
+
+		void setTitle(const QString& title);
 
 	private:
 
@@ -33,6 +34,7 @@ namespace Pitstop {
 		float m_StepSize;
 		float m_Value;
 		float m_Treshold;
+		QString m_Title;
 
 	}; // class WidgetSingleAxis
 

@@ -30,36 +30,47 @@ namespace Pitstop {
 		}
 	}
 
-	void WidgetSingleAxis::setLimits(float minimum, float maximum, float stepSize /*= 0.1f*/)
+	void WidgetSingleAxis::setRange(float minimum, float maximum, float stepSize, float treshold)
 	{
 		m_Minimum = minimum;
 		m_Maximum = maximum;
 		m_StepSize = stepSize;
+		m_Treshold = treshold;
 
 		update();
 	}
 
-	void WidgetSingleAxis::setTreshold(float treshold)
+	void WidgetSingleAxis::setTitle(const QString& title)
 	{
-		m_Treshold = treshold;
+		m_Title = title;
 
 		update();
 	}
 
 	void WidgetSingleAxis::paintEvent(QPaintEvent* event)
 	{
-		int text_width = 50;
+		int title_text_width = 100;
+		int value_text_width = 50;
 
-		QRectF text_rect(
-				QPointF(
-					event->rect().right() - text_width,
-					event->rect().top()),
-				QPointF(
-					event->rect().right(),
-					event->rect().bottom()));
+		QRectF title_text_rect(
+			QPointF(
+				event->rect().left(),
+				event->rect().top()),
+			QPointF(
+				event->rect().left() + title_text_width,
+				event->rect().bottom()));
+
+		QRectF value_text_rect(
+			QPointF(
+				event->rect().right() - value_text_width,
+				event->rect().top()),
+			QPointF(
+				event->rect().right(),
+				event->rect().bottom()));
 
 		QRect paint_rect = event->rect();
-		paint_rect.setRight(event->rect().right() - text_width);
+		paint_rect.setLeft(event->rect().left() + title_text_width);
+		paint_rect.setRight(event->rect().right() - value_text_width);
 
 		int step_count = (int)((m_Maximum - m_Minimum) / m_StepSize);
 		int step_length = (paint_rect.right() - paint_rect.left()) / step_count;
@@ -68,7 +79,7 @@ namespace Pitstop {
 		int step_half_height = paint_rect.height() / 4;
 
 		int threshold_offset = (int)(((qMin(m_Value, m_Treshold) - m_Minimum) / (m_Maximum - m_Minimum)) * paint_rect.width());
-		int treshold_x = (int)(((m_Treshold - m_Minimum) / (m_Maximum - m_Minimum)) * paint_rect.width());
+		int treshold_x = paint_rect.left() + (int)(((m_Treshold - m_Minimum) / (m_Maximum - m_Minimum)) * paint_rect.width());
 
 		int value_offset = (int)(((qMax(m_Value - m_Treshold, m_Minimum) - m_Minimum) / (m_Maximum - m_Minimum)) * paint_rect.width());
 		int value_half_height = paint_rect.height() / 3;
@@ -144,10 +155,17 @@ namespace Pitstop {
 			QPoint(treshold_x, paint_rect.top()),
 			QPoint(treshold_x, paint_rect.bottom()));
 
+		// Title text
+
+		painter.drawText(
+			title_text_rect,
+			m_Title,
+			QTextOption(Qt::AlignHCenter | Qt::AlignCenter));
+
 		// Value text
 
 		painter.drawText(
-			text_rect,
+			value_text_rect,
 			QString::number((int)m_Value),
 			QTextOption(Qt::AlignHCenter | Qt::AlignCenter));
 	}

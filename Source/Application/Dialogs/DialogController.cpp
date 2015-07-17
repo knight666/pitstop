@@ -12,11 +12,19 @@ namespace Pitstop {
 
 		setWindowTitle(QString("Controller %1").arg(device->getUserIndex() + 1));
 
-		m_Form.wdgAxisLeftTrigger->setLimits(0.0f, UINT8_MAX, 32.0f);
-		m_Form.wdgAxisLeftTrigger->setTreshold(XINPUT_GAMEPAD_TRIGGER_THRESHOLD);
+		m_Form.wdgAxisLeftTrigger->setTitle("Left Trigger");
+		m_Form.wdgAxisLeftTrigger->setRange(
+			0.0f,
+			UINT8_MAX,
+			32.0f,
+			XINPUT_GAMEPAD_TRIGGER_THRESHOLD);
 
-		m_Form.wdgAxisRightTrigger->setLimits(0.0f, UINT8_MAX, 32.0f);
-		m_Form.wdgAxisRightTrigger->setTreshold(XINPUT_GAMEPAD_TRIGGER_THRESHOLD);
+		m_Form.wdgAxisRightTrigger->setTitle("Right Trigger");
+		m_Form.wdgAxisRightTrigger->setRange(
+			0.0f,
+			UINT8_MAX,
+			32.0f,
+			XINPUT_GAMEPAD_TRIGGER_THRESHOLD);
 
 		m_Form.wdgLeftStick->setTitle("Left Stick");
 		m_Form.wdgLeftStick->setRange(INT16_MAX, XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
