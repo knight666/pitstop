@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Base/Main.h"
-#include "Input/Usb/UsbDevice.h"
 
 #include "ui_WidgetDevice.h"
 
@@ -10,6 +9,7 @@ namespace Pitstop {
 	class RawInputJoystick;
 	class RawInputManager;
 	class UsbController;
+	class UsbDevice;
 	class VirtualInputDevice;
 
 	class WidgetDevice
@@ -35,7 +35,7 @@ namespace Pitstop {
 
 		void slotJoystickChanged(QSharedPointer<RawInputJoystick> joystick);
 
-		void slotUsbDeviceChanged(UsbDevicePtr usb);
+		void slotUsbDeviceChanged(QSharedPointer<UsbDevice> usb);
 		void slotUsbDeviceConnectionChanged(bool connected);
 
 		void on_cmbJoystick_currentIndexChanged(int index);
