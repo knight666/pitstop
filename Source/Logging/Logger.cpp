@@ -30,6 +30,8 @@ namespace Pitstop {
 
 	void Logger::destroy()
 	{
+		PS_LOG_INFO(Logger) << "Closing log.";
+
 		delete s_Instance;
 		s_Instance = nullptr;
 	}

@@ -5,7 +5,8 @@
 namespace Pitstop {
 
 	ConfigurationManager::ConfigurationManager()
-		: m_Locked(false)
+		: m_Enabled(true)
+		, m_Locked(false)
 	{
 	}
 
@@ -102,7 +103,8 @@ namespace Pitstop {
 
 	bool ConfigurationManager::save()
 	{
-		if (m_Locked)
+		if (!m_Enabled ||
+			m_Locked)
 		{
 			return true;
 		}
@@ -147,7 +149,8 @@ namespace Pitstop {
 
 	bool ConfigurationManager::load()
 	{
-		if (m_Locked)
+		if (!m_Enabled ||
+			m_Locked)
 		{
 			return true;
 		}
