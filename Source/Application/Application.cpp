@@ -63,6 +63,8 @@ namespace Pitstop {
 	{
 		PS_LOG_INFO(Application) << "Closing application.";
 
+		m_Configuration->setEnabled(false);
+
 		m_XInput->stop();
 
 		delete m_MainWindow;

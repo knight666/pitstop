@@ -19,6 +19,8 @@ namespace Pitstop {
 		ConfigurationManager();
 		~ConfigurationManager();
 
+		void setEnabled(bool value) { m_Enabled = value; }
+
 		void addEventDispatcher(ConfigurationEventDispatcher& eventDispatcher);
 		void removeEventDispatcher(ConfigurationEventDispatcher& eventDispatcher);
 
@@ -49,6 +51,7 @@ namespace Pitstop {
 
 		};
 
+		bool m_Enabled;
 		bool m_Locked;
 		QVector<ConfigurationEventDispatcher*> m_EventDispatchers;
 		QVector<ConfigurationBase*> m_Installed;
