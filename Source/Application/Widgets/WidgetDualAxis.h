@@ -17,7 +17,8 @@ namespace Pitstop {
 		WidgetDualAxis(QWidget* parent = nullptr);
 		~WidgetDualAxis();
 
-		void setValue(float horizontal, float vertical);
+		void setAxisValues(float horizontal, float vertical);
+		void setPressed(bool value);
 
 		void setRange(float range, float treshold);
 
@@ -31,6 +32,7 @@ namespace Pitstop {
 
 		float m_HorizontalValue;
 		float m_VerticalValue;
+		bool m_Pressed;
 		float m_Range;
 		float m_Treshold;
 		QString m_Title;

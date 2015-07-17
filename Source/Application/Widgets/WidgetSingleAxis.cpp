@@ -49,7 +49,7 @@ namespace Pitstop {
 
 	void WidgetSingleAxis::paintEvent(QPaintEvent* event)
 	{
-		int title_text_width = 100;
+		int title_text_width = 75;
 		int value_text_width = 50;
 
 		QRectF title_text_rect(

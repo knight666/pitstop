@@ -10,6 +10,7 @@ namespace Pitstop {
 		: QWidget(parent)
 		, m_HorizontalValue(0.0f)
 		, m_VerticalValue(0.0f)
+		, m_Pressed(false)
 		, m_Range(1.0f)
 		, m_Treshold(0.0f)
 	{
@@ -19,7 +20,7 @@ namespace Pitstop {
 	{
 	}
 
-	void WidgetDualAxis::setValue(float horizontal, float vertical)
+	void WidgetDualAxis::setAxisValues(float horizontal, float vertical)
 	{
 		horizontal = qMax(-m_Range, qMin(horizontal, m_Range));
 		vertical = qMax(-m_Range, qMin(vertical, m_Range));
@@ -29,6 +30,16 @@ namespace Pitstop {
 		{
 			m_HorizontalValue = horizontal;
 			m_VerticalValue = vertical;
+
+			update();
+		}
+	}
+
+	void WidgetDualAxis::setPressed(bool value)
+	{
+		if (m_Pressed != value)
+		{
+			m_Pressed = value;
 
 			update();
 		}
@@ -134,6 +145,17 @@ namespace Pitstop {
 			paint_rect.center(),
 			(int)((m_Treshold / m_Range) * half_width),
 			(int)((m_Treshold / m_Range) * half_height));
+
+		if (m_Pressed)
+		{
+			painter.setPen(Qt::NoPen);
+			painter.setBrush(QBrush(ColorValue));
+
+			painter.drawEllipse(
+				paint_rect.center(),
+				(int)((m_Treshold / m_Range) * half_width),
+				(int)((m_Treshold / m_Range) * half_height));
+		}
 
 		// Magnitude circle
 
