@@ -320,10 +320,10 @@
     <ClCompile Include="Source\Input\RawInput\RawInputManager.cpp" />
     <ClCompile Include="Source\Input\Usb\UsbController.cpp" />
     <ClCompile Include="Source\Input\Usb\UsbDevice.cpp" />
+    <ClCompile Include="Source\Input\Virtual\VirtualInputDevice.cpp" />
+    <ClCompile Include="Source\Input\Virtual\VirtualInputManager.cpp" />
     <ClCompile Include="Source\Input\XInput\XInputDevice.cpp" />
     <ClCompile Include="Source\Input\XInput\XInputManager.cpp" />
-    <ClCompile Include="Source\Input\VirtualInputDevice.cpp" />
-    <ClCompile Include="Source\Input\VirtualInputManager.cpp" />
     <ClCompile Include="Source\Logging\Context.cpp" />
     <ClCompile Include="Source\Logging\Logger.cpp" />
     <ClCompile Include="Source\Logging\SinkFile.cpp" />
@@ -467,6 +467,18 @@
       <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
+    <CustomBuild Include="Source\Input\Virtual\VirtualInputDevice.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
+    <CustomBuild Include="Source\Input\Virtual\VirtualInputManager.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
     <CustomBuild Include="Source\Input\XInput\XInputDevice.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -479,19 +491,7 @@
       <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
-    <CustomBuild Include="Source\Input\VirtualInputManager.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <CustomBuild Include="Source\Input\VirtualInputDevice.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <ClInclude Include="Source\Input\XInputState.h" />
+    <ClInclude Include="Source\Input\XInput\XInputState.h" />
     <ClInclude Include="Source\Logging\Context.h" />
     <ClInclude Include="Source\Logging\Levels.h" />
     <CustomBuild Include="Source\Logging\Logger.h">
