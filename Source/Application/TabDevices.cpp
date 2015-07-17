@@ -3,7 +3,7 @@
 #include "Application/Application.h"
 #include "Input/RawInput/RawInputManager.h"
 #include "Input/Usb/UsbController.h"
-#include "Input/VirtualInputManager.h"
+#include "Input/Virtual/VirtualInputManager.h"
 
 namespace Pitstop {
 
@@ -21,7 +21,7 @@ namespace Pitstop {
 	TabDevices::~TabDevices()
 	{
 		disconnect(
-			this, SLOT(slotVirtualDeviceCreated(VirtualInputDevicePtr)));
+			this, SLOT(slotVirtualDeviceCreated(QSharedPointer<VirtualInputDevice>)));
 	}
 
 	void TabDevices::setup(
@@ -36,17 +36,17 @@ namespace Pitstop {
 		m_VirtualInput = &virtualInput;
 
 		connect(
-			m_VirtualInput, SIGNAL(signalVirtualDeviceCreated(VirtualInputDevicePtr)),
-			this, SLOT(slotVirtualDeviceCreated(VirtualInputDevicePtr)));
+			m_VirtualInput, SIGNAL(signalVirtualDeviceCreated(QSharedPointer<VirtualInputDevice>)),
+			this, SLOT(slotVirtualDeviceCreated(QSharedPointer<VirtualInputDevice>)));
 	}
 
 	void TabDevices::on_btnAdd_pressed()
 	{
-		VirtualInputDevicePtr device = m_VirtualInput->createDevice();
+		QSharedPointer<VirtualInputDevice> device = m_VirtualInput->createDevice();
 		device->setUsbDevice(m_UsbController->createDevice());
 	}
 
-	void TabDevices::slotVirtualDeviceCreated(VirtualInputDevicePtr device)
+	void TabDevices::slotVirtualDeviceCreated(QSharedPointer<VirtualInputDevice> device)
 	{
 		WidgetDevicePtr device_widget(
 			new WidgetDevice(

@@ -63,6 +63,4 @@ namespace Pitstop {
 
 	}; // class VirtualInputDevice
 
-	typedef QSharedPointer<VirtualInputDevice> VirtualInputDevicePtr;
-
 }; // namespace Pitstop
