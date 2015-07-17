@@ -28,13 +28,13 @@ namespace Pitstop {
 
 		m_Device = device;
 
-		m_IconDirty = true;
-
-		update();
+		slotDeviceChanged();
 	}
 
 	void WidgetController::slotDeviceChanged()
 	{
+		setEnabled(m_Device->isConnected());
+
 		m_IconDirty = true;
 
 		update();
