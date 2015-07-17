@@ -113,14 +113,14 @@ namespace Pitstop {
 		painter.drawText(
 			title_text_rect,
 			m_Title,
-			QTextOption(Qt::AlignHCenter | Qt::AlignCenter));
+			QTextOption(Qt::AlignHCenter | Qt::AlignVCenter));
 
 		painter.drawText(
 			axis_text_rect,
 			QString("(%1, %2)")
 				.arg((int)m_HorizontalValue)
 				.arg((int)m_VerticalValue),
-			QTextOption(Qt::AlignHCenter | Qt::AlignCenter));
+			QTextOption(Qt::AlignHCenter | Qt::AlignVCenter));
 	}
 
 }; // namespace Pitstop

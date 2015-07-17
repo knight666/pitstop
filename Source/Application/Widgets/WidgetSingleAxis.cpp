@@ -79,7 +79,7 @@ namespace Pitstop {
 		int step_half_height = paint_rect.height() / 4;
 
 		int threshold_offset = (int)(((qMin(m_Value, m_Treshold) - m_Minimum) / (m_Maximum - m_Minimum)) * paint_rect.width());
-		int treshold_x = paint_rect.left() + (int)(((m_Treshold - m_Minimum) / (m_Maximum - m_Minimum)) * paint_rect.width());
+		int treshold_x = (int)(((m_Treshold - m_Minimum) / (m_Maximum - m_Minimum)) * paint_rect.width());
 
 		int value_offset = (int)(((qMax(m_Value - m_Treshold, m_Minimum) - m_Minimum) / (m_Maximum - m_Minimum)) * paint_rect.width());
 		int value_half_height = paint_rect.height() / 3;
@@ -120,11 +120,15 @@ namespace Pitstop {
 
 		// Center
 
+		painter.setPen(QPen(QColor(0, 0, 0)));
+
 		painter.drawLine(
 			QPoint(paint_rect.left(), paint_rect.center().y()),
 			QPoint(paint_rect.right(), paint_rect.center().y()));
 
 		// Outline
+
+		painter.setPen(QPen(QColor(0, 0, 0)));
 
 		painter.drawLine(
 			paint_rect.topLeft(),
@@ -135,6 +139,8 @@ namespace Pitstop {
 			paint_rect.bottomRight());
 
 		// Steps
+
+		painter.setPen(QPen(QColor(0, 0, 0)));
 
 		int step_x = paint_rect.left() + step_length;
 
@@ -151,23 +157,24 @@ namespace Pitstop {
 
 		// Treshold line
 
+		painter.setPen(QPen(QColor(0, 0, 0)));
 		painter.drawLine(
-			QPoint(treshold_x, paint_rect.top()),
-			QPoint(treshold_x, paint_rect.bottom()));
+			QPoint(paint_rect.left() + treshold_x, paint_rect.top()),
+			QPoint(paint_rect.left() + treshold_x, paint_rect.bottom()));
 
-		// Title text
+		// Text
+
+		painter.setPen(QPen(QColor(0, 0, 0)));
 
 		painter.drawText(
 			title_text_rect,
 			m_Title,
-			QTextOption(Qt::AlignHCenter | Qt::AlignCenter));
-
-		// Value text
+			QTextOption(Qt::AlignVCenter));
 
 		painter.drawText(
 			value_text_rect,
 			QString::number((int)m_Value),
-			QTextOption(Qt::AlignHCenter | Qt::AlignCenter));
+			QTextOption(Qt::AlignHCenter | Qt::AlignVCenter));
 	}
 
 }; // namespace Pitstop
