@@ -309,9 +309,6 @@
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h">
       <Filter>GeneratedFiles</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\XInputState.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Input\Process\InputProcessorBase.h">
       <Filter>Input\Process</Filter>
     </ClInclude>
@@ -359,6 +356,9 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_WidgetControllerList.h">
       <Filter>GeneratedFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\XInput\XInputState.h">
+      <Filter>Input\XInput</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
