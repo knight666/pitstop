@@ -49,11 +49,13 @@ namespace Pitstop {
 		title_text_rect.setBottom((float)(event->rect().top() + title_text_height));
 
 		QRect paint_rect = event->rect();
-		paint_rect.setTop((int)title_text_rect.top());
+		paint_rect.setTop((int)title_text_rect.bottom());
 
-		QRect image_rect = m_Image.rect();
-		image_rect.moveLeft((paint_rect.width() - m_Image.rect().width()) / 2);
-		image_rect.setTop(paint_rect.top());
+		QRect image_rect;
+		image_rect.setWidth(paint_rect.height());
+		image_rect.setHeight(paint_rect.height());
+		image_rect.moveLeft((event->rect().width() - paint_rect.height()) / 2);
+		image_rect.moveTop(paint_rect.top());
 
 		QPainter painter(this);
 

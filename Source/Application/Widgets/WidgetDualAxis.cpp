@@ -7,7 +7,8 @@
 namespace Pitstop {
 
 	WidgetDualAxis::WidgetDualAxis(QWidget* parent /*= nullptr*/)
-		: m_HorizontalValue(0.0f)
+		: QWidget(parent)
+		, m_HorizontalValue(0.0f)
 		, m_VerticalValue(0.0f)
 		, m_Range(1.0f)
 		, m_Treshold(0.0f)
