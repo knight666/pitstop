@@ -10,6 +10,7 @@
 #include "Input/Container/ContainerManager.h"
 #include "Input/Process/InputProcessorDualShock4.h"
 #include "Input/Process/InputProcessorFFBWheel.h"
+#include "Input/Process/InputProcessorDarkTornado.h"
 #include "Input/RawInput/RawInputManager.h"
 #include "Input/Usb/UsbController.h"
 #include "Input/Virtual/VirtualInputManager.h"
@@ -57,6 +58,7 @@ namespace Pitstop {
 
 		m_RawInput->registerInputProcessor<InputProcessorDualShock4>();
 		m_RawInput->registerInputProcessor<InputProcessorFFBWheel>();
+		m_RawInput->registerInputProcessor<InputProcessorDarkTornado>();
 	}
 
 	Application::~Application()
