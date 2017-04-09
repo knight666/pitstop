@@ -290,6 +290,9 @@
     <ClCompile Include="Source\Input\Virtual\VirtualInputManager.cpp">
       <Filter>Input\Virtual</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\Process\InputProcessorDarkTornado.cpp">
+      <Filter>Input\Process</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Base">
@@ -401,6 +404,9 @@
     </ClInclude>
     <ClInclude Include="Source\Input\XInput\XInputState.h">
       <Filter>Input\XInput</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\Process\InputProcessorDarkTornado.h">
+      <Filter>Input\Process</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

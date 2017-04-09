@@ -314,6 +314,7 @@
     <ClCompile Include="Source\Input\Container\ContainerDevice.cpp" />
     <ClCompile Include="Source\Input\Container\ContainerManager.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorBase.cpp" />
+    <ClCompile Include="Source\Input\Process\InputProcessorDarkTornado.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorDualShock4.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorFFBWheel.cpp" />
     <ClCompile Include="Source\Input\RawInput\RawInputJoystick.cpp" />
@@ -441,6 +442,7 @@
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <ClInclude Include="Source\Input\Process\InputProcessorBase.h" />
+    <ClInclude Include="Source\Input\Process\InputProcessorDarkTornado.h" />
     <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h" />
     <ClInclude Include="Source\Input\Process\InputProcessorFFBWheel.h" />
     <CustomBuild Include="Source\Input\RawInput\RawInputJoystick.h">
