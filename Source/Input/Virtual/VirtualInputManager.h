@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base/Main.h"
+#include <Core/Main.h>
 
 #include "Input/RawInput/RawInputManager.h"
 #include "Input/Usb/UsbController.h"

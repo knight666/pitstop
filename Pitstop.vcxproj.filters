@@ -98,9 +98,6 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_Logger.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Base\Utils.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_TabJoysticks.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
@@ -259,9 +256,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Base">
-      <UniqueIdentifier>{35a7c934-37d1-4205-8dce-0f134dd65395}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application">
       <UniqueIdentifier>{a0866125-9c39-48af-aedf-da95c5721666}</UniqueIdentifier>
     </Filter>
@@ -309,9 +303,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Base\Main.h">
-      <Filter>Base</Filter>
-    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_MainWindow.h">
       <Filter>GeneratedFiles</Filter>
     </ClInclude>
@@ -341,9 +332,6 @@
     </ClInclude>
     <ClInclude Include="Source\Logging\SinkFile.h">
       <Filter>Logging</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Base\Utils.h">
-      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_TabJoysticks.h">
       <Filter>GeneratedFiles</Filter>

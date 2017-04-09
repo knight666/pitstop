@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Base/Main.h"
+#include <Core/Main.h>
 #include "Application/Widgets/WidgetDevice.h"
 
 #include "ui_TabDevices.h"

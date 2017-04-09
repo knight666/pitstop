@@ -38,6 +38,7 @@
     <Import Project="Properties\DependencyQt.props" />
     <Import Project="Properties\DependencyWinDDK.props" />
     <Import Project="Properties\DependencyWindowsSDK.props" />
+    <Import Project="Properties\ProjectCore.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -46,6 +47,7 @@
     <Import Project="Properties\DependencyQt.props" />
     <Import Project="Properties\DependencyWinDDK.props" />
     <Import Project="Properties\DependencyWindowsSDK.props" />
+    <Import Project="Properties\ProjectCore.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
@@ -276,7 +278,6 @@
     <ClCompile Include="Source\Application\MainWindow.cpp" />
     <ClCompile Include="Source\Application\TabDevices.cpp" />
     <ClCompile Include="Source\Application\TabJoysticks.cpp" />
-    <ClCompile Include="Source\Base\Utils.cpp" />
     <ClCompile Include="Source\Input\Container\ContainerDevice.cpp" />
     <ClCompile Include="Source\Input\Container\ContainerManager.cpp" />
     <ClCompile Include="Source\Input\Process\InputProcessorBase.cpp" />
@@ -368,8 +369,6 @@
       <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
-    <ClInclude Include="Source\Base\Main.h" />
-    <ClInclude Include="Source\Base\Utils.h" />
     <CustomBuild Include="Source\Input\Container\ContainerDevice.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

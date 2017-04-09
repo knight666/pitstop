@@ -73,6 +73,6 @@ extern "C" {
 #include <QtCore/QVariant>
 #include <QtCore/QWaitCondition>
 
-#include "Base/Utils.h"
+#include <Core/Utils.h>
 #include "Logging/Context.h"
 #include "Logging/Logger.h"
