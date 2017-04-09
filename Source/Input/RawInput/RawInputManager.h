@@ -26,6 +26,7 @@ namespace Pitstop {
 
 		void processInput(LPARAM lParam, WPARAM wParam);
 		void processConnectionChanged(LPARAM lParam, WPARAM wParam);
+		void processDeviceChange(LPARAM lParam, WPARAM wParam);
 
 		QSharedPointer<RawInputJoystick> createJoystick(const QString& devicePath);
 		QSharedPointer<RawInputJoystick> createJoystick(HANDLE device);

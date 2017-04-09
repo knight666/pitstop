@@ -140,6 +140,10 @@ namespace Pitstop {
 			m_RawInput->processConnectionChanged(msg->lParam, msg->wParam);
 			return true;
 
+		case WM_DEVICECHANGE:
+			m_RawInput->processDeviceChange(msg->lParam, msg->wParam);
+			return true;
+
 		default:
 			return false;
 

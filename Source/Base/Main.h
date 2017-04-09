@@ -20,6 +20,10 @@
 
 #include <Windows.h>
 
+#pragma pack(push, 8)
+#include <Dbt.h>
+#pragma pack(pop)
+
 // XInput
 
 #include <Xinput.h>
