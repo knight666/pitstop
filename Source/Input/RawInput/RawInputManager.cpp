@@ -31,6 +31,15 @@ namespace Pitstop {
 
 		m_Window = window;
 
+		DEV_BROADCAST_DEVICEINTERFACE_W broadcast = { 0 };
+		broadcast.dbcc_size = sizeof(DEV_BROADCAST_DEVICEINTERFACE_W);
+		broadcast.dbcc_devicetype = DBT_DEVTYP_DEVICEINTERFACE;
+
+		::RegisterDeviceNotification(
+			m_Window,
+			&broadcast,
+			DEVICE_NOTIFY_WINDOW_HANDLE);
+
 		if (!updateRegisteredDevices())
 		{
 			return false;
@@ -184,6 +193,28 @@ namespace Pitstop {
 		else
 		{
 			PS_LOG_INFO(RawInputManager) << "Device " << device << " was " << (connected ? "connected" : "disconnected") << ".";
+		}
+	}
+
+	void RawInputManager::processDeviceChange(LPARAM lParam, WPARAM wParam)
+	{
+		DEV_BROADCAST_HDR* broadcast = (DEV_BROADCAST_HDR*)lParam;
+
+		switch (wParam)
+		{
+
+		case DBT_DEVICEARRIVAL:
+			{
+				int i = 0;
+
+			} break;
+
+		case DBT_DEVICEREMOVECOMPLETE:
+			{
+				int i = 0;
+
+			} break;
+
 		}
 	}
 
