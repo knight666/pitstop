@@ -72,74 +72,68 @@
     <ClCompile Include="..\Source\Input\Process\InputProcessorFFBWheel.cpp">
       <Filter>Process</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_XInputManager.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_XInputDevice.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputManager.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputDevice.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UsbDevice.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UsbController.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_RawInputManager.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_RawInputJoystick.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ContainerManager.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ContainerDevice.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ContainerDevice.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_XInputManager.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ContainerManager.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_XInputDevice.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_RawInputJoystick.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_VirtualInputManager.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_RawInputManager.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_VirtualInputDevice.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UsbController.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_UsbDevice.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UsbDevice.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_UsbController.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputDevice.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_RawInputManager.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputManager.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_RawInputJoystick.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_XInputDevice.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_ContainerManager.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_XInputManager.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_ContainerDevice.cpp">
       <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_ContainerDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_ContainerManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_RawInputJoystick.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_RawInputManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_UsbController.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_UsbDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_VirtualInputDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_VirtualInputManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_XInputDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_XInputManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\Input\Container\ContainerDevice.h">
-      <Filter>Container</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Input\Container\ContainerManager.h">
-      <Filter>Container</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\Input\XInput\XInputState.h">
       <Filter>XInput</Filter>
     </ClInclude>
@@ -165,5 +159,7 @@
     <CustomBuild Include="..\Source\Input\Virtual\VirtualInputManager.h" />
     <CustomBuild Include="..\Source\Input\XInput\XInputDevice.h" />
     <CustomBuild Include="..\Source\Input\XInput\XInputManager.h" />
+    <CustomBuild Include="..\Source\Input\Container\ContainerDevice.h" />
+    <CustomBuild Include="..\Source\Input\Container\ContainerManager.h" />
   </ItemGroup>
 </Project>
