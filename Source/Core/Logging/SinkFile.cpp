@@ -1,4 +1,4 @@
-#include "Logging/SinkFile.h"
+#include "SinkFile.h"
 
 namespace Pitstop {
 

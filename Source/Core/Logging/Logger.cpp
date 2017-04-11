@@ -1,8 +1,8 @@
-#include "Logging/Logger.h"
+#include "Logger.h"
 
 #include <time.h>
 
-#include "Logging/SinkFile.h"
+#include <Core/Logging/SinkFile.h>
 
 namespace Pitstop {
 

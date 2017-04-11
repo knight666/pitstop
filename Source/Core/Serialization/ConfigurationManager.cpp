@@ -1,6 +1,6 @@
-#include "Serialization/ConfigurationManager.h"
+#include "ConfigurationManager.h"
 
-#include "Serialization/ConfigurationBase.h"
+#include <Core/Serialization/ConfigurationBase.h>
 
 namespace Pitstop {
 

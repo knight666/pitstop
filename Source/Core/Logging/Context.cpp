@@ -1,6 +1,6 @@
-#include "Logging/Context.h"
+#include "Context.h"
 
-#include "Logging/Logger.h"
+#include <Core/Logging/Logger.h>
 
 namespace Pitstop {
 

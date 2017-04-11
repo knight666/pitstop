@@ -15,7 +15,7 @@
 #include "Input/Usb/UsbController.h"
 #include "Input/Virtual/VirtualInputManager.h"
 #include "Input/XInput/XInputManager.h"
-#include "Serialization/ConfigurationManager.h"
+#include <Core/Serialization/ConfigurationManager.h>
 
 namespace Pitstop {
 
