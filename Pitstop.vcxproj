@@ -39,6 +39,7 @@
     <Import Project="Properties\DependencyWinDDK.props" />
     <Import Project="Properties\DependencyWindowsSDK.props" />
     <Import Project="Properties\ProjectCore.props" />
+    <Import Project="Properties\ProjectInput.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -48,6 +49,7 @@
     <Import Project="Properties\DependencyWinDDK.props" />
     <Import Project="Properties\DependencyWindowsSDK.props" />
     <Import Project="Properties\ProjectCore.props" />
+    <Import Project="Properties\ProjectInput.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
@@ -278,20 +280,6 @@
     <ClCompile Include="Source\Application\MainWindow.cpp" />
     <ClCompile Include="Source\Application\TabDevices.cpp" />
     <ClCompile Include="Source\Application\TabJoysticks.cpp" />
-    <ClCompile Include="Source\Input\Container\ContainerDevice.cpp" />
-    <ClCompile Include="Source\Input\Container\ContainerManager.cpp" />
-    <ClCompile Include="Source\Input\Process\InputProcessorBase.cpp" />
-    <ClCompile Include="Source\Input\Process\InputProcessorDarkTornado.cpp" />
-    <ClCompile Include="Source\Input\Process\InputProcessorDualShock4.cpp" />
-    <ClCompile Include="Source\Input\Process\InputProcessorFFBWheel.cpp" />
-    <ClCompile Include="Source\Input\RawInput\RawInputJoystick.cpp" />
-    <ClCompile Include="Source\Input\RawInput\RawInputManager.cpp" />
-    <ClCompile Include="Source\Input\Usb\UsbController.cpp" />
-    <ClCompile Include="Source\Input\Usb\UsbDevice.cpp" />
-    <ClCompile Include="Source\Input\Virtual\VirtualInputDevice.cpp" />
-    <ClCompile Include="Source\Input\Virtual\VirtualInputManager.cpp" />
-    <ClCompile Include="Source\Input\XInput\XInputDevice.cpp" />
-    <ClCompile Include="Source\Input\XInput\XInputManager.cpp" />
     <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -363,71 +351,6 @@
       <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
-    <CustomBuild Include="Source\Input\Container\ContainerDevice.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <CustomBuild Include="Source\Input\Container\ContainerManager.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <ClInclude Include="Source\Input\Process\InputProcessorBase.h" />
-    <ClInclude Include="Source\Input\Process\InputProcessorDarkTornado.h" />
-    <ClInclude Include="Source\Input\Process\InputProcessorDualShock4.h" />
-    <ClInclude Include="Source\Input\Process\InputProcessorFFBWheel.h" />
-    <CustomBuild Include="Source\Input\RawInput\RawInputJoystick.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <CustomBuild Include="Source\Input\RawInput\RawInputManager.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <CustomBuild Include="Source\Input\Usb\UsbController.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <CustomBuild Include="Source\Input\Usb\UsbDevice.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <CustomBuild Include="Source\Input\Virtual\VirtualInputDevice.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <CustomBuild Include="Source\Input\Virtual\VirtualInputManager.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <CustomBuild Include="Source\Input\XInput\XInputDevice.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <CustomBuild Include="Source\Input\XInput\XInputManager.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <ClInclude Include="Source\Input\XInput\XInputState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

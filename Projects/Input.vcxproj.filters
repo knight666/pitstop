@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Container">
+      <UniqueIdentifier>{daededbf-5b30-442b-8eb3-7103bfa9309c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Process">
+      <UniqueIdentifier>{02d34c57-7e2a-4a0c-9562-0004a7c06481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RawInput">
+      <UniqueIdentifier>{005c4431-43ae-4d89-bf50-5843edb23173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Usb">
+      <UniqueIdentifier>{7f38e2c1-a9a2-403f-bd3e-2e2e580a10ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Virtual">
+      <UniqueIdentifier>{10cf0101-1972-4eb0-87af-9d02acd8403e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XInput">
+      <UniqueIdentifier>{40177b45-02c8-490d-92d3-b788d28f8c2e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\Input\Container\ContainerDevice.cpp">
+      <Filter>Container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\Container\ContainerManager.cpp">
+      <Filter>Container</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\XInput\XInputDevice.cpp">
+      <Filter>XInput</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\XInput\XInputManager.cpp">
+      <Filter>XInput</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\Virtual\VirtualInputDevice.cpp">
+      <Filter>Virtual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\Virtual\VirtualInputManager.cpp">
+      <Filter>Virtual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\Usb\UsbController.cpp">
+      <Filter>Usb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\Usb\UsbDevice.cpp">
+      <Filter>Usb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\RawInput\RawInputJoystick.cpp">
+      <Filter>RawInput</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\RawInput\RawInputManager.cpp">
+      <Filter>RawInput</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\Process\InputProcessorBase.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\Process\InputProcessorDarkTornado.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\Process\InputProcessorDualShock4.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Input\Process\InputProcessorFFBWheel.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\Input\Container\ContainerDevice.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\Container\ContainerManager.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\XInput\XInputDevice.h">
+      <Filter>XInput</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\XInput\XInputManager.h">
+      <Filter>XInput</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\XInput\XInputState.h">
+      <Filter>XInput</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\Virtual\VirtualInputDevice.h">
+      <Filter>Virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\Virtual\VirtualInputManager.h">
+      <Filter>Virtual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\Usb\UsbController.h">
+      <Filter>Usb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\Usb\UsbDevice.h">
+      <Filter>Usb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\RawInput\RawInputJoystick.h">
+      <Filter>RawInput</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\RawInput\RawInputManager.h">
+      <Filter>RawInput</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\Process\InputProcessorBase.h">
+      <Filter>Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\Process\InputProcessorDarkTornado.h">
+      <Filter>Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\Process\InputProcessorDualShock4.h">
+      <Filter>Process</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Input\Process\InputProcessorFFBWheel.h">
+      <Filter>Process</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

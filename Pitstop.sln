@@ -3,10 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pitstop", "Pitstop.vcxproj", "{4EA7108F-F9B5-4360-85F0-D293DD063E4D}"
 	ProjectSection(ProjectDependencies) = postProject
+		{36FAA406-77B4-4861-814E-9A055023DD41} = {36FAA406-77B4-4861-814E-9A055023DD41}
 		{46AEE07D-20D0-4DF4-A016-2D8160B1F0B4} = {46AEE07D-20D0-4DF4-A016-2D8160B1F0B4}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Projects\Core.vcxproj", "{46AEE07D-20D0-4DF4-A016-2D8160B1F0B4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Input", "Projects\Input.vcxproj", "{36FAA406-77B4-4861-814E-9A055023DD41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,6 +25,10 @@ Global
 		{46AEE07D-20D0-4DF4-A016-2D8160B1F0B4}.Debug|Win32.Build.0 = Debug|Win32
 		{46AEE07D-20D0-4DF4-A016-2D8160B1F0B4}.Release|Win32.ActiveCfg = Release|Win32
 		{46AEE07D-20D0-4DF4-A016-2D8160B1F0B4}.Release|Win32.Build.0 = Release|Win32
+		{36FAA406-77B4-4861-814E-9A055023DD41}.Debug|Win32.ActiveCfg = Debug|Win32
+		{36FAA406-77B4-4861-814E-9A055023DD41}.Debug|Win32.Build.0 = Debug|Win32
+		{36FAA406-77B4-4861-814E-9A055023DD41}.Release|Win32.ActiveCfg = Release|Win32
+		{36FAA406-77B4-4861-814E-9A055023DD41}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
