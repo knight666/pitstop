@@ -185,7 +185,6 @@
     <ClCompile Include="Source\Application\MainWindow.cpp" />
     <ClCompile Include="Source\Application\TabDevices.cpp" />
     <ClCompile Include="Source\Application\TabJoysticks.cpp" />
-    <ClCompile Include="Source\Application\PitstopMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeneratedFiles">

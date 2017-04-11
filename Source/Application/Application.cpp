@@ -38,8 +38,6 @@ namespace Pitstop {
 
 		setApplicationName("Pitstop");
 
-		Logger::initialize();
-
 		m_Configuration = QSharedPointer<ConfigurationManager>(new ConfigurationManager());
 		m_Containers = QSharedPointer<ContainerManager>(new ContainerManager());
 		m_RawInput = new RawInputManager(m_Containers);
@@ -76,8 +74,6 @@ namespace Pitstop {
 		delete m_RawInput;
 		m_Containers.clear();
 		m_Configuration.clear();
-
-		Logger::destroy();
 
 		s_Instance = nullptr;
 	}
@@ -149,3 +145,15 @@ namespace Pitstop {
 	}
 
 }; // namespace Pitstop
+
+int main(int argc, char** argv)
+{
+	Pitstop::Logger::initialize();
+
+	Pitstop::Application application(argc, argv);
+	int result = application.run();
+
+	Pitstop::Logger::destroy();
+
+	return result;
+}
