@@ -271,7 +271,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\Dialogs\DialogJoystickDetails.cpp" />
-    <ClCompile Include="Source\Application\PitstopMain.cpp" />
     <ClCompile Include="Source\Application\Widgets\BindingsList.cpp" />
     <ClCompile Include="Source\Application\Widgets\WidgetController.cpp" />
     <ClCompile Include="Source\Application\Widgets\WidgetControllerList.cpp" />
