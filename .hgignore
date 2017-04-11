@@ -1,6 +1,8 @@
 # Project
 syntax: glob
 Intermediate/*
+Build/*.lib
+Build/*.pdb
 
 syntax: regexp
 Build/[P|p]itstop([D|d]ebug|[R|r]elease)\.(exe|pdb)
