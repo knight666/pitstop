@@ -2,6 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <QTDIR>$(SolutionDir)Dependencies\Qt-5.4.1</QTDIR>
+    <QtGeneratedDir>$(SolutionDir)GeneratedFiles\</QtGeneratedDir>
     <DepQtDir>$(SolutionDir)Dependencies\Qt-5.4.1\</DepQtDir>
     <DepQtTargetMacro Condition="'$(Configuration)'=='Debug'"></DepQtTargetMacro>
     <DepQtTargetMacro Condition="'$(Configuration)'!='Debug'">QT_NO_DEBUG</DepQtTargetMacro>

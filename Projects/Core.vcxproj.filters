@@ -9,23 +9,11 @@
     <ClInclude Include="..\Source\Core\Logging\Levels.h">
       <Filter>Logging</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Core\Logging\Logger.h">
-      <Filter>Logging</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\Core\Logging\Sink.h">
       <Filter>Logging</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Logging\SinkFile.h">
       <Filter>Logging</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Serialization\ConfigurationBase.h">
-      <Filter>Serialization</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Serialization\ConfigurationEventDispatcher.h">
-      <Filter>Serialization</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Serialization\ConfigurationManager.h">
-      <Filter>Serialization</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Serialization\ISerializable.h">
       <Filter>Serialization</Filter>
@@ -51,6 +39,30 @@
     <ClCompile Include="..\Source\Core\Serialization\ConfigurationManager.cpp">
       <Filter>Serialization</Filter>
     </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_ConfigurationBase.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_ConfigurationEventDispatcher.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_ConfigurationManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_Logger.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_ConfigurationBase.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_ConfigurationEventDispatcher.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_ConfigurationManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_Logger.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Logging">
@@ -59,5 +71,20 @@
     <Filter Include="Serialization">
       <UniqueIdentifier>{8cdedd79-a7e5-4073-9e63-e132337ea9aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GeneratedFiles">
+      <UniqueIdentifier>{ef67e69b-cb09-49dc-95df-225880c50089}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneratedFiles\Debug">
+      <UniqueIdentifier>{bb1a98a7-41f2-4979-83a1-c4d7ce02c69d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneratedFiles\Release">
+      <UniqueIdentifier>{0c0ed982-63ed-47b1-bc52-b48926cb254c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Source\Core\Logging\Logger.h" />
+    <CustomBuild Include="..\Source\Core\Serialization\ConfigurationBase.h" />
+    <CustomBuild Include="..\Source\Core\Serialization\ConfigurationEventDispatcher.h" />
+    <CustomBuild Include="..\Source\Core\Serialization\ConfigurationManager.h" />
   </ItemGroup>
 </Project>

@@ -62,211 +62,127 @@
     <Link />
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GeneratedFiles\Debug\moc_Application.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_Application.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_Application.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_Application.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_BindingsList.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_BindingsList.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_BindingsList.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_BindingsList.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ContainerDevice.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_DialogJoystickDetails.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ContainerDevice.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_DialogJoystickDetails.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ContainerManager.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_MainWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ContainerManager.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_MainWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigurationBase.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_TabDevices.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ConfigurationBase.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_TabDevices.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigurationEventDispatcher.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_TabJoysticks.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ConfigurationEventDispatcher.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_TabJoysticks.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ConfigurationManager.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_WidgetController.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ConfigurationManager.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_WidgetController.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_DialogJoystickDetails.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_WidgetControllerList.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_DialogJoystickDetails.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_WidgetControllerList.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_Logger.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_WidgetDevice.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_Logger.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_WidgetDevice.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_MainWindow.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_WidgetJoystick.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_MainWindow.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_WidgetJoystick.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_RawInputJoystick.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Debug\qrc_Pitstop.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_RawInputJoystick.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_RawInputManager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_RawInputManager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_TabDevices.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_TabDevices.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_TabJoysticks.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_TabJoysticks.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UsbController.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UsbController.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_UsbDevice.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_UsbDevice.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputDevice.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputDevice.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputManager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputManager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetController.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_WidgetController.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetControllerList.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_WidgetControllerList.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetDevice.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_WidgetDevice.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_WidgetJoystick.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_WidgetJoystick.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_XInputDevice.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_XInputDevice.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_XInputManager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_XInputManager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\qrc_Pitstop.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\qrc_Pitstop.cpp">
+    <ClCompile Include="$(QtGeneratedDir)Release\qrc_Pitstop.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Source\Application\Dialogs\DialogJoystickDetails.ui">
       <Message>Uic%27ing %(Filename)%(Extension)...</Message>
-      <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <Command>"$(QTDIR)\bin\uic.exe" -o "$(QtGeneratedDir)ui_%(Filename).h" "%(FullPath)"</Command>
       <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs>$(QtGeneratedDir)ui_%(Filename).h;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\BindingsList.ui">
       <Message>Uic%27ing %(Filename)%(Extension)...</Message>
-      <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <Command>"$(QTDIR)\bin\uic.exe" -o "$(QtGeneratedDir)ui_%(Filename).h" "%(FullPath)"</Command>
       <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs>$(QtGeneratedDir)ui_%(Filename).h;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetControllerList.ui">
       <Message>Uic%27ing %(Filename)%(Extension)...</Message>
-      <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <Command>"$(QTDIR)\bin\uic.exe" -o "$(QtGeneratedDir)ui_%(Filename).h" "%(FullPath)"</Command>
       <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs>$(QtGeneratedDir)ui_%(Filename).h;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetDevice.ui">
       <Message>Uic%27ing %(Filename)%(Extension)...</Message>
-      <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <Command>"$(QTDIR)\bin\uic.exe" -o "$(QtGeneratedDir)ui_%(Filename).h" "%(FullPath)"</Command>
       <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs>$(QtGeneratedDir)ui_%(Filename).h;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.ui">
       <Message>Uic%27ing %(Filename)%(Extension)...</Message>
-      <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <Command>"$(QTDIR)\bin\uic.exe" -o "$(QtGeneratedDir)ui_%(Filename).h" "%(FullPath)"</Command>
       <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs>$(QtGeneratedDir)ui_%(Filename).h;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="Source\Application\MainWindow.ui">
       <Message>Uic%27ing %(Filename)%(Extension)...</Message>
-      <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <Command>"$(QTDIR)\bin\uic.exe" -o "$(QtGeneratedDir)ui_%(Filename).h" "%(FullPath)"</Command>
       <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs>$(QtGeneratedDir)ui_%(Filename).h;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="Source\Application\TabDevices.ui">
       <Message>Uic%27ing %(Filename)%(Extension)...</Message>
-      <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <Command>"$(QTDIR)\bin\uic.exe" -o "$(QtGeneratedDir)ui_%(Filename).h" "%(FullPath)"</Command>
       <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs>$(QtGeneratedDir)ui_%(Filename).h;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="Source\Application\TabJoysticks.ui">
       <Message>Uic%27ing %(Filename)%(Extension)...</Message>
-      <Command>"$(QTDIR)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <Command>"$(QTDIR)\bin\uic.exe" -o "$(QtGeneratedDir)ui_%(Filename).h" "%(FullPath)"</Command>
       <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs>$(QtGeneratedDir)ui_%(Filename).h;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="Pitstop.qrc">
       <Message>Rcc%27ing %(Filename)%(Extension)...</Message>
-      <Command>"$(QTDIR)\bin\rcc.exe" "%(FullPath)" -name "Pitstop" -o ".\GeneratedFiles\$(ConfigurationName)\qrc_%(Filename).cpp"</Command>
+      <Command>"$(QTDIR)\bin\rcc.exe" "%(FullPath)" -name "Pitstop" -o "$(QtGeneratedDir)$(ConfigurationName)\qrc_%(Filename).cpp"</Command>
       <AdditionalInputs>$(QTDIR)\bin\rcc.exe;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\qrc_%(Filename).cpp</Outputs>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\qrc_%(Filename).cpp</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -282,73 +198,73 @@
     <ClCompile Include="Source\Application\TabJoysticks.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GeneratedFiles\ui_BindingsList.h" />
-    <ClInclude Include="GeneratedFiles\ui_DialogJoystickDetails.h" />
-    <ClInclude Include="GeneratedFiles\ui_MainWindow.h" />
-    <ClInclude Include="GeneratedFiles\ui_TabDevices.h" />
-    <ClInclude Include="GeneratedFiles\ui_TabJoysticks.h" />
-    <ClInclude Include="GeneratedFiles\ui_WidgetControllerList.h" />
-    <ClInclude Include="GeneratedFiles\ui_WidgetDevice.h" />
-    <ClInclude Include="GeneratedFiles\ui_WidgetJoystick.h" />
+    <ClInclude Include="$(QtGeneratedDir)ui_BindingsList.h" />
+    <ClInclude Include="$(QtGeneratedDir)ui_DialogJoystickDetails.h" />
+    <ClInclude Include="$(QtGeneratedDir)ui_MainWindow.h" />
+    <ClInclude Include="$(QtGeneratedDir)ui_TabDevices.h" />
+    <ClInclude Include="$(QtGeneratedDir)ui_TabJoysticks.h" />
+    <ClInclude Include="$(QtGeneratedDir)ui_WidgetControllerList.h" />
+    <ClInclude Include="$(QtGeneratedDir)ui_WidgetDevice.h" />
+    <ClInclude Include="$(QtGeneratedDir)ui_WidgetJoystick.h" />
     <CustomBuild Include="Source\Application\Dialogs\DialogJoystickDetails.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\BindingsList.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetController.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetControllerList.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetDevice.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Application.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <CustomBuild Include="Source\Application\MainWindow.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <CustomBuild Include="Source\Application\TabDevices.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <CustomBuild Include="Source\Application\TabJoysticks.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
