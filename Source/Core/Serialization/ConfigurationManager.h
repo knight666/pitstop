@@ -1,8 +1,8 @@
 #pragma once
 
 #include <Core/Main.h>
-#include "Serialization/ConfigurationBase.h"
-#include "Serialization/ConfigurationEventDispatcher.h"
+#include <Core/Serialization/ConfigurationBase.h>
+#include <Core/Serialization/ConfigurationEventDispatcher.h>
 
 namespace Pitstop {
 

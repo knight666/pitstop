@@ -74,5 +74,5 @@ extern "C" {
 #include <QtCore/QWaitCondition>
 
 #include <Core/Utils.h>
-#include "Logging/Context.h"
-#include "Logging/Logger.h"
+#include <Core/Logging/Context.h>
+#include <Core/Logging/Logger.h>

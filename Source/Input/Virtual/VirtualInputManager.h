@@ -5,7 +5,7 @@
 #include "Input/RawInput/RawInputManager.h"
 #include "Input/Usb/UsbController.h"
 #include "Input/Virtual/VirtualInputDevice.h"
-#include "Serialization/ConfigurationBase.h"
+#include <Core/Serialization/ConfigurationBase.h>
 
 namespace Pitstop {
 

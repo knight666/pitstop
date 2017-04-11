@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Core/Main.h>
-#include "Serialization/ISerializable.h"
+#include <Core/Serialization/ISerializable.h>
 
 namespace Pitstop {
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Core/Main.h>
-#include "Logging/Levels.h"
+#include <Core/Logging/Levels.h>
 
 namespace Pitstop {
 

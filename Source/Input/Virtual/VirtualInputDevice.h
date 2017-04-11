@@ -2,8 +2,8 @@
 
 #include <Core/Main.h>
 #include "Input/Process/InputProcessorBase.h"
-#include "Serialization/ConfigurationEventDispatcher.h"
-#include "Serialization/ISerializable.h"
+#include <Core/Serialization/ConfigurationEventDispatcher.h>
+#include <Core/Serialization/ISerializable.h>
 
 namespace Pitstop {
 

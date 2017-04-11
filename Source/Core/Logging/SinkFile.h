@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Core/Main.h>
-#include "Logging/Sink.h"
+#include <Core/Logging/Sink.h>
 
 namespace Pitstop {
 

@@ -69,26 +69,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Source\Core\Logging\Context.h" />
+    <ClInclude Include="..\Source\Core\Logging\Levels.h" />
+    <ClInclude Include="..\Source\Core\Logging\Logger.h" />
+    <ClInclude Include="..\Source\Core\Logging\Sink.h" />
+    <ClInclude Include="..\Source\Core\Logging\SinkFile.h" />
     <ClInclude Include="..\Source\Core\Main.h" />
+    <ClInclude Include="..\Source\Core\Serialization\ConfigurationBase.h" />
+    <ClInclude Include="..\Source\Core\Serialization\ConfigurationEventDispatcher.h" />
+    <ClInclude Include="..\Source\Core\Serialization\ConfigurationManager.h" />
+    <ClInclude Include="..\Source\Core\Serialization\ISerializable.h" />
     <ClInclude Include="..\Source\Core\Utils.h" />
-    <ClInclude Include="..\Source\Logging\Context.h" />
-    <ClInclude Include="..\Source\Logging\Levels.h" />
-    <ClInclude Include="..\Source\Logging\Logger.h" />
-    <ClInclude Include="..\Source\Logging\Sink.h" />
-    <ClInclude Include="..\Source\Logging\SinkFile.h" />
-    <ClInclude Include="..\Source\Serialization\ConfigurationBase.h" />
-    <ClInclude Include="..\Source\Serialization\ConfigurationEventDispatcher.h" />
-    <ClInclude Include="..\Source\Serialization\ConfigurationManager.h" />
-    <ClInclude Include="..\Source\Serialization\ISerializable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\Core\Logging\Context.cpp" />
+    <ClCompile Include="..\Source\Core\Logging\Logger.cpp" />
+    <ClCompile Include="..\Source\Core\Logging\SinkFile.cpp" />
+    <ClCompile Include="..\Source\Core\Serialization\ConfigurationBase.cpp" />
+    <ClCompile Include="..\Source\Core\Serialization\ConfigurationEventDispatcher.cpp" />
+    <ClCompile Include="..\Source\Core\Serialization\ConfigurationManager.cpp" />
     <ClCompile Include="..\Source\Core\Utils.cpp" />
-    <ClCompile Include="..\Source\Logging\Context.cpp" />
-    <ClCompile Include="..\Source\Logging\Logger.cpp" />
-    <ClCompile Include="..\Source\Logging\SinkFile.cpp" />
-    <ClCompile Include="..\Source\Serialization\ConfigurationBase.cpp" />
-    <ClCompile Include="..\Source\Serialization\ConfigurationEventDispatcher.cpp" />
-    <ClCompile Include="..\Source\Serialization\ConfigurationManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

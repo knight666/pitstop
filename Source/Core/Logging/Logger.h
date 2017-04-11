@@ -2,7 +2,7 @@
 
 #include <Core/Main.h>
 
-#include "Logging/Sink.h"
+#include <Core/Logging/Sink.h>
 
 #define PS_LOG_INFO(_module)   Pitstop::Context(Pitstop::Levels::Information, #_module, __FILE__, __LINE__)
 #define PS_LOG_TRACE(_module)  Pitstop::Context(Pitstop::Levels::Trace, #_module, __FILE__, __LINE__)
