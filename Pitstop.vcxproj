@@ -271,6 +271,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application\Dialogs\DialogJoystickDetails.cpp" />
+    <ClCompile Include="Source\Application\PitstopMain.cpp" />
     <ClCompile Include="Source\Application\Widgets\BindingsList.cpp" />
     <ClCompile Include="Source\Application\Widgets\WidgetController.cpp" />
     <ClCompile Include="Source\Application\Widgets\WidgetControllerList.cpp" />
@@ -280,7 +281,6 @@
     <ClCompile Include="Source\Application\MainWindow.cpp" />
     <ClCompile Include="Source\Application\TabDevices.cpp" />
     <ClCompile Include="Source\Application\TabJoysticks.cpp" />
-    <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_BindingsList.h" />

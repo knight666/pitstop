@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Projects\Core.vcxpr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Input", "Projects\Input.vcxproj", "{36FAA406-77B4-4861-814E-9A055023DD41}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{2B5BF9F6-ED4A-47DE-BA2A-5B491C0B19FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -32,5 +34,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{46AEE07D-20D0-4DF4-A016-2D8160B1F0B4} = {2B5BF9F6-ED4A-47DE-BA2A-5B491C0B19FC}
+		{36FAA406-77B4-4861-814E-9A055023DD41} = {2B5BF9F6-ED4A-47DE-BA2A-5B491C0B19FC}
 	EndGlobalSection
 EndGlobal

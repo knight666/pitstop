@@ -1,21 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\Application\Application.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Application\Widgets\BindingsList.cpp">
-      <Filter>Application\Widgets</Filter>
+      <Filter>Widgets</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_BindingsList.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_BindingsList.cpp">
       <Filter>GeneratedFiles\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Application\MainWindow.cpp">
-      <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_RawInputManager.cpp">
       <Filter>GeneratedFiles\Release</Filter>
@@ -48,7 +41,7 @@
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Widgets\WidgetJoystick.cpp">
-      <Filter>Application\Widgets</Filter>
+      <Filter>Widgets</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_WidgetJoystick.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
@@ -80,17 +73,11 @@
     <ClCompile Include="GeneratedFiles\Release\moc_TabJoysticks.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Application\TabJoysticks.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_TabDevices.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_TabDevices.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Application\TabDevices.cpp">
-      <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_WidgetDevice.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
@@ -99,7 +86,7 @@
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Widgets\WidgetDevice.cpp">
-      <Filter>Application\Widgets</Filter>
+      <Filter>Widgets</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\qrc_Pitstop.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
@@ -138,7 +125,7 @@
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Dialogs\DialogJoystickDetails.cpp">
-      <Filter>Application\Dialogs</Filter>
+      <Filter>Dialogs</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_DialogJoystickDetails.cpp">
       <Filter>GeneratedFiles\Release</Filter>
@@ -165,7 +152,7 @@
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Widgets\WidgetControllerList.cpp">
-      <Filter>Application\Widgets</Filter>
+      <Filter>Widgets</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_Application.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
@@ -192,13 +179,15 @@
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
     <ClCompile Include="Source\Application\Widgets\WidgetController.cpp">
-      <Filter>Application\Widgets</Filter>
+      <Filter>Widgets</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Application\Application.cpp" />
+    <ClCompile Include="Source\Application\MainWindow.cpp" />
+    <ClCompile Include="Source\Application\TabDevices.cpp" />
+    <ClCompile Include="Source\Application\TabJoysticks.cpp" />
+    <ClCompile Include="Source\Application\PitstopMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Application">
-      <UniqueIdentifier>{a0866125-9c39-48af-aedf-da95c5721666}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GeneratedFiles">
       <UniqueIdentifier>{80a2cfa4-5584-4ec7-839a-dfa768c514dc}</UniqueIdentifier>
     </Filter>
@@ -208,11 +197,11 @@
     <Filter Include="GeneratedFiles\Release">
       <UniqueIdentifier>{b3bbc76f-fb7e-4047-ac90-3d6dfd5e1605}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Widgets">
-      <UniqueIdentifier>{d08accf9-c4c0-4430-8b60-b4abfa06d43e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Dialogs">
+    <Filter Include="Dialogs">
       <UniqueIdentifier>{c7347cb5-9603-4d71-9137-7462475fc151}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Widgets">
+      <UniqueIdentifier>{d08accf9-c4c0-4430-8b60-b4abfa06d43e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -242,60 +231,46 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Source\Application\MainWindow.ui">
-      <Filter>Application</Filter>
-    </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\BindingsList.h">
-      <Filter>Application\Widgets</Filter>
+      <Filter>Widgets</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\BindingsList.ui">
-      <Filter>Application\Widgets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Source\Application\MainWindow.h">
-      <Filter>Application</Filter>
+      <Filter>Widgets</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.ui">
-      <Filter>Application\Widgets</Filter>
+      <Filter>Widgets</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetJoystick.h">
-      <Filter>Application\Widgets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Source\Application\TabJoysticks.h">
-      <Filter>Application</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Source\Application\TabJoysticks.ui">
-      <Filter>Application</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Source\Application\TabDevices.h">
-      <Filter>Application</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Source\Application\TabDevices.ui">
-      <Filter>Application</Filter>
+      <Filter>Widgets</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetDevice.h">
-      <Filter>Application\Widgets</Filter>
+      <Filter>Widgets</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetDevice.ui">
-      <Filter>Application\Widgets</Filter>
+      <Filter>Widgets</Filter>
     </CustomBuild>
     <CustomBuild Include="Pitstop.qrc" />
     <CustomBuild Include="Source\Application\Dialogs\DialogJoystickDetails.h">
-      <Filter>Application\Dialogs</Filter>
+      <Filter>Dialogs</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Dialogs\DialogJoystickDetails.ui">
-      <Filter>Application\Dialogs</Filter>
+      <Filter>Dialogs</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetControllerList.h">
-      <Filter>Application\Widgets</Filter>
+      <Filter>Widgets</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetControllerList.ui">
-      <Filter>Application\Widgets</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Source\Application\Application.h">
-      <Filter>Application</Filter>
+      <Filter>Widgets</Filter>
     </CustomBuild>
     <CustomBuild Include="Source\Application\Widgets\WidgetController.h">
-      <Filter>Application\Widgets</Filter>
+      <Filter>Widgets</Filter>
     </CustomBuild>
+    <CustomBuild Include="Source\Application\Application.h" />
+    <CustomBuild Include="Source\Application\MainWindow.h" />
+    <CustomBuild Include="Source\Application\MainWindow.ui" />
+    <CustomBuild Include="Source\Application\TabDevices.h" />
+    <CustomBuild Include="Source\Application\TabDevices.ui" />
+    <CustomBuild Include="Source\Application\TabJoysticks.h" />
+    <CustomBuild Include="Source\Application\TabJoysticks.ui" />
   </ItemGroup>
 </Project>
