@@ -51,33 +51,68 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile />
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
+    <Link />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-    </ClCompile>
-    <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
+    <ClCompile />
+    <Link />
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_ConfigurationBase.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_ConfigurationBase.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_ConfigurationEventDispatcher.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_ConfigurationEventDispatcher.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_ConfigurationManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_ConfigurationManager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_Logger.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_Logger.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\Core\Logging\Context.h" />
     <ClInclude Include="..\Source\Core\Logging\Levels.h" />
-    <ClInclude Include="..\Source\Core\Logging\Logger.h" />
+    <CustomBuild Include="..\Source\Core\Logging\Logger.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
     <ClInclude Include="..\Source\Core\Logging\Sink.h" />
     <ClInclude Include="..\Source\Core\Logging\SinkFile.h" />
     <ClInclude Include="..\Source\Core\Main.h" />
-    <ClInclude Include="..\Source\Core\Serialization\ConfigurationBase.h" />
-    <ClInclude Include="..\Source\Core\Serialization\ConfigurationEventDispatcher.h" />
-    <ClInclude Include="..\Source\Core\Serialization\ConfigurationManager.h" />
+    <CustomBuild Include="..\Source\Core\Serialization\ConfigurationBase.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
+    <CustomBuild Include="..\Source\Core\Serialization\ConfigurationEventDispatcher.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
+    <CustomBuild Include="..\Source\Core\Serialization\ConfigurationManager.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
     <ClInclude Include="..\Source\Core\Serialization\ISerializable.h" />
     <ClInclude Include="..\Source\Core\Utils.h" />
   </ItemGroup>

@@ -19,6 +19,15 @@
     <Filter Include="XInput">
       <UniqueIdentifier>{40177b45-02c8-490d-92d3-b788d28f8c2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GeneratedFiles">
+      <UniqueIdentifier>{7f92622d-1516-4b55-be93-ea344e14a510}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneratedFiles\Debug">
+      <UniqueIdentifier>{d08dbee0-d9b9-412f-bde2-6a7354d8536f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneratedFiles\Release">
+      <UniqueIdentifier>{1e0bab48-a4d0-48c0-95e3-ccb51edb9b42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Input\Container\ContainerDevice.cpp">
@@ -63,6 +72,66 @@
     <ClCompile Include="..\Source\Input\Process\InputProcessorFFBWheel.cpp">
       <Filter>Process</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_XInputManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_XInputDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UsbDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_UsbController.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_RawInputManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_RawInputJoystick.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ContainerManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ContainerDevice.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ContainerDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ContainerManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_RawInputJoystick.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_RawInputManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UsbController.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_UsbDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_XInputDevice.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_XInputManager.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\Input\Container\ContainerDevice.h">
@@ -71,32 +140,8 @@
     <ClInclude Include="..\Source\Input\Container\ContainerManager.h">
       <Filter>Container</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Input\XInput\XInputDevice.h">
-      <Filter>XInput</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Input\XInput\XInputManager.h">
-      <Filter>XInput</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\Input\XInput\XInputState.h">
       <Filter>XInput</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Input\Virtual\VirtualInputDevice.h">
-      <Filter>Virtual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Input\Virtual\VirtualInputManager.h">
-      <Filter>Virtual</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Input\Usb\UsbController.h">
-      <Filter>Usb</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Input\Usb\UsbDevice.h">
-      <Filter>Usb</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Input\RawInput\RawInputJoystick.h">
-      <Filter>RawInput</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Input\RawInput\RawInputManager.h">
-      <Filter>RawInput</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Input\Process\InputProcessorBase.h">
       <Filter>Process</Filter>
@@ -110,5 +155,15 @@
     <ClInclude Include="..\Source\Input\Process\InputProcessorFFBWheel.h">
       <Filter>Process</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Source\Input\RawInput\RawInputJoystick.h" />
+    <CustomBuild Include="..\Source\Input\RawInput\RawInputManager.h" />
+    <CustomBuild Include="..\Source\Input\Usb\UsbController.h" />
+    <CustomBuild Include="..\Source\Input\Usb\UsbDevice.h" />
+    <CustomBuild Include="..\Source\Input\Virtual\VirtualInputDevice.h" />
+    <CustomBuild Include="..\Source\Input\Virtual\VirtualInputManager.h" />
+    <CustomBuild Include="..\Source\Input\XInput\XInputDevice.h" />
+    <CustomBuild Include="..\Source\Input\XInput\XInputManager.h" />
   </ItemGroup>
 </Project>
