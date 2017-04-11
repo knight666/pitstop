@@ -4,6 +4,12 @@
     <Filter Include="Core">
       <UniqueIdentifier>{84d2d207-5764-44ed-957e-d7a78f7fd434}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Logging">
+      <UniqueIdentifier>{e0cab0d2-b3f1-448b-8736-bfa237b1b7d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialization">
+      <UniqueIdentifier>{e5a11faa-7803-4d00-9ae0-8670bdfc83e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\Core\Main.h">
@@ -12,10 +18,55 @@
     <ClInclude Include="..\Source\Core\Utils.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\Logging\Context.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Logging\Levels.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Logging\Logger.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Logging\Sink.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Logging\SinkFile.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Serialization\ConfigurationBase.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Serialization\ConfigurationEventDispatcher.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Serialization\ConfigurationManager.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Serialization\ISerializable.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Core\Utils.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Logging\Context.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Logging\Logger.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Logging\SinkFile.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Serialization\ConfigurationBase.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Serialization\ConfigurationEventDispatcher.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Serialization\ConfigurationManager.cpp">
+      <Filter>Serialization</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

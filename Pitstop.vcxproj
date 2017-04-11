@@ -292,12 +292,6 @@
     <ClCompile Include="Source\Input\Virtual\VirtualInputManager.cpp" />
     <ClCompile Include="Source\Input\XInput\XInputDevice.cpp" />
     <ClCompile Include="Source\Input\XInput\XInputManager.cpp" />
-    <ClCompile Include="Source\Logging\Context.cpp" />
-    <ClCompile Include="Source\Logging\Logger.cpp" />
-    <ClCompile Include="Source\Logging\SinkFile.cpp" />
-    <ClCompile Include="Source\Serialization\ConfigurationBase.cpp" />
-    <ClCompile Include="Source\Serialization\ConfigurationEventDispatcher.cpp" />
-    <ClCompile Include="Source\Serialization\ConfigurationManager.cpp" />
     <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -434,35 +428,6 @@
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <ClInclude Include="Source\Input\XInput\XInputState.h" />
-    <ClInclude Include="Source\Logging\Context.h" />
-    <ClInclude Include="Source\Logging\Levels.h" />
-    <CustomBuild Include="Source\Logging\Logger.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <ClInclude Include="Source\Logging\Sink.h" />
-    <ClInclude Include="Source\Logging\SinkFile.h" />
-    <ClInclude Include="Source\Serialization\ISerializable.h" />
-    <CustomBuild Include="Source\Serialization\ConfigurationBase.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <CustomBuild Include="Source\Serialization\ConfigurationEventDispatcher.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
-    <CustomBuild Include="Source\Serialization\ConfigurationManager.h">
-      <Message>Moc%27ing %(Filename).h...</Message>
-      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
-      <Outputs>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
-      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
-    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
