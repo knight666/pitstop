@@ -32,6 +32,9 @@ namespace Pitstop {
 
 		void slotJoystickConnected(QSharedPointer<RawInputJoystick> joystick, bool connected);
 
+		void on_btnStart_pressed();
+		void on_btnStop_pressed();
+
 	private:
 
 		virtual bool nativeEventFilter(const QByteArray& eventType, void* message, long* result) override;

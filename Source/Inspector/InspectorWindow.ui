@@ -22,7 +22,7 @@
      <widget class="QPushButton" name="btnStart">
       <property name="maximumSize">
        <size>
-        <width>150</width>
+        <width>100</width>
         <height>16777215</height>
        </size>
       </property>
@@ -35,7 +35,7 @@
      <widget class="QPushButton" name="btnStop">
       <property name="maximumSize">
        <size>
-        <width>150</width>
+        <width>100</width>
         <height>16777215</height>
        </size>
       </property>
