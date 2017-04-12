@@ -35,6 +35,7 @@ namespace Pitstop {
 	private:
 
 		virtual bool nativeEventFilter(const QByteArray& eventType, void* message, long* result) override;
+		void updateJoysticks();
 
 	private:
 
@@ -43,6 +44,7 @@ namespace Pitstop {
 
 		QSharedPointer<ContainerManager> m_Containers;
 		QSharedPointer<RawInputManager> m_RawInput;
+		QSharedPointer<RawInputJoystick> m_JoystickSelected;
 
 	};
 

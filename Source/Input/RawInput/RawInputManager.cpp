@@ -337,6 +337,7 @@ namespace Pitstop {
 			m_JoysticksByIdentifier.insert(joystick->getIdentifier(), joystick);
 
 			emit signalJoystickCreated(joystick);
+			emit signalJoystickConnected(joystick, true);
 		}
 
 		return joystick;

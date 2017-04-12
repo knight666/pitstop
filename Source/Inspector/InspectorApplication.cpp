@@ -12,6 +12,9 @@ namespace Pitstop {
 	{
 		m_MainWindowForm.setupUi(&m_MainWindow);
 
+		m_MainWindowForm.cmbJoysticks->clear();
+		m_MainWindowForm.cmbJoysticks->addItem("<None>");
+
 		connect(
 			m_RawInput.data(), SIGNAL(signalJoystickConnected(QSharedPointer<RawInputJoystick>, bool)),
 			this, SLOT(slotJoystickConnected(QSharedPointer<RawInputJoystick>, bool)));
@@ -46,7 +49,38 @@ namespace Pitstop {
 
 	void InspectorApplication::slotJoystickConnected(QSharedPointer<RawInputJoystick> joystick, bool connected)
 	{
-		int i = 0;
+		int selected = 0;
+		int current = 1;
+
+		bool previous = m_MainWindowForm.cmbJoysticks->blockSignals(true);
+
+		m_MainWindowForm.cmbJoysticks->clear();
+		m_MainWindowForm.cmbJoysticks->addItem("<None>");
+
+		QVector<QSharedPointer<RawInputJoystick>> joysticks = m_RawInput->getJoysticks();
+		for (QSharedPointer<RawInputJoystick>& joystick : joysticks)
+		{
+			if (joystick->getType() != RawInputJoystick::Type::RawInput)
+			{
+				continue;
+			}
+
+			if (m_JoystickSelected != nullptr &&
+				joystick == m_JoystickSelected)
+			{
+				selected = current;
+			}
+
+			m_MainWindowForm.cmbJoysticks->addItem(
+				joystick->getDescription(),
+				QVariant(joystick->getIdentifier()));
+
+			current++;
+		}
+
+		m_MainWindowForm.cmbJoysticks->blockSignals(previous);
+
+		m_MainWindowForm.cmbJoysticks->setCurrentIndex(selected);
 	}
 
 	bool InspectorApplication::nativeEventFilter(const QByteArray& eventType, void* message, long* result)
