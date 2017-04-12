@@ -10,6 +10,10 @@
 
 namespace Pitstop {
 
+	class ContainerManager;
+	class RawInputJoystick;
+	class RawInputManager;
+
 	class InspectorApplication
 		: public QApplication
 		, public QAbstractNativeEventFilter
@@ -24,6 +28,10 @@ namespace Pitstop {
 
 		int run();
 
+	private slots:
+
+		void slotJoystickConnected(QSharedPointer<RawInputJoystick> joystick, bool connected);
+
 	private:
 
 		virtual bool nativeEventFilter(const QByteArray& eventType, void* message, long* result) override;
@@ -32,6 +40,9 @@ namespace Pitstop {
 
 		Ui_InspectorWindow m_MainWindowForm;
 		QMainWindow m_MainWindow;
+
+		QSharedPointer<ContainerManager> m_Containers;
+		QSharedPointer<RawInputManager> m_RawInput;
 
 	};
 
