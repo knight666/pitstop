@@ -3,8 +3,6 @@
 #include <Input/Container/ContainerManager.h>
 #include <Input/RawInput/RawInputManager.h>
 
-#include "InspectorDriver.h"
-
 namespace Pitstop {
 
 	InspectorApplication::InspectorApplication(int& argc, char** argv, int flags /*= ApplicationFlags*/)
@@ -33,6 +31,10 @@ namespace Pitstop {
 		connect(
 			m_RawInput.data(), SIGNAL(signalJoystickConnected(QSharedPointer<RawInputJoystick>, bool)),
 			this, SLOT(slotJoystickConnected(QSharedPointer<RawInputJoystick>, bool)));
+
+		connect(
+			m_Driver.data(), SIGNAL(signalTrackingCreated(USAGE, TrackingItem&)),
+			this, SLOT(slotTrackingCreated(USAGE, TrackingItem&)));
 
 		installNativeEventFilter(this);
 	}
@@ -100,6 +102,18 @@ namespace Pitstop {
 		m_MainWindowForm.cmbJoysticks->setCurrentIndex(selected);
 	}
 
+	void InspectorApplication::slotTrackingCreated(USAGE identifier, TrackingItem& item)
+	{
+		int row_index = m_MainWindowForm.tblValues->rowCount();
+		m_MainWindowForm.tblValues->insertRow(row_index);
+
+		QTableWidgetItem* id_item = new QTableWidgetItem(identifier);
+		m_MainWindowForm.tblValues->setItem(row_index, 0, id_item);
+
+		QTableWidgetItem* name_item = new QTableWidgetItem(item.name);
+		m_MainWindowForm.tblValues->setItem(row_index, 1, name_item);
+	}
+
 	void InspectorApplication::on_btnStart_pressed()
 	{
 		int selected = m_MainWindowForm.cmbJoysticks->currentIndex();
@@ -115,11 +129,6 @@ namespace Pitstop {
 			return;
 		}
 
-		if (m_JoystickSelected != nullptr)
-		{
-			m_JoystickSelected->setInputProcessor(nullptr);
-		}
-
 		m_JoystickSelected = joystick;
 		m_JoystickSelected->setInputProcessor(m_Driver.data());
 
@@ -130,6 +139,11 @@ namespace Pitstop {
 
 	void InspectorApplication::on_btnStop_pressed()
 	{
+		if (m_JoystickSelected != nullptr)
+		{
+			m_JoystickSelected->setInputProcessor(nullptr);
+		}
+
 		m_MainWindowForm.cmbJoysticks->setEnabled(true);
 		m_MainWindowForm.btnStart->setEnabled(true);
 		m_MainWindowForm.btnStop->setEnabled(false);

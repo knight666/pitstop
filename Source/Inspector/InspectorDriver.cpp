@@ -30,7 +30,8 @@ namespace Pitstop {
 
 	void InspectorDriver::trackValue(USAGE identifier, LONG value)
 	{
-		QMap<LONG, int32_t>* tracked = nullptr;
+		TrackingItem* tracked = nullptr;
+		bool is_new = false;
 
 		auto found = m_Tracking.find(identifier);
 		if (found != m_Tracking.end())
@@ -39,18 +40,25 @@ namespace Pitstop {
 		}
 		else
 		{
-			m_Tracking.insert(identifier, QMap<LONG, int32_t>());
+			m_Tracking.insert(identifier, TrackingItem());
 			tracked = &m_Tracking.find(identifier).value();
+			is_new = true;
 		}
 
-		auto found_counter = tracked->find(value);
-		if (found_counter == tracked->end())
+		auto found_counter = tracked->values.find(value);
+		if (found_counter == tracked->values.end())
 		{
-			tracked->insert(value, 0);
-			found_counter = tracked->find(value);
+			tracked->values.insert(value, 0);
+			found_counter = tracked->values.find(value);
 		}
 
 		found_counter.value() += 1;
+
+		if (is_new)
+		{
+			tracked->name = QString("Input%1").arg(identifier);
+			emit signalTrackingCreated(identifier, *tracked);
+		}
 	}
 
 };
