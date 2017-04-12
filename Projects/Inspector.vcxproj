@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Inspector\InspectorApplication.cpp" />
+    <ClCompile Include="..\Source\Inspector\InspectorDriver.cpp" />
     <ClCompile Include="..\Source\Inspector\InspectorMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +89,9 @@
       <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\Inspector\InspectorDriver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

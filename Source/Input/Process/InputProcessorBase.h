@@ -8,8 +8,7 @@ namespace Pitstop {
 #define IMPLEMENT_INPUT_PROCESSOR(_type, _vid, _pid) \
 	static const uint16_t Vendor = _vid; \
 	static const uint16_t Product = _pid; \
-	static InputProcessorBase* create(RawInputJoystick& joystick) { return new _type(joystick); } \
-	_type(RawInputJoystick& joystick) : InputProcessorBase(joystick) { }
+	static InputProcessorBase* create() { return new _type(); }
 
 	class InputProcessorBase
 	{
@@ -48,14 +47,14 @@ namespace Pitstop {
 			float analogValue;
 		};
 
-		typedef InputProcessorBase* (FactoryMethod(RawInputJoystick&));
+		typedef InputProcessorBase* (FactoryMethod());
 
-		InputProcessorBase(RawInputJoystick& joystick);
+		InputProcessorBase();
 		virtual ~InputProcessorBase();
 
 		const QHash<QString, InputBinding>& getBindings() const { return m_Bindings; }
 
-		virtual bool setup();
+		virtual bool setup(RawInputJoystick* joystick);
 
 		bool process(const RAWINPUT& message);
 
@@ -70,7 +69,7 @@ namespace Pitstop {
 
 	protected:
 
-		RawInputJoystick& m_Joystick;
+		RawInputJoystick* m_Joystick;
 		QHash<QString, InputBinding> m_Bindings;
 
 		QVector<uint8_t> m_PreparsedData;

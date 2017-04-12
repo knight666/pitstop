@@ -265,7 +265,7 @@ namespace Pitstop {
 		QHash<uint32_t, std::function<InputProcessorBase::FactoryMethod>>::iterator found = m_InputProcessorFactories.find(key);
 		if (found != m_InputProcessorFactories.end())
 		{
-			return found.value()(joystick);
+			return found.value()();
 		}
 
 		return nullptr;
@@ -432,7 +432,7 @@ namespace Pitstop {
 	{
 		uint32_t key = (vendor << 16) | product;
 
-		m_InputProcessorFactories.insert(key, std::bind(method, std::placeholders::_1));
+		m_InputProcessorFactories.insert(key, std::bind(method));
 	}
 
 	void RawInputManager::addThumbnailImage(uint16_t vendor, uint16_t product, const QString& thumbnailPath)

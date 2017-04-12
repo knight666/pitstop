@@ -3,13 +3,18 @@
 #include <Input/Container/ContainerManager.h>
 #include <Input/RawInput/RawInputManager.h>
 
+#include "InspectorDriver.h"
+
 namespace Pitstop {
 
 	InspectorApplication::InspectorApplication(int& argc, char** argv, int flags /*= ApplicationFlags*/)
 		: QApplication(argc, argv, flags)
 		, m_Containers(new ContainerManager())
 		, m_RawInput(new RawInputManager(m_Containers))
+		, m_Driver(new InspectorDriver())
 	{
+		setApplicationName("PitstopInspector");
+
 		m_MainWindowForm.setupUi(&m_MainWindow);
 
 		m_MainWindowForm.cmbJoysticks->clear();
@@ -28,6 +33,8 @@ namespace Pitstop {
 		connect(
 			m_RawInput.data(), SIGNAL(signalJoystickConnected(QSharedPointer<RawInputJoystick>, bool)),
 			this, SLOT(slotJoystickConnected(QSharedPointer<RawInputJoystick>, bool)));
+
+		installNativeEventFilter(this);
 	}
 
 	InspectorApplication::~InspectorApplication()
@@ -107,6 +114,14 @@ namespace Pitstop {
 		{
 			return;
 		}
+
+		if (m_JoystickSelected != nullptr)
+		{
+			m_JoystickSelected->setInputProcessor(nullptr);
+		}
+
+		m_JoystickSelected = joystick;
+		m_JoystickSelected->setInputProcessor(m_Driver.data());
 
 		m_MainWindowForm.cmbJoysticks->setEnabled(false);
 		m_MainWindowForm.btnStart->setEnabled(false);

@@ -13,6 +13,7 @@ namespace Pitstop {
 	class ContainerManager;
 	class RawInputJoystick;
 	class RawInputManager;
+	class InspectorDriver;
 
 	class InspectorApplication
 		: public QApplication
@@ -48,6 +49,7 @@ namespace Pitstop {
 		QSharedPointer<ContainerManager> m_Containers;
 		QSharedPointer<RawInputManager> m_RawInput;
 		QSharedPointer<RawInputJoystick> m_JoystickSelected;
+		QSharedPointer<InspectorDriver> m_Driver;
 
 	};
 

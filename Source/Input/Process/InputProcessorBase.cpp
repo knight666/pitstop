@@ -4,8 +4,8 @@
 
 namespace Pitstop {
 
-	InputProcessorBase::InputProcessorBase(RawInputJoystick& joystick)
-		: m_Joystick(joystick)
+	InputProcessorBase::InputProcessorBase()
+		: m_Joystick(nullptr)
 	{
 	}
 
@@ -13,11 +13,13 @@ namespace Pitstop {
 	{
 	}
 
-	bool InputProcessorBase::setup()
+	bool InputProcessorBase::setup(RawInputJoystick* joystick)
 	{
+		m_Joystick = joystick;
+
 		UINT preparsed_size = 0;
 		if (::GetRawInputDeviceInfoW(
-			m_Joystick.getHandle(),
+			m_Joystick->getHandle(),
 			RIDI_PREPARSEDDATA,
 			nullptr,
 			&preparsed_size) != 0)
@@ -30,7 +32,7 @@ namespace Pitstop {
 		m_PreparsedData.resize(preparsed_size);
 
 		if (::GetRawInputDeviceInfoW(
-			m_Joystick.getHandle(),
+			m_Joystick->getHandle(),
 			RIDI_PREPARSEDDATA,
 			&m_PreparsedData[0],
 			&preparsed_size) == (UINT)-1)
