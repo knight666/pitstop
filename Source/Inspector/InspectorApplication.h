@@ -6,6 +6,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 
+#include "InspectorDriver.h"
 #include "ui_InspectorWindow.h"
 
 namespace Pitstop {
@@ -13,7 +14,6 @@ namespace Pitstop {
 	class ContainerManager;
 	class RawInputJoystick;
 	class RawInputManager;
-	class InspectorDriver;
 
 	class InspectorApplication
 		: public QApplication
@@ -32,6 +32,7 @@ namespace Pitstop {
 	private slots:
 
 		void slotJoystickConnected(QSharedPointer<RawInputJoystick> joystick, bool connected);
+		void slotTrackingCreated(USAGE identifier, TrackingItem& item);
 
 		void on_btnStart_pressed();
 		void on_btnStop_pressed();

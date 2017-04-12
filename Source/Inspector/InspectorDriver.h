@@ -5,13 +5,26 @@
 
 namespace Pitstop {
 
-	class InspectorDriver
-		: public InputProcessorBase
+	struct TrackingItem
 	{
+		QString name;
+		QMap<LONG, int32_t> values;
+	};
+
+	class InspectorDriver
+		: public QObject
+		, public InputProcessorBase
+	{
+
+		Q_OBJECT
 
 	public:
 
 		InspectorDriver();
+
+	signals:
+
+		void signalTrackingCreated(USAGE identifier, TrackingItem& item);
 
 	private:
 
@@ -24,7 +37,7 @@ namespace Pitstop {
 
 	private:
 
-		QMap<USAGE, QMap<LONG, int32_t>> m_Tracking;
+		QMap<USAGE, TrackingItem> m_Tracking;
 
 	};
 
