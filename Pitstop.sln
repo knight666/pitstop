@@ -14,6 +14,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{2B5BF9F6-ED4A-47DE-BA2A-5B491C0B19FC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Inspector", "Projects\Inspector.vcxproj", "{4C1129AC-7698-4D08-A8DF-3A8121F0088D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{36FAA406-77B4-4861-814E-9A055023DD41} = {36FAA406-77B4-4861-814E-9A055023DD41}
+		{46AEE07D-20D0-4DF4-A016-2D8160B1F0B4} = {46AEE07D-20D0-4DF4-A016-2D8160B1F0B4}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

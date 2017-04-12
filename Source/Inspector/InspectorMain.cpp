@@ -4,8 +4,9 @@ int main(int argc, char** argv)
 {
 	Pitstop::Logger::initialize();
 
-	Pitstop::InspectorApplication application(argc, argv);
-	int result = application.run();
+	Pitstop::InspectorApplication* application = new Pitstop::InspectorApplication(argc, argv);
+	int result = application->run();
+	delete application;
 
 	Pitstop::Logger::destroy();
 
