@@ -73,6 +73,29 @@ namespace Pitstop {
 		return m_Container->getIdentifier();
 	}
 
+	bool RawInputJoystick::setInputProcessor(InputProcessorBase* processor)
+	{
+		if (m_InputProcessor != nullptr)
+		{
+			delete m_InputProcessor;
+		}
+
+		if (m_InputProcessor != nullptr &&
+			!m_InputProcessor->setup())
+		{
+			PS_LOG_ERROR(RawInputJoystick) << "Failed to setup input processor for device. "
+				<< "(VID: " << QString::number(m_VendorIdentifier, 16)
+				<< " PID: " << QString::number(m_ProductIdentifier, 16)
+				<< ")";
+
+			return false;
+		}
+
+		m_InputProcessor = processor;
+
+		return true;
+	}
+
 	bool RawInputJoystick::setup(ContainerManager& containers, const QString& devicePath)
 	{
 		// Extract properties from device path
@@ -285,20 +308,9 @@ namespace Pitstop {
 
 		// Add input processor
 
-		if (m_InputProcessor != nullptr)
+		auto input_processor = m_Manager.createInputProcessor(*this);
+		if (!setInputProcessor(input_processor))
 		{
-			delete m_InputProcessor;
-		}
-
-		m_InputProcessor = m_Manager.createInputProcessor(*this);
-		if (m_InputProcessor != nullptr &&
-			!m_InputProcessor->setup())
-		{
-			PS_LOG_ERROR(RawInputJoystick) << "Failed to setup input processor for device. "
-				<< "(VID: " << QString::number(m_VendorIdentifier, 16)
-				<< " PID: " << QString::number(m_ProductIdentifier, 16)
-				<< ")";
-
 			return false;
 		}
 

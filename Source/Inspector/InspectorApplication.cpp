@@ -101,6 +101,13 @@ namespace Pitstop {
 			return;
 		}
 
+		QString joystick_path = m_MainWindowForm.cmbJoysticks->currentData().toString();
+		auto joystick = m_RawInput->getJoystickByIdentifier(joystick_path);
+		if (joystick == nullptr)
+		{
+			return;
+		}
+
 		m_MainWindowForm.cmbJoysticks->setEnabled(false);
 		m_MainWindowForm.btnStart->setEnabled(false);
 		m_MainWindowForm.btnStop->setEnabled(true);

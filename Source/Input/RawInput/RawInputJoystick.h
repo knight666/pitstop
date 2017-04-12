@@ -64,6 +64,7 @@ namespace Pitstop {
 		const GUID& getGuid() const { return m_Guid; }
 
 		InputProcessorBase* getInputProcessor() const { return m_InputProcessor; }
+		bool setInputProcessor(InputProcessorBase* processor);
 
 		QSharedPointer<QImage> getThumbnail() const { return m_Thumbnail; }
 
