@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="..\Source\Inspector\InspectorWindow.ui" />
+    <CustomBuild Include="..\Source\Inspector\InspectorApplication.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\Inspector\InspectorApplication.cpp" />
+    <ClCompile Include="..\Source\Inspector\InspectorMain.cpp" />
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_InspectorApplication.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_InspectorApplication.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GeneratedFiles">
+      <UniqueIdentifier>{824f1834-81fe-4dd5-9c5e-3c539f81d372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneratedFiles\Debug">
+      <UniqueIdentifier>{baf7b18a-2e04-4145-a343-9f16524c7799}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeneratedFiles\Release">
+      <UniqueIdentifier>{a3cd1cc5-c925-4cbe-9e5d-e78bca4161c7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
