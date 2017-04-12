@@ -13,6 +13,7 @@
     <ClCompile Include="$(QtGeneratedDir)Release\moc_InspectorApplication.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Inspector\InspectorDriver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeneratedFiles">
@@ -24,5 +25,8 @@
     <Filter Include="GeneratedFiles\Release">
       <UniqueIdentifier>{a3cd1cc5-c925-4cbe-9e5d-e78bca4161c7}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\Inspector\InspectorDriver.h" />
   </ItemGroup>
 </Project>

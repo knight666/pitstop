@@ -75,13 +75,13 @@ namespace Pitstop {
 
 	bool RawInputJoystick::setInputProcessor(InputProcessorBase* processor)
 	{
-		if (m_InputProcessor != nullptr)
+		if (m_InputProcessor == processor)
 		{
-			delete m_InputProcessor;
+			return true;
 		}
 
-		if (m_InputProcessor != nullptr &&
-			!m_InputProcessor->setup())
+		if (processor != nullptr &&
+			!processor->setup(this))
 		{
 			PS_LOG_ERROR(RawInputJoystick) << "Failed to setup input processor for device. "
 				<< "(VID: " << QString::number(m_VendorIdentifier, 16)
