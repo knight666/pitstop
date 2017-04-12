@@ -15,6 +15,16 @@ namespace Pitstop {
 		m_MainWindowForm.cmbJoysticks->clear();
 		m_MainWindowForm.cmbJoysticks->addItem("<None>");
 
+		m_MainWindowForm.btnStop->setEnabled(false);
+
+		connect(
+			m_MainWindowForm.btnStart, SIGNAL(pressed()),
+			this, SLOT(on_btnStart_pressed()));
+
+		connect(
+			m_MainWindowForm.btnStop, SIGNAL(pressed()),
+			this, SLOT(on_btnStop_pressed()));
+
 		connect(
 			m_RawInput.data(), SIGNAL(signalJoystickConnected(QSharedPointer<RawInputJoystick>, bool)),
 			this, SLOT(slotJoystickConnected(QSharedPointer<RawInputJoystick>, bool)));
@@ -81,6 +91,26 @@ namespace Pitstop {
 		m_MainWindowForm.cmbJoysticks->blockSignals(previous);
 
 		m_MainWindowForm.cmbJoysticks->setCurrentIndex(selected);
+	}
+
+	void InspectorApplication::on_btnStart_pressed()
+	{
+		int selected = m_MainWindowForm.cmbJoysticks->currentIndex();
+		if (selected == 0)
+		{
+			return;
+		}
+
+		m_MainWindowForm.cmbJoysticks->setEnabled(false);
+		m_MainWindowForm.btnStart->setEnabled(false);
+		m_MainWindowForm.btnStop->setEnabled(true);
+	}
+
+	void InspectorApplication::on_btnStop_pressed()
+	{
+		m_MainWindowForm.cmbJoysticks->setEnabled(true);
+		m_MainWindowForm.btnStart->setEnabled(true);
+		m_MainWindowForm.btnStop->setEnabled(false);
 	}
 
 	bool InspectorApplication::nativeEventFilter(const QByteArray& eventType, void* message, long* result)
