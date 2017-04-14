@@ -2,11 +2,13 @@
 
 #include <Core/Main.h>
 #include <Input/Process/InputProcessorBase.h>
+#include <Input/Types.h>
 
 namespace Pitstop {
 
 	struct TrackingItem
 	{
+		InputType type;
 		QString name;
 		QMap<LONG, int32_t> values;
 	};
@@ -33,7 +35,7 @@ namespace Pitstop {
 		virtual bool processDigital(USAGE identifier, bool pressed) override;
 		virtual bool processAnalog(USAGE identifier, LONG value) override;
 
-		void trackValue(USAGE identifier, LONG value);
+		void trackValue(InputType type, USAGE identifier, LONG value);
 
 	private:
 
