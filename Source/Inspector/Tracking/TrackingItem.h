@@ -12,8 +12,6 @@ namespace Pitstop {
 
 		TrackingItem(USAGE identifier, InputType type);
 
-		void add(int32_t value);
-
 		const QString& getName() const { return m_name; }
 
 		int32_t getValueLatest() const { return m_valueLatest; }
@@ -21,8 +19,13 @@ namespace Pitstop {
 		int32_t getMaximum() const { return m_maximum; }
 		float getAverage() const { return m_average; }
 
+		void add(int32_t value);
+
+		void serialize(QJsonArray& bindings);
+
 	public:
 
+		USAGE m_identifier;
 		InputType m_type;
 		QString m_name;
 		QMap<LONG, int32_t> m_values;
