@@ -53,20 +53,17 @@ namespace Pitstop {
 		m_average = m_valueTotal / m_valueSamples;
 	}
 
-	void TrackingItem::serialize(QJsonArray& bindings)
+	void TrackingItem::serialize(QJsonObject& target, size_t version)
 	{
-		QJsonObject item;
-		item["identifier"] = m_identifier;
-		item["name"] = m_name;
+		target["identifier"] = m_identifier;
+		target["name"] = m_name;
 
 		QJsonObject samples;
 		for (auto it = m_values.begin(); it != m_values.end(); ++it)
 		{
 			samples[QString("%1").arg(it.key(), 4)] = it.value();
 		}
-		item["samples"] = samples;
-
-		bindings.append(item);
+		target["samples"] = samples;
 	}
 
 };

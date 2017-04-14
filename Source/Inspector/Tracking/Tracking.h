@@ -17,7 +17,8 @@ namespace Pitstop {
 
 		void clear();
 		void trackValue(InputType type, USAGE identifier, LONG value);
-		void serialize(QJsonDocument& document);
+
+		void serialize(QJsonObject& target, size_t version);
 
 	signals:
 

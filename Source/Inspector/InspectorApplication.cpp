@@ -186,8 +186,20 @@ namespace Pitstop {
 			m_JoystickSelected->setInputProcessor(nullptr);
 		}
 
+		QJsonObject target;
+
+		QJsonObject target_driver;
+		target_driver["description"] = m_JoystickSelected->getDescription();
+		target_driver["vendor"] = QString("0x%1").arg(m_JoystickSelected->getVendorIdentifier(), 4, 16, QLatin1Char('0'));
+		target_driver["product"] = QString("0x%1").arg(m_JoystickSelected->getProductIdentifier(), 4, 16, QLatin1Char('0'));
+		target["driver"] = target_driver;
+
+		QJsonObject target_tracking;
+		m_Tracking.serialize(target_tracking, 1);
+		target["tracking"] = target_tracking;
+
 		QJsonDocument document;
-		m_Tracking.serialize(document);
+		document.setObject(target);
 
 		QFile output("joystick.json");
 		if (output.open(QIODevice::WriteOnly))
