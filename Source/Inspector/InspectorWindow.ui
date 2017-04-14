@@ -50,22 +50,22 @@
       </column>
       <column>
        <property name="text">
-        <string>Min</string>
+        <string>Value</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Max</string>
+        <string>Minimum</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Maximum</string>
        </property>
       </column>
       <column>
        <property name="text">
         <string>Average</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Median</string>
        </property>
       </column>
      </widget>

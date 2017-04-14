@@ -105,20 +105,20 @@ namespace Pitstop {
 	void InspectorApplication::slotTrackingUpdated(USAGE identifier, TrackingItem& item)
 	{
 		int row_index = -1;
+		QTableWidgetItem* item_latest = nullptr;
 		QTableWidgetItem* item_minimum = nullptr;
 		QTableWidgetItem* item_maximum = nullptr;
 		QTableWidgetItem* item_average = nullptr;
-		QTableWidgetItem* item_median = nullptr;
 
 		auto found = m_TrackingRows.find(identifier);
 		if (found != m_TrackingRows.end())
 		{
 			row_index = found.value();
 
-			item_minimum = m_MainWindowForm.tblValues->item(row_index, 2);
-			item_maximum = m_MainWindowForm.tblValues->item(row_index, 3);
-			item_average = m_MainWindowForm.tblValues->item(row_index, 4);
-			item_median = m_MainWindowForm.tblValues->item(row_index, 5);
+			item_latest = m_MainWindowForm.tblValues->item(row_index, 2);
+			item_minimum = m_MainWindowForm.tblValues->item(row_index, 3);
+			item_maximum = m_MainWindowForm.tblValues->item(row_index, 4);
+			item_average = m_MainWindowForm.tblValues->item(row_index, 5);
 		}
 		else
 		{
@@ -131,25 +131,25 @@ namespace Pitstop {
 			QTableWidgetItem* item_name = new QTableWidgetItem(item.getName());
 			m_MainWindowForm.tblValues->setItem(row_index, 1, item_name);
 
+			item_latest = new QTableWidgetItem();
+			m_MainWindowForm.tblValues->setItem(row_index, 2, item_latest);
+
 			item_minimum = new QTableWidgetItem();
-			m_MainWindowForm.tblValues->setItem(row_index, 2, item_minimum);
+			m_MainWindowForm.tblValues->setItem(row_index, 3, item_minimum);
 
 			item_maximum = new QTableWidgetItem();
-			m_MainWindowForm.tblValues->setItem(row_index, 3, item_maximum);
+			m_MainWindowForm.tblValues->setItem(row_index, 4, item_maximum);
 
 			item_average = new QTableWidgetItem();
-			m_MainWindowForm.tblValues->setItem(row_index, 4, item_average);
-
-			item_median = new QTableWidgetItem();
-			m_MainWindowForm.tblValues->setItem(row_index, 5, item_median);
+			m_MainWindowForm.tblValues->setItem(row_index, 5, item_average);
 
 			m_TrackingRows[identifier] = row_index;
 		}
 
+		item_latest->setText(QString("%1").arg(item.getValueLatest()));
 		item_minimum->setText(QString("%1").arg(item.getMinimum()));
 		item_maximum->setText(QString("%1").arg(item.getMaximum()));
 		item_average->setText(QString("%1").arg(item.getAverage()));
-		item_median->setText(QString("%1").arg(item.getMedian()));
 	}
 
 	void InspectorApplication::on_btnStart_pressed()

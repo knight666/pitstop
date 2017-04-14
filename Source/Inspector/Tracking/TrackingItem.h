@@ -14,22 +14,24 @@ namespace Pitstop {
 
 		void add(int32_t value);
 
-		const QString& getName() const { return name; }
+		const QString& getName() const { return m_name; }
 
-		int32_t getMinimum() const { return minimum; }
-		int32_t getMaximum() const { return maximum; }
-		float getAverage() const { return average; }
-		float getMedian() const { return median; }
+		int32_t getValueLatest() const { return m_valueLatest; }
+		int32_t getMinimum() const { return m_minimum; }
+		int32_t getMaximum() const { return m_maximum; }
+		float getAverage() const { return m_average; }
 
 	public:
 
-		InputType type;
-		QString name;
-		QMap<LONG, int32_t> values;
-		int32_t minimum;
-		int32_t maximum;
-		float average;
-		float median;
+		InputType m_type;
+		QString m_name;
+		QMap<LONG, int32_t> m_values;
+		int32_t m_valueLatest;
+		float m_valueSamples;
+		float m_valueTotal;
+		int32_t m_minimum;
+		int32_t m_maximum;
+		float m_average;
 
 	};
 
