@@ -3,6 +3,8 @@
 #include <Input/Container/ContainerManager.h>
 #include <Input/RawInput/RawInputManager.h>
 
+#include <QtWidgets/QFileDialog>
+
 namespace Pitstop {
 
 	InspectorApplication::InspectorApplication(int& argc, char** argv, int flags /*= ApplicationFlags*/)
@@ -19,6 +21,14 @@ namespace Pitstop {
 		m_MainWindowForm.cmbJoysticks->addItem("<None>");
 
 		m_MainWindowForm.btnStop->setEnabled(false);
+
+		connect(
+			m_MainWindowForm.btnOpen, SIGNAL(pressed()),
+			this, SLOT(on_btnOpen_pressed()));
+
+		connect(
+			m_MainWindowForm.btnSave, SIGNAL(pressed()),
+			this, SLOT(on_btnSave_pressed()));
 
 		connect(
 			m_MainWindowForm.btnStart, SIGNAL(pressed()),
@@ -152,38 +162,29 @@ namespace Pitstop {
 		item_average->setText(QString("%1").arg(item.getAverage()));
 	}
 
-	void InspectorApplication::on_btnStart_pressed()
+	void InspectorApplication::on_btnOpen_pressed()
 	{
-		int selected = m_MainWindowForm.cmbJoysticks->currentIndex();
-		if (selected == 0)
+		QString file_name = QFileDialog::getOpenFileName(
+			nullptr,
+			"Select a sample file.",
+			QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "\\joysticks",
+			"Joystick files (*.json)");
+
+		QFile input(file_name);
+		if (!input.open(QIODevice::ReadOnly))
 		{
 			return;
 		}
 
-		QString joystick_path = m_MainWindowForm.cmbJoysticks->currentData().toString();
-		auto joystick = m_RawInput->getJoystickByIdentifier(joystick_path);
-		if (joystick == nullptr)
-		{
-			return;
-		}
-
-		m_Tracking.clear();
-
-		m_JoystickSelected = joystick;
-		m_JoystickSelected->setInputProcessor(m_Driver.data());
-
-		m_MainWindowForm.btnOpen->setEnabled(false);
-		m_MainWindowForm.btnSave->setEnabled(false);
-		m_MainWindowForm.cmbJoysticks->setEnabled(false);
-		m_MainWindowForm.btnStart->setEnabled(false);
-		m_MainWindowForm.btnStop->setEnabled(true);
+		QJsonDocument document;
+		document.fromBinaryData(input.readAll());
 	}
 
-	void InspectorApplication::on_btnStop_pressed()
+	void InspectorApplication::on_btnSave_pressed()
 	{
-		if (m_JoystickSelected != nullptr)
+		if (m_JoystickSelected == nullptr)
 		{
-			m_JoystickSelected->setInputProcessor(nullptr);
+			return;
 		}
 
 		QJsonObject target;
@@ -214,6 +215,43 @@ namespace Pitstop {
 		{
 			output.write(document.toJson());
 			output.close();
+		}
+	}
+
+	void InspectorApplication::on_btnStart_pressed()
+	{
+		int selected = m_MainWindowForm.cmbJoysticks->currentIndex();
+		if (selected == 0)
+		{
+			return;
+		}
+
+		QString joystick_path = m_MainWindowForm.cmbJoysticks->currentData().toString();
+		auto joystick = m_RawInput->getJoystickByIdentifier(joystick_path);
+		if (joystick == nullptr)
+		{
+			return;
+		}
+
+		m_Tracking.clear();
+
+		m_JoystickSelected = joystick;
+		m_JoystickSelected->setInputProcessor(m_Driver.data());
+
+		m_MainWindowForm.btnOpen->setEnabled(false);
+		m_MainWindowForm.btnSave->setEnabled(false);
+		m_MainWindowForm.cmbJoysticks->setEnabled(false);
+		m_MainWindowForm.btnStart->setEnabled(false);
+		m_MainWindowForm.btnStop->setEnabled(true);
+	}
+
+	void InspectorApplication::on_btnStop_pressed()
+	{
+		on_btnSave_pressed();
+
+		if (m_JoystickSelected != nullptr)
+		{
+			m_JoystickSelected->setInputProcessor(nullptr);
 		}
 
 		m_MainWindowForm.btnOpen->setEnabled(true);
