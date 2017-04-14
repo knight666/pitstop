@@ -3,25 +3,26 @@
 namespace Pitstop {
 
 	TrackingItem::TrackingItem(USAGE identifier, InputType type)
-		: type(type)
-		, minimum(std::numeric_limits<int32_t>::max())
-		, maximum(std::numeric_limits<int32_t>::min())
-		, average(0.0f)
-		, median(0.0f)
+		: m_type(type)
+		, m_valueSamples(0.0f)
+		, m_valueTotal(0.0f)
+		, m_minimum(std::numeric_limits<int32_t>::max())
+		, m_maximum(std::numeric_limits<int32_t>::min())
+		, m_average(0.0f)
 	{
 		switch (type)
 		{
 
 		case InputType::Digital:
-			name = QString("Digital%1").arg(identifier);
+			m_name = QString("Digital%1").arg(identifier);
 			break;
 
 		case InputType::Analog:
-			name = QString("Analog%1").arg(identifier);
+			m_name = QString("Analog%1").arg(identifier);
 			break;
 
 		case InputType::Axis:
-			name = QString("Axis%1").arg(identifier);
+			m_name = QString("Axis%1").arg(identifier);
 			break;
 
 		default:
@@ -32,17 +33,23 @@ namespace Pitstop {
 
 	void TrackingItem::add(int32_t value)
 	{
-		auto found = values.find(value);
-		if (found == values.end())
+		m_valueLatest = value;
+
+		auto found = m_values.find(value);
+		if (found == m_values.end())
 		{
-			values.insert(value, 0);
-			found = values.find(value);
+			m_values.insert(value, 0);
+			found = m_values.find(value);
 		}
 
 		found.value() += 1;
 
-		minimum = std::min(minimum, value);
-		maximum = std::max(maximum, value);
+		m_valueSamples += 1.0f;
+		m_valueTotal += static_cast<float>(value);
+
+		m_minimum = std::min(m_minimum, value);
+		m_maximum = std::max(m_maximum, value);
+		m_average = m_valueTotal / m_valueSamples;
 	}
 
 };
