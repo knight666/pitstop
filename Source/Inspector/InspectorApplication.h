@@ -35,6 +35,8 @@ namespace Pitstop {
 		void slotJoystickConnected(QSharedPointer<RawInputJoystick> joystick, bool connected);
 		void slotTrackingUpdated(USAGE identifier, TrackingItem& item);
 
+		void on_btnOpen_pressed();
+		void on_btnSave_pressed();
 		void on_btnStart_pressed();
 		void on_btnStop_pressed();
 
