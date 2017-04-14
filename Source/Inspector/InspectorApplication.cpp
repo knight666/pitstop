@@ -201,7 +201,15 @@ namespace Pitstop {
 		QJsonDocument document;
 		document.setObject(target);
 
-		QFile output("joystick.json");
+		QString file_name = QString("joystick_%1_%2.json")
+			.arg(m_JoystickSelected->getVendorIdentifier(), 4, 16, QLatin1Char('0'))
+			.arg(m_JoystickSelected->getProductIdentifier(), 4, 16, QLatin1Char('0'));
+
+		QDir directory(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "\\joysticks");
+		directory.mkpath(".");
+
+		QFile output;
+		output.setFileName(directory.absoluteFilePath(file_name));
 		if (output.open(QIODevice::WriteOnly))
 		{
 			output.write(document.toJson());
