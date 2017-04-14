@@ -5,5 +5,9 @@
     <file>Resources/Connected-50.png</file>
     <file>Resources/Controller-50.png</file>
     <file>Resources/Disconnected-50.png</file>
+    <file>Resources/Open Folder-26.png</file>
+    <file>Resources/Save Filled-50.png</file>
+    <file>Resources/Record-48.png</file>
+    <file>Resources/Stop-48.png</file>
   </qresource>
 </RCC>

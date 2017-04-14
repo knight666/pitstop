@@ -132,6 +132,8 @@ namespace Pitstop {
 		m_JoystickSelected = joystick;
 		m_JoystickSelected->setInputProcessor(m_Driver.data());
 
+		m_MainWindowForm.btnOpen->setEnabled(false);
+		m_MainWindowForm.btnSave->setEnabled(false);
 		m_MainWindowForm.cmbJoysticks->setEnabled(false);
 		m_MainWindowForm.btnStart->setEnabled(false);
 		m_MainWindowForm.btnStop->setEnabled(true);
@@ -144,6 +146,8 @@ namespace Pitstop {
 			m_JoystickSelected->setInputProcessor(nullptr);
 		}
 
+		m_MainWindowForm.btnOpen->setEnabled(true);
+		m_MainWindowForm.btnSave->setEnabled(true);
 		m_MainWindowForm.cmbJoysticks->setEnabled(true);
 		m_MainWindowForm.btnStart->setEnabled(true);
 		m_MainWindowForm.btnStop->setEnabled(false);
