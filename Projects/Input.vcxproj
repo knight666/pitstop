@@ -203,6 +203,7 @@
       <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
     </CustomBuild>
     <ClInclude Include="..\Source\Input\XInput\XInputState.h" />
+    <ClInclude Include="..\Source\Input\Types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

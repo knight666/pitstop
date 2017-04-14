@@ -16,19 +16,19 @@ namespace Pitstop {
 
 	bool InspectorDriver::processDigital(USAGE identifier, bool pressed)
 	{
-		trackValue(identifier, static_cast<LONG>(pressed));
+		trackValue(InputType::Digital, identifier, static_cast<LONG>(pressed));
 
 		return true;
 	}
 
 	bool InspectorDriver::processAnalog(USAGE identifier, LONG value)
 	{
-		trackValue(identifier, value);
+		trackValue(InputType::Analog, identifier, value);
 
 		return true;
 	}
 
-	void InspectorDriver::trackValue(USAGE identifier, LONG value)
+	void InspectorDriver::trackValue(InputType type, USAGE identifier, LONG value)
 	{
 		TrackingItem* tracked = nullptr;
 		bool is_new = false;
@@ -56,7 +56,29 @@ namespace Pitstop {
 
 		if (is_new)
 		{
-			tracked->name = QString("Input%1").arg(identifier);
+			tracked->type = type;
+
+			switch (type)
+			{
+
+			case InputType::Digital:
+				tracked->name = QString("Digital%1").arg(identifier);
+				break;
+
+			case InputType::Analog:
+				tracked->name = QString("Analog%1").arg(identifier);
+				break;
+
+			case InputType::Axis:
+				tracked->name = QString("Axis%1").arg(identifier);
+				break;
+
+			default:
+				break;
+
+			}
+
+
 			emit signalTrackingCreated(identifier, *tracked);
 		}
 	}

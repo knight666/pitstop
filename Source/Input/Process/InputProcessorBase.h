@@ -1,7 +1,8 @@
 #pragma once
 
 #include <Core/Main.h>
-#include "Input/RawInput/RawInputJoystick.h"
+#include <Input/RawInput/RawInputJoystick.h>
+#include <Input/Types.h>
 
 namespace Pitstop {
 
@@ -14,20 +15,6 @@ namespace Pitstop {
 	{
 
 	public:
-
-		enum InputState
-		{
-			InputState_Up = 0,
-			InputState_Pressed = 0x01,
-			InputState_Down = 0x02,
-			InputState_Released = 0x04,
-		};
-
-		enum class InputType
-		{
-			Digital,
-			Analog
-		};
 
 		struct InputBinding
 		{
