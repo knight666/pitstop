@@ -20,7 +20,7 @@ namespace Pitstop {
 
 	signals:
 
-		void signalTrackingCreated(USAGE identifier, TrackingItem& item);
+		void signalTrackingUpdated(USAGE identifier, TrackingItem& item);
 
 	private:
 

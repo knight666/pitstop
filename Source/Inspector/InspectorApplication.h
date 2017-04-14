@@ -33,7 +33,7 @@ namespace Pitstop {
 	private slots:
 
 		void slotJoystickConnected(QSharedPointer<RawInputJoystick> joystick, bool connected);
-		void slotTrackingCreated(USAGE identifier, TrackingItem& item);
+		void slotTrackingUpdated(USAGE identifier, TrackingItem& item);
 
 		void on_btnStart_pressed();
 		void on_btnStop_pressed();
@@ -53,6 +53,7 @@ namespace Pitstop {
 		QSharedPointer<RawInputJoystick> m_JoystickSelected;
 
 		Tracking m_Tracking;
+		QMap<USAGE, int> m_TrackingRows;
 		QSharedPointer<InspectorDriver> m_Driver;
 
 	};

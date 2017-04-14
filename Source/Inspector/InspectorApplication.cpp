@@ -33,8 +33,8 @@ namespace Pitstop {
 			this, SLOT(slotJoystickConnected(QSharedPointer<RawInputJoystick>, bool)));
 
 		connect(
-			&m_Tracking, SIGNAL(signalTrackingCreated(USAGE, TrackingItem&)),
-			this, SLOT(slotTrackingCreated(USAGE, TrackingItem&)));
+			&m_Tracking, SIGNAL(signalTrackingUpdated(USAGE, TrackingItem&)),
+			this, SLOT(slotTrackingUpdated(USAGE, TrackingItem&)));
 
 		installNativeEventFilter(this);
 	}
@@ -102,16 +102,54 @@ namespace Pitstop {
 		m_MainWindowForm.cmbJoysticks->setCurrentIndex(selected);
 	}
 
-	void InspectorApplication::slotTrackingCreated(USAGE identifier, TrackingItem& item)
+	void InspectorApplication::slotTrackingUpdated(USAGE identifier, TrackingItem& item)
 	{
-		int row_index = m_MainWindowForm.tblValues->rowCount();
-		m_MainWindowForm.tblValues->insertRow(row_index);
+		int row_index = -1;
+		QTableWidgetItem* item_minimum = nullptr;
+		QTableWidgetItem* item_maximum = nullptr;
+		QTableWidgetItem* item_average = nullptr;
+		QTableWidgetItem* item_median = nullptr;
 
-		QTableWidgetItem* id_item = new QTableWidgetItem(identifier);
-		m_MainWindowForm.tblValues->setItem(row_index, 0, id_item);
+		auto found = m_TrackingRows.find(identifier);
+		if (found != m_TrackingRows.end())
+		{
+			row_index = found.value();
 
-		QTableWidgetItem* name_item = new QTableWidgetItem(item.name);
-		m_MainWindowForm.tblValues->setItem(row_index, 1, name_item);
+			item_minimum = m_MainWindowForm.tblValues->item(row_index, 2);
+			item_maximum = m_MainWindowForm.tblValues->item(row_index, 3);
+			item_average = m_MainWindowForm.tblValues->item(row_index, 4);
+			item_median = m_MainWindowForm.tblValues->item(row_index, 5);
+		}
+		else
+		{
+			row_index = m_MainWindowForm.tblValues->rowCount();
+			m_MainWindowForm.tblValues->insertRow(row_index);
+
+			QTableWidgetItem* item_id = new QTableWidgetItem(QString("%1").arg(identifier));
+			m_MainWindowForm.tblValues->setItem(row_index, 0, item_id);
+
+			QTableWidgetItem* item_name = new QTableWidgetItem(item.getName());
+			m_MainWindowForm.tblValues->setItem(row_index, 1, item_name);
+
+			item_minimum = new QTableWidgetItem();
+			m_MainWindowForm.tblValues->setItem(row_index, 2, item_minimum);
+
+			item_maximum = new QTableWidgetItem();
+			m_MainWindowForm.tblValues->setItem(row_index, 3, item_maximum);
+
+			item_average = new QTableWidgetItem();
+			m_MainWindowForm.tblValues->setItem(row_index, 4, item_average);
+
+			item_median = new QTableWidgetItem();
+			m_MainWindowForm.tblValues->setItem(row_index, 5, item_median);
+
+			m_TrackingRows[identifier] = row_index;
+		}
+
+		item_minimum->setText(QString("%1").arg(item.getMinimum()));
+		item_maximum->setText(QString("%1").arg(item.getMaximum()));
+		item_average->setText(QString("%1").arg(item.getAverage()));
+		item_median->setText(QString("%1").arg(item.getMedian()));
 	}
 
 	void InspectorApplication::on_btnStart_pressed()
