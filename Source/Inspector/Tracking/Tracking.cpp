@@ -27,18 +27,16 @@ namespace Pitstop {
 		emit signalTrackingUpdated(identifier, *tracked);
 	}
 
-	void Tracking::serialize(QJsonDocument& document)
+	void Tracking::serialize(QJsonObject& target, size_t version)
 	{
-		QJsonObject current;
-
 		QJsonArray bindings;
 		for (auto& it : m_Items)
 		{
-			it.serialize(bindings);
+			QJsonObject item;
+			it.serialize(item, version);
+			bindings.append(item);
 		}
-		current["bindings"] = bindings;
-
-		document.setObject(current);
+		target["bindings"] = bindings;
 	}
 
 };

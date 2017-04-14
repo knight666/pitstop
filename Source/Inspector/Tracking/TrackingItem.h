@@ -21,7 +21,7 @@ namespace Pitstop {
 
 		void add(int32_t value);
 
-		void serialize(QJsonArray& bindings);
+		void serialize(QJsonObject& target, size_t version);
 
 	public:
 
