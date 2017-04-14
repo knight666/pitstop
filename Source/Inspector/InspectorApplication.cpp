@@ -186,6 +186,16 @@ namespace Pitstop {
 			m_JoystickSelected->setInputProcessor(nullptr);
 		}
 
+		QJsonDocument document;
+		m_Tracking.serialize(document);
+
+		QFile output("joystick.json");
+		if (output.open(QIODevice::WriteOnly))
+		{
+			output.write(document.toJson());
+			output.close();
+		}
+
 		m_MainWindowForm.btnOpen->setEnabled(true);
 		m_MainWindowForm.btnSave->setEnabled(true);
 		m_MainWindowForm.cmbJoysticks->setEnabled(true);

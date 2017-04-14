@@ -3,7 +3,8 @@
 namespace Pitstop {
 
 	TrackingItem::TrackingItem(USAGE identifier, InputType type)
-		: m_type(type)
+		: m_identifier(identifier)
+		, m_type(type)
 		, m_valueSamples(0.0f)
 		, m_valueTotal(0.0f)
 		, m_minimum(std::numeric_limits<int32_t>::max())
@@ -50,6 +51,22 @@ namespace Pitstop {
 		m_minimum = std::min(m_minimum, value);
 		m_maximum = std::max(m_maximum, value);
 		m_average = m_valueTotal / m_valueSamples;
+	}
+
+	void TrackingItem::serialize(QJsonArray& bindings)
+	{
+		QJsonObject item;
+		item["identifier"] = m_identifier;
+		item["name"] = m_name;
+
+		QJsonObject samples;
+		for (auto it = m_values.begin(); it != m_values.end(); ++it)
+		{
+			samples[QString("%1").arg(it.key(), 4)] = it.value();
+		}
+		item["samples"] = samples;
+
+		bindings.append(item);
 	}
 
 };
