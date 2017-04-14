@@ -4,6 +4,7 @@
     <CustomBuild Include="..\Source\Inspector\InspectorWindow.ui" />
     <CustomBuild Include="..\Source\Inspector\InspectorApplication.h" />
     <CustomBuild Include="..\Source\Inspector\InspectorDriver.h" />
+    <CustomBuild Include="$(SolutionDir)Pitstop.qrc" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Inspector\InspectorApplication.cpp" />
@@ -19,6 +20,12 @@
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
     <ClCompile Include="$(QtGeneratedDir)Debug\moc_InspectorDriver.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\qrc_Pitstop.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\qrc_Pitstop.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
   </ItemGroup>
