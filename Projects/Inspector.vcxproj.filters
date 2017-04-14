@@ -5,6 +5,9 @@
     <CustomBuild Include="..\Source\Inspector\InspectorApplication.h" />
     <CustomBuild Include="..\Source\Inspector\InspectorDriver.h" />
     <CustomBuild Include="$(SolutionDir)Pitstop.qrc" />
+    <CustomBuild Include="..\Source\Inspector\Tracking\Tracking.h">
+      <Filter>Tracking</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Inspector\InspectorApplication.cpp" />
@@ -28,6 +31,24 @@
     <ClCompile Include="$(QtGeneratedDir)Debug\qrc_Pitstop.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_Tracking.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_TrackingItem.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_TrackingItem.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_Tracking.cpp">
+      <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Inspector\Tracking\Tracking.cpp">
+      <Filter>Tracking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Inspector\Tracking\TrackingItem.cpp">
+      <Filter>Tracking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeneratedFiles">
@@ -39,5 +60,13 @@
     <Filter Include="GeneratedFiles\Release">
       <UniqueIdentifier>{a3cd1cc5-c925-4cbe-9e5d-e78bca4161c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tracking">
+      <UniqueIdentifier>{b4011c05-0b28-443b-b359-925dfda3fe0d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\Inspector\Tracking\TrackingItem.h">
+      <Filter>Tracking</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

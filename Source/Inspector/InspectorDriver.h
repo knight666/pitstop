@@ -6,12 +6,7 @@
 
 namespace Pitstop {
 
-	struct TrackingItem
-	{
-		InputType type;
-		QString name;
-		QMap<LONG, int32_t> values;
-	};
+	class Tracking;
 
 	class InspectorDriver
 		: public QObject
@@ -22,11 +17,7 @@ namespace Pitstop {
 
 	public:
 
-		InspectorDriver();
-
-	signals:
-
-		void signalTrackingCreated(USAGE identifier, TrackingItem& item);
+		InspectorDriver(Tracking& tracking);
 
 	private:
 
@@ -35,11 +26,9 @@ namespace Pitstop {
 		virtual bool processDigital(USAGE identifier, bool pressed) override;
 		virtual bool processAnalog(USAGE identifier, LONG value) override;
 
-		void trackValue(InputType type, USAGE identifier, LONG value);
-
 	private:
 
-		QMap<USAGE, TrackingItem> m_Tracking;
+		Tracking& m_Tracking;
 
 	};
 

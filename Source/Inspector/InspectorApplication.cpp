@@ -9,7 +9,7 @@ namespace Pitstop {
 		: QApplication(argc, argv, flags)
 		, m_Containers(new ContainerManager())
 		, m_RawInput(new RawInputManager(m_Containers))
-		, m_Driver(new InspectorDriver())
+		, m_Driver(new InspectorDriver(m_Tracking))
 	{
 		setApplicationName("PitstopInspector");
 
@@ -33,7 +33,7 @@ namespace Pitstop {
 			this, SLOT(slotJoystickConnected(QSharedPointer<RawInputJoystick>, bool)));
 
 		connect(
-			m_Driver.data(), SIGNAL(signalTrackingCreated(USAGE, TrackingItem&)),
+			&m_Tracking, SIGNAL(signalTrackingCreated(USAGE, TrackingItem&)),
 			this, SLOT(slotTrackingCreated(USAGE, TrackingItem&)));
 
 		installNativeEventFilter(this);
@@ -128,6 +128,8 @@ namespace Pitstop {
 		{
 			return;
 		}
+
+		m_Tracking.clear();
 
 		m_JoystickSelected = joystick;
 		m_JoystickSelected->setInputProcessor(m_Driver.data());
