@@ -74,6 +74,12 @@
     <ClCompile Include="$(QtGeneratedDir)Release\moc_InspectorDriver.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Debug\moc_Tracking.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(QtGeneratedDir)Release\moc_Tracking.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'!='Release'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="$(QtGeneratedDir)Debug\qrc_Pitstop.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'!='Debug'">true</ExcludedFromBuild>
     </ClCompile>
@@ -82,19 +88,26 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\Inspector\Tracking\Tracking.cpp" />
+    <ClCompile Include="..\Source\Inspector\Tracking\TrackingItem.cpp" />
     <CustomBuild Include="..\Source\Inspector\InspectorWindow.ui">
       <Message>Uic%27ing %(Filename)%(Extension)...</Message>
       <Command>"$(QTDIR)\bin\uic.exe" -o "$(QtGeneratedDir)ui_%(Filename).h" "%(FullPath)"</Command>
       <AdditionalInputs>$(QTDIR)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
       <Outputs>$(QtGeneratedDir)ui_%(Filename).h;%(Outputs)</Outputs>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\Source\Inspector\InspectorApplication.cpp" />
     <ClCompile Include="..\Source\Inspector\InspectorDriver.cpp" />
     <ClCompile Include="..\Source\Inspector\InspectorMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="..\Source\Inspector\Tracking\Tracking.h">
+      <Message>Moc%27ing %(Filename).h...</Message>
+      <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Outputs>$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command>"$(QTDIR)\bin\moc.exe" "%(FullPath)" -o "$(QtGeneratedDir)$(ConfigurationName)\moc_%(Filename).cpp" "-f../../%(RelativeDir)%(Filename).h"</Command>
+    </CustomBuild>
+    <ClInclude Include="..\Source\Inspector\Tracking\TrackingItem.h" />
     <CustomBuild Include="..\Source\Inspector\InspectorApplication.h">
       <Message>Moc%27ing %(Filename).h...</Message>
       <AdditionalInputs>$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

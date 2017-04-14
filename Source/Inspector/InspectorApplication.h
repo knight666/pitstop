@@ -6,6 +6,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 
+#include "Tracking/Tracking.h"
 #include "InspectorDriver.h"
 #include "ui_InspectorWindow.h"
 
@@ -50,6 +51,8 @@ namespace Pitstop {
 		QSharedPointer<ContainerManager> m_Containers;
 		QSharedPointer<RawInputManager> m_RawInput;
 		QSharedPointer<RawInputJoystick> m_JoystickSelected;
+
+		Tracking m_Tracking;
 		QSharedPointer<InspectorDriver> m_Driver;
 
 	};
