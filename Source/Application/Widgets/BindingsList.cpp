@@ -83,7 +83,7 @@ namespace Pitstop {
 			if (found != m_Labels.end())
 			{
 				QString text = QString("%1: %2").arg(it.key());
-				if (binding.type == InputProcessorBase::InputType::Digital)
+				if (binding.type == InputType::Digital)
 				{
 					text = text.arg(binding.digitalValue);
 				}

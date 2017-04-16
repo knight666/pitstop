@@ -36,5 +36,5 @@ extern "C" Pitstop::DriverInfo* Pitstop_GetInfo()
 		return nullptr;
 	}
 
-	return g_Driver->GetInfo();
+	return g_Driver->getInfo();
 }
