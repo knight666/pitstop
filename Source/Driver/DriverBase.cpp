@@ -176,4 +176,53 @@ namespace Pitstop {
 		return true;
 	}
 
+	void DriverBase::addDigitalInput(const char* name, USAGE identifier)
+	{
+		DigitalInput input;
+		strcpy_s(input.name, name);
+		input.identifier = identifier;
+		input.value = false;
+
+		m_DigitalInputs[identifier] = input;
+	}
+
+	void DriverBase::addAnalogInput(const char* name, USAGE identifier, float minimum, float maximum)
+	{
+		AnalogInput input;
+		strcpy_s(input.name, name);
+		input.identifier = identifier;
+		input.minimum = minimum;
+		input.maximum = maximum;
+		input.value = 0.0f;
+
+		m_AnalogInputs[identifier] = input;
+	}
+
+	bool DriverBase::processDigital(USAGE identifier, bool value)
+	{
+		auto found = m_DigitalInputs.find(identifier);
+		if (found != m_DigitalInputs.end())
+		{
+			found.value().value = value;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	bool DriverBase::processAnalog(USAGE identifier, LONG value)
+	{
+		auto found = m_AnalogInputs.find(identifier);
+		if (found != m_AnalogInputs.end())
+		{
+			auto& input = found.value();
+			input.value = (static_cast<float>(value) - input.minimum) / (input.maximum - input.minimum);
+
+			return true;
+		}
+
+		return false;
+	}
+
 };
