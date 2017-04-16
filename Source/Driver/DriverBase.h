@@ -24,12 +24,20 @@ namespace Pitstop {
 
 	protected:
 
-		virtual bool processDigital(USAGE identifier, bool value) = 0;
-		virtual bool processAnalog(USAGE identifier, LONG value) = 0;
+		void addDigitalInput(const char* name, USAGE identifier);
+		void addAnalogInput(const char* name, USAGE identifier, float minimum, float maximum);
+
+		virtual bool processDigital(USAGE identifier, bool value);
+		virtual bool processAnalog(USAGE identifier, LONG value);
+
+	protected:
+
+		DriverInfo m_Info;
+		QMap<USAGE, DigitalInput> m_DigitalInputs;
+		QMap<USAGE, AnalogInput> m_AnalogInputs;
 
 	private:
 
-		DriverInfo m_Info;
 		RawInputJoystick* m_Joystick;
 
 		QVector<uint8_t> m_PreparsedData;
