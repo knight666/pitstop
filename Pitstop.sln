@@ -19,6 +19,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Inspector", "Projects\Inspe
 		{46AEE07D-20D0-4DF4-A016-2D8160B1F0B4} = {46AEE07D-20D0-4DF4-A016-2D8160B1F0B4}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Driver", "Projects\Driver.vcxproj", "{103F460A-546C-45D5-820C-2A3D702AB2B8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{36FAA406-77B4-4861-814E-9A055023DD41} = {36FAA406-77B4-4861-814E-9A055023DD41}
+		{46AEE07D-20D0-4DF4-A016-2D8160B1F0B4} = {46AEE07D-20D0-4DF4-A016-2D8160B1F0B4}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -41,6 +47,10 @@ Global
 		{4C1129AC-7698-4D08-A8DF-3A8121F0088D}.Debug|Win32.Build.0 = Debug|Win32
 		{4C1129AC-7698-4D08-A8DF-3A8121F0088D}.Release|Win32.ActiveCfg = Release|Win32
 		{4C1129AC-7698-4D08-A8DF-3A8121F0088D}.Release|Win32.Build.0 = Release|Win32
+		{103F460A-546C-45D5-820C-2A3D702AB2B8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{103F460A-546C-45D5-820C-2A3D702AB2B8}.Debug|Win32.Build.0 = Debug|Win32
+		{103F460A-546C-45D5-820C-2A3D702AB2B8}.Release|Win32.ActiveCfg = Release|Win32
+		{103F460A-546C-45D5-820C-2A3D702AB2B8}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +58,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{36FAA406-77B4-4861-814E-9A055023DD41} = {2B5BF9F6-ED4A-47DE-BA2A-5B491C0B19FC}
 		{46AEE07D-20D0-4DF4-A016-2D8160B1F0B4} = {2B5BF9F6-ED4A-47DE-BA2A-5B491C0B19FC}
+		{103F460A-546C-45D5-820C-2A3D702AB2B8} = {2B5BF9F6-ED4A-47DE-BA2A-5B491C0B19FC}
 	EndGlobalSection
 EndGlobal
