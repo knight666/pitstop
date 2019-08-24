@@ -1,0 +1,19 @@
+# Project
+Intermediate/
+Build/*.lib
+Build/*.pdb
+
+# Visual Studio
+.vs/
+*.exp
+*.idb
+*.ilk
+*.ncb
+*.opensdf
+*.sdf
+*.suo
+*.vcxproj.user
+
+# Qt
+Generated/
+GeneratedFiles/

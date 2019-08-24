@@ -34,12 +34,6 @@
     <ClCompile Include="$(QtGeneratedDir)Debug\moc_Tracking.cpp">
       <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="$(QtGeneratedDir)Debug\moc_TrackingItem.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="$(QtGeneratedDir)Release\moc_TrackingItem.cpp">
-      <Filter>GeneratedFiles\Release</Filter>
-    </ClCompile>
     <ClCompile Include="$(QtGeneratedDir)Release\moc_Tracking.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>

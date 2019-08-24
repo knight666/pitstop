@@ -149,6 +149,7 @@
     <ClInclude Include="..\Source\Input\Process\InputProcessorFFBWheel.h">
       <Filter>Process</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\Input\Types.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Source\Input\RawInput\RawInputJoystick.h" />

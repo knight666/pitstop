@@ -7,18 +7,6 @@
     <ClCompile Include="Source\Application\Widgets\WidgetJoystick.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_RawInputJoystick.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_RawInputJoystick.cpp">
-      <Filter>GeneratedFiles\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_VirtualInputDevice.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_VirtualInputDevice.cpp">
-      <Filter>GeneratedFiles\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Application\Widgets\WidgetDevice.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
