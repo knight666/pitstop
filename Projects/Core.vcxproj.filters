@@ -82,9 +82,17 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\Source\Core\Logging\Logger.h" />
-    <CustomBuild Include="..\Source\Core\Serialization\ConfigurationBase.h" />
-    <CustomBuild Include="..\Source\Core\Serialization\ConfigurationEventDispatcher.h" />
-    <CustomBuild Include="..\Source\Core\Serialization\ConfigurationManager.h" />
+    <CustomBuild Include="..\Source\Core\Logging\Logger.h">
+      <Filter>Logging</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Source\Core\Serialization\ConfigurationBase.h">
+      <Filter>Serialization</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Source\Core\Serialization\ConfigurationEventDispatcher.h">
+      <Filter>Serialization</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Source\Core\Serialization\ConfigurationManager.h">
+      <Filter>Serialization</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

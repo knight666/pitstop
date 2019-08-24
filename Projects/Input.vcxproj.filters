@@ -152,15 +152,23 @@
     <ClInclude Include="..\Source\Input\Types.h" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\Source\Input\RawInput\RawInputJoystick.h" />
-    <CustomBuild Include="..\Source\Input\RawInput\RawInputManager.h" />
-    <CustomBuild Include="..\Source\Input\Usb\UsbController.h" />
-    <CustomBuild Include="..\Source\Input\Usb\UsbDevice.h" />
     <CustomBuild Include="..\Source\Input\Virtual\VirtualInputDevice.h" />
     <CustomBuild Include="..\Source\Input\Virtual\VirtualInputManager.h" />
     <CustomBuild Include="..\Source\Input\XInput\XInputDevice.h" />
     <CustomBuild Include="..\Source\Input\XInput\XInputManager.h" />
     <CustomBuild Include="..\Source\Input\Container\ContainerDevice.h" />
     <CustomBuild Include="..\Source\Input\Container\ContainerManager.h" />
+    <CustomBuild Include="..\Source\Input\Usb\UsbDevice.h">
+      <Filter>Usb</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Source\Input\Usb\UsbController.h">
+      <Filter>Usb</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Source\Input\RawInput\RawInputManager.h">
+      <Filter>RawInput</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Source\Input\RawInput\RawInputJoystick.h">
+      <Filter>RawInput</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

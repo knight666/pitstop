@@ -40,8 +40,8 @@ namespace Pitstop {
 			_COUNT
 		};
 
-		uint8_t buttonState[Button::_COUNT];
-		float axisState[Axis::_COUNT];
+		uint8_t buttonState[static_cast<size_t>(Button::_COUNT)] = { 0 };
+		float axisState[static_cast<size_t>(Axis::_COUNT)] = { 0 };
 
 	}; // struct XInputState
 
