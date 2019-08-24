@@ -444,13 +444,13 @@ def DeployQt():
 	print('')
 
 	with PrintScopeLock() as lock:
-		debug_exe = os.path.abspath(BuildDir + r'\SSSGDebug.exe')
+		debug_exe = os.path.abspath(BuildDir + r'\PitstopDebug.exe')
 		if os.path.exists(debug_exe):
 			print('Deploying debug...')
 			print('')
 			RunCommand([QtSdkPath + r'\bin\windeployqt.exe', debug_exe], vcVars=True)
 
-		release_exe = os.path.abspath(BuildDir + r'\SSSGRelease.exe')
+		release_exe = os.path.abspath(BuildDir + r'\PitstopRelease.exe')
 		if os.path.exists(release_exe):
 			print('Deploying release...')
 			print('')
@@ -462,23 +462,14 @@ def DeployQt():
 		return True
 
 def RunBuild():
-	installed_path = os.path.abspath(BuildDir + r'\SSSG.exe')
-	release_path = os.path.abspath(BuildDir + r'\SSSGRelease.exe')
-	debug_path = os.path.abspath(BuildDir + r'\SSSGDebug.exe')
+	exe_path = os.path.abspath(BuildDir + r'\PitstopRelease.exe')
 
-	if GetBuildVersion(installed_path) > GetBuildVersion(release_path):
-		exe_path = installed_path
-	elif GetBuildVersion(debug_path) > GetBuildVersion(release_path):
-		exe_path = debug_path
-	else:
-		exe_path = release_path
-
-	print('Running "%s", build %d...' % (os.path.split(exe_path)[1], GetBuildVersion(exe_path)))
+	print('Running "%s"...' % (os.path.split(exe_path)[1]))
 	print('')
 
 	with PrintScopeLock() as lock:
 		if not os.path.exists(exe_path):
-			print('Missing executable, try running --install again.')
+			print('Missing executable.')
 			print('')
 
 			return False
@@ -505,13 +496,19 @@ if __name__ == '__main__':
 		'--build',
 		dest = 'build',
 		action = 'store_true',
-		help = 'build both server and client'
+		help = 'build application'
+	)
+	parser.add_argument(
+		'--deploy',
+		dest = 'deploy',
+		action = 'store_true',
+		help = 'deploy qt dlls'
 	)
 	parser.add_argument(
 		'--run',
 		dest = 'run',
 		action = 'store_true',
-		help = 'run the game if built'
+		help = 'run the application'
 	)
 	ProgramOptions = parser.parse_args()
 
@@ -533,7 +530,7 @@ if __name__ == '__main__':
 		if dep not in dependencies:
 			dependencies.append(dep)
 
-	if ProgramOptions.build:
+	if ProgramOptions.build or ProgramOptions.deploy:
 		AddDependency(ToolsVisualStudio)
 		AddDependency(ToolsQt)
 		AddDependency(ToolsCMake)
@@ -550,13 +547,14 @@ if __name__ == '__main__':
 
 	# app
 
-	print('[      GAME      ]')
+	print('[  APPLICATION   ]')
 	print('')
 
 	if ProgramOptions.build:
 		if not BuildApplication():
 			exit(1)
 
+	if ProgramOptions.deploy or ProgramOptions.build:
 		DeployQt()
 
 	if ProgramOptions.run:
