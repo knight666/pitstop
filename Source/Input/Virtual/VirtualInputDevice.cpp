@@ -174,7 +174,18 @@ namespace Pitstop {
 
 	bool VirtualInputDevice::mapToXinput(XInputState& state, const QHash<QString, InputProcessorBase::InputBinding>& bindings)
 	{
-		// Look behind
+		state.buttonState[static_cast<uint8_t>(XInputState::Button::Up)] = bindings["Up"].digitalValue;
+		state.buttonState[static_cast<uint8_t>(XInputState::Button::Right)] = bindings["Right"].digitalValue;
+		state.buttonState[static_cast<uint8_t>(XInputState::Button::Left)] = bindings["Left"].digitalValue;
+		state.buttonState[static_cast<uint8_t>(XInputState::Button::Down)] = bindings["Down"].digitalValue;
+		state.buttonState[static_cast<uint8_t>(XInputState::Button::A)] = bindings["B"].digitalValue;
+		state.buttonState[static_cast<uint8_t>(XInputState::Button::B)] = bindings["A"].digitalValue;
+		state.buttonState[static_cast<uint8_t>(XInputState::Button::Back)] = bindings["Select"].digitalValue;
+		state.buttonState[static_cast<uint8_t>(XInputState::Button::Start)] = bindings["Start"].digitalValue;
+
+		// Test for Watch_Dogs
+
+		/*// Look behind
 		state.buttonState[(uint8_t)XInputState::Button::A] = bindings["RightThumbButton"].digitalValue;
 		state.buttonState[(uint8_t)XInputState::Button::B] = bindings["RightStickRight"].digitalValue;
 		state.buttonState[(uint8_t)XInputState::Button::X] = bindings["RightStickLeft"].digitalValue;
@@ -209,7 +220,7 @@ namespace Pitstop {
 		state.axisState[(uint8_t)XInputState::Axis::RightStickHorizontal] = look_around;
 
 		state.axisState[(uint8_t)XInputState::Axis::LeftTrigger] = bindings["LeftFootPaddle"].analogValue;
-		state.axisState[(uint8_t)XInputState::Axis::RightTrigger] = bindings["RightFootPaddle"].analogValue;
+		state.axisState[(uint8_t)XInputState::Axis::RightTrigger] = bindings["RightFootPaddle"].analogValue;*/
 
 		return true;
 	}

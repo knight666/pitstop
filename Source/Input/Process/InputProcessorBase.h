@@ -48,16 +48,18 @@ namespace Pitstop {
 	protected:
 
 		virtual void createBindings() = 0;
-
 		virtual bool processDigital(USAGE identifier, bool pressed) = 0;
 		virtual bool processAnalog(USAGE identifier, LONG value) = 0;
 
 		void addBinding(const QString& name, InputType type);
+		InputBinding& getBinding(const QString& name);
 
 	protected:
 
 		RawInputJoystick* m_Joystick;
 		QHash<QString, InputBinding> m_Bindings;
+
+	private:
 
 		QVector<uint8_t> m_PreparsedData;
 		PHIDP_PREPARSED_DATA m_Preparsed;

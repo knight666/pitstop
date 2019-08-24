@@ -186,4 +186,16 @@ namespace Pitstop {
 		m_Bindings[name] = InputBinding(name, m_Bindings.size(), type);
 	}
 
+	InputProcessorBase::InputBinding& InputProcessorBase::getBinding(const QString& name)
+	{
+		auto found = m_Bindings.find(name);
+		if (found != m_Bindings.end())
+		{
+			return found.value();
+		}
+
+		static InputBinding Empty;
+		return Empty;
+	}
+
 }; // namespace Pitstop

@@ -160,6 +160,7 @@
     <ClCompile Include="..\Source\Input\Process\InputProcessorDarkTornado.cpp" />
     <ClCompile Include="..\Source\Input\Process\InputProcessorDualShock4.cpp" />
     <ClCompile Include="..\Source\Input\Process\InputProcessorFFBWheel.cpp" />
+    <ClCompile Include="..\Source\Input\Process\InputProcessorNesController.cpp" />
     <ClCompile Include="..\Source\Input\RawInput\RawInputJoystick.cpp" />
     <ClCompile Include="..\Source\Input\RawInput\RawInputManager.cpp" />
     <ClCompile Include="..\Source\Input\Usb\UsbController.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="..\Source\Input\Process\InputProcessorDarkTornado.h" />
     <ClInclude Include="..\Source\Input\Process\InputProcessorDualShock4.h" />
     <ClInclude Include="..\Source\Input\Process\InputProcessorFFBWheel.h" />
+    <ClInclude Include="..\Source\Input\Process\InputProcessorNesController.h" />
     <CustomBuild Include="..\Source\Input\RawInput\RawInputJoystick.h">
       <Message>Moc%27ing %(Filename)%(Extension)...</Message>
       <AdditionalInputs>%(FullPath);$(QTDIR)\bin\moc.exe;%(AdditionalInputs)</AdditionalInputs>

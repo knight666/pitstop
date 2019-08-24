@@ -132,6 +132,9 @@
     <ClCompile Include="$(SolutionDir)GeneratedFiles\Release\moc_XInputManager.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Input\Process\InputProcessorNesController.cpp">
+      <Filter>Process</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\Input\XInput\XInputState.h">
@@ -150,6 +153,9 @@
       <Filter>Process</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Input\Types.h" />
+    <ClInclude Include="..\Source\Input\Process\InputProcessorNesController.h">
+      <Filter>Process</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Source\Input\Virtual\VirtualInputDevice.h" />
