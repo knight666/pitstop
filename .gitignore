@@ -8,6 +8,8 @@ Build/*.pdb
 *.exp
 *.idb
 *.ilk
+*.iobj
+*.ipdb
 *.ncb
 *.opensdf
 *.sdf
