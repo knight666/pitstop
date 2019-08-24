@@ -43,9 +43,8 @@ namespace Pitstop {
 
 		QList<InputProcessorBase::InputBinding> bindings = processor->getBindings().values();
 
-		qSort(bindings.begin(), bindings.end(),
-			[] (const InputProcessorBase::InputBinding& left, const InputProcessorBase::InputBinding& right) {
-				return left.index < right.index;
+		std::sort(bindings.begin(), bindings.end(), [] (const InputProcessorBase::InputBinding& left, const InputProcessorBase::InputBinding& right) {
+			return left.index < right.index;
 		});
 
 		for (InputProcessorBase::InputBinding& binding : bindings)

@@ -148,12 +148,15 @@ namespace Pitstop {
 
 int main(int argc, char** argv)
 {
-	Pitstop::Logger::initialize();
+	using namespace Pitstop;
 
-	Pitstop::Application application(argc, argv);
-	int result = application.run();
+	Logger::initialize();
 
-	Pitstop::Logger::destroy();
+	Application* application = new Application(argc, argv);
+	int result = application->run();
+	delete application;
+
+	Logger::destroy();
 
 	return result;
 }

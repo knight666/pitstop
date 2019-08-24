@@ -39,29 +39,29 @@
     <ClCompile Include="..\Source\Core\Serialization\ConfigurationManager.cpp">
       <Filter>Serialization</Filter>
     </ClCompile>
-    <ClCompile Include="$(QtGeneratedDir)Debug\moc_ConfigurationBase.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="$(QtGeneratedDir)Debug\moc_ConfigurationEventDispatcher.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="$(QtGeneratedDir)Debug\moc_ConfigurationManager.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="$(QtGeneratedDir)Debug\moc_Logger.cpp">
-      <Filter>GeneratedFiles\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="$(QtGeneratedDir)Release\moc_ConfigurationBase.cpp">
+    <ClCompile Include="$(SolutionDir)GeneratedFiles\Release\moc_ConfigurationBase.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="$(QtGeneratedDir)Release\moc_ConfigurationEventDispatcher.cpp">
+    <ClCompile Include="$(SolutionDir)GeneratedFiles\Debug\moc_ConfigurationBase.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(SolutionDir)GeneratedFiles\Release\moc_ConfigurationEventDispatcher.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="$(QtGeneratedDir)Release\moc_ConfigurationManager.cpp">
+    <ClCompile Include="$(SolutionDir)GeneratedFiles\Release\moc_ConfigurationManager.cpp">
       <Filter>GeneratedFiles\Release</Filter>
     </ClCompile>
-    <ClCompile Include="$(QtGeneratedDir)Release\moc_Logger.cpp">
+    <ClCompile Include="$(SolutionDir)GeneratedFiles\Release\moc_Logger.cpp">
       <Filter>GeneratedFiles\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="$(SolutionDir)GeneratedFiles\Debug\moc_ConfigurationEventDispatcher.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(SolutionDir)GeneratedFiles\Debug\moc_ConfigurationManager.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="$(SolutionDir)GeneratedFiles\Debug\moc_Logger.cpp">
+      <Filter>GeneratedFiles\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

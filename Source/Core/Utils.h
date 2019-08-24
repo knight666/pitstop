@@ -60,7 +60,7 @@ namespace Pitstop {
 		QStringList result;
 
 		const BYTE* src = &output[0];
-		size_t src_length = (size_t)output.length() - sizeof(wchar_t);
+		size_t src_length = static_cast<size_t>(output.length()) - sizeof(wchar_t);
 
 		while (src_length > 0)
 		{
@@ -68,7 +68,7 @@ namespace Pitstop {
 			size_t entry_text_length = wcslen(entry_text);
 			size_t entry_text_offset = (entry_text_length + 1) * sizeof(wchar_t);
 
-			QString entry = QString::fromUtf16(entry_text, entry_text_length);
+			QString entry = QString::fromUtf16(entry_text, static_cast<int>(entry_text_length));
 			result.push_back(entry);
 
 			if (entry_text_offset >= src_length)

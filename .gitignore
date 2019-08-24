@@ -1,7 +1,8 @@
 # Project
-Intermediate/
+Build/translations/
 Build/*.lib
 Build/*.pdb
+Intermediate/
 
 # Visual Studio
 .vs/
